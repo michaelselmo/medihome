@@ -1,3 +1,7 @@
+function svgToUri(svg) {
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
 function buildHtml(data) {
   const p = (v, fallback = '—') => (v && v !== 'undefined' ? v : fallback);
   const year = new Date().getFullYear();
@@ -16,43 +20,39 @@ function buildHtml(data) {
   };
   const ec = estadoColors[data.estado] || estadoColors.pendiente;
 
-  // SVG icons as reusable inline snippets
-  const iconCircle = (fill, svg) =>
-    `<table cellpadding="0" cellspacing="0" style="display:inline-block;vertical-align:middle"><tr><td style="border-radius:50%;width:32px;height:32px;text-align:center;vertical-align:middle;background:${fill}">
-      ${svg}
-    </td></tr></table>`;
-
-  const icons = {
-    heart: `<svg width="84" height="84" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg" style="display:block">
-      <defs>
-        <linearGradient id="medGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#0ea5e9"/>
-          <stop offset="100%" stop-color="#06b6d4"/>
-        </linearGradient>
-      </defs>
-      <circle cx="42" cy="42" r="40" fill="rgba(14,165,233,0.05)" stroke="rgba(14,165,233,0.08)" stroke-width="1"/>
-      <path d="M42 60 C26 49 18 39 18 32 C18 26 22 22 27 22 C31 22 35 24 37 27 L42 32 L47 27 C49 24 53 22 57 22 C62 22 66 26 66 32 C66 39 58 49 42 60Z" fill="url(#medGrad)"/>
-      <polyline points="24,37 30,37 32,37 34,30 36,37 39,37 42,37 44,40 46,37 49,37 52,37 54,30 56,37 60,37" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.93"/>
-    </svg>`,
-    ecgLine: `<svg width="100%" height="24" viewBox="0 0 740 24" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;max-width:740px">
-      <path d="M0 18 L180 18 L200 18 L210 18 L215 8 L220 18 L230 18 L245 18 L260 18 L265 14 L270 18 L285 18 L310 18 L320 18 L325 8 L330 18 L340 18 L360 18" fill="none" stroke="rgba(14,165,233,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M370 18 L380 18 L386 18 L390 12 L394 18 L400 18 L410 18" fill="none" stroke="rgba(14,165,233,0.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M420 18 L430 18 L436 18 L440 12 L444 18 L450 18 L460 18" fill="none" stroke="rgba(14,165,233,0.25)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M470 18 L600 18 L620 18 L630 18 L635 12 L640 18 L650 18 L665 18 L680 18 L690 18 L695 14 L700 18 L710 18 L740 18" fill="none" stroke="rgba(14,165,233,0.15)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`,
-    patient:
-      '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M8 8c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z" fill="#fff"/></svg>',
-    details:
-      '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M2 4h12v10a1 1 0 01-1 1H3a1 1 0 01-1-1V4zm3-3v4m6-4v4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7h12" stroke="#fff" stroke-width="1"/></svg>',
-    comment:
-      '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M14 0H2C.9 0 0 .9 0 2v10c0 1.1.9 2 2 2h3l3 3 3-3h3c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zm0 12H2V2h12v10z" fill="#fff"/></svg>',
-    check:
-      '<svg width="14" height="14" viewBox="0 0 14 14" style="display:block;margin:8px auto"><path d="M5.5 9.8L2.2 6.5 1 7.7l4.5 4.5 7.5-7.5L11.8 3z" fill="#fff"/></svg>',
-    clock:
-      '<svg width="14" height="14" viewBox="0 0 14 14" style="display:block;margin:8px auto"><path d="M7 0C3.1 0 0 3.1 0 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zm0 12c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm.5-8.5H6v4.3l3.5 2.1.5-.8-3-1.8V3.5z" fill="#fff"/></svg>',
-    bell:
-      '<svg width="20" height="20" viewBox="0 0 20 20" style="display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg"><path d="M10 0C6.7 0 4 2.7 4 6v3.3L2.3 12.7c-.4.6-.1 1.3.5 1.5l.2.1c.1 0 .2.1.3.1H17c.1 0 .2 0 .3-.1l.2-.1c.6-.2.9-.9.5-1.5L16 9.3V6c0-3.3-2.7-6-6-6zm2 15H8c0 1.1.9 2 2 2s2-.9 2-2z" fill="#0ea5e9"/></svg>',
+  // ----- SVG data URIs for Gmail-safe icons -----
+  const uris = {
+    heart: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+        <rect width="100" height="100" rx="24" fill="rgba(14,165,233,0.1)" stroke="rgba(14,165,233,0.15)" stroke-width="1"/>
+        <path d="M50 70 C28 56 18 44 18 35 C18 28 23 23 30 23 C35 23 40 26 43 30 L50 38 L57 30 C60 26 65 23 70 23 C77 23 82 28 82 35 C82 44 72 56 50 70Z" fill="url(#g)"/>
+        <polyline points="26,42 33,42 35,42 37,34 39,42 43,42 46,42 48,46 50,42 53,42 56,42 58,34 60,42 64,42" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`
+    ),
+    user: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="#fff"/><path d="M2 15c0-3.3 2.7-6 6-6s6 2.7 6 6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>`
+    ),
+    calendar: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="11" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M5 1v4m6-4v4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M2 7h12" stroke="#fff" stroke-width="1"/></svg>`
+    ),
+    comment: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M14 1H2a1 1 0 00-1 1v9a1 1 0 001 1h3l3 3 3-3h3a1 1 0 001-1V2a1 1 0 00-1-1z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>`
+    ),
+    check: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><path d="M2 7.5l3.5 3.5L12 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    ),
+    clock: svgToUri(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M7 4v4l3 1.5" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>`
+    ),
   };
+
+  // Helper: icon inside colored circle using background-image
+  const iconCircle = (uri, size = 32) =>
+    `<table cellpadding="0" cellspacing="0" style="display:inline-block"><tr><td style="width:${size}px;height:${size}px;border-radius:50%;background-image:url('${uri}');background-size:${size - 12}px;background-repeat:no-repeat;background-position:center;background-color:#0ea5e9;font-size:0;line-height:0">&zwj;</td></tr></table>`;
+
+  const iconCircleColor = (uri, color, size = 32) =>
+    `<table cellpadding="0" cellspacing="0" style="display:inline-block"><tr><td style="width:${size}px;height:${size}px;border-radius:50%;background-image:url('${uri}');background-size:${size - 12}px;background-repeat:no-repeat;background-position:center;background-color:${color};font-size:0;line-height:0">&zwj;</td></tr></table>`;
 
   function cardRow(label, value, i, len) {
     return `<tr>
@@ -99,20 +99,19 @@ function buildHtml(data) {
           <!-- ========== HEADER ========== -->
           <tr>
             <td style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);padding:0">
-              <!-- ECG line running across top -->
+              <!-- ECG horizontal line -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr><td style="padding:0;line-height:0;font-size:0">${icons.ecgLine}</td></tr>
+                <tr><td style="height:4px;background:repeating-linear-gradient(90deg,rgba(14,165,233,0.08) 0,rgba(14,165,233,0.08) 2px,transparent 2px,transparent 6px);font-size:0;line-height:0">&zwj;</td></tr>
+                <tr><td style="height:1px;background:linear-gradient(90deg,transparent 5%,rgba(14,165,233,0.12) 15%,rgba(14,165,233,0.2) 20%,rgba(14,165,233,0.25) 22%,rgba(14,165,233,0.2) 24%,rgba(14,165,233,0.12) 30%,transparent 40%,transparent 55%,rgba(14,165,233,0.12) 65%,rgba(14,165,233,0.2) 70%,rgba(14,165,233,0.25) 72%,rgba(14,165,233,0.2) 74%,rgba(14,165,233,0.12) 80%,transparent 90%);font-size:0;line-height:0">&zwj;</td></tr>
               </table>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:16px 36px 18px">
+              <!-- Heart + MediHome row -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:20px 36px 14px">
                 <tr>
-                  <!-- Heart icon left -->
-                  <td width="80" valign="middle" align="left" style="padding-right:20px">
-                    <!--[if !mso]><!-->
-                    ${icons.heart}
-                    <!--<![endif]-->
-                    <!--[if mso]>&nbsp;<![endif]-->
+                  <td width="100" valign="middle" align="left" style="padding-right:20px">
+                    <table cellpadding="0" cellspacing="0">
+                      <tr><td style="width:100px;height:100px;background-image:url('${uris.heart}');background-size:contain;background-repeat:no-repeat;background-position:center;font-size:0;line-height:0">&zwj;</td></tr>
+                    </table>
                   </td>
-                  <!-- MediHome text -->
                   <td valign="middle" align="left">
                     <table cellpadding="0" cellspacing="0">
                       <tr>
@@ -132,13 +131,6 @@ function buildHtml(data) {
           <tr>
             <td style="padding:22px 36px 0;text-align:center">
               <table role="presentation" cellpadding="0" cellspacing="0" align="center">
-                <tr>
-                  <td align="center" style="padding-bottom:12px">
-                    <table cellpadding="0" cellspacing="0" style="background:rgba(14,165,233,0.08);border-radius:50%;width:44px;height:44px">
-                      <tr><td align="center" valign="middle" style="padding:12px">${icons.bell}</td></tr>
-                    </table>
-                  </td>
-                </tr>
                 <tr>
                   <td align="center" style="font-size:22px;font-weight:700;color:#0f172a;letter-spacing:-0.3px">Nueva cita agendada</td>
                 </tr>
@@ -173,7 +165,7 @@ function buildHtml(data) {
                   <td style="padding:18px 22px 14px">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td valign="middle" width="36">${iconCircle('rgba(14,165,233,0.85)', icons.patient)}</td>
+                        <td valign="middle" width="36">${iconCircle(uris.user)}</td>
                         <td valign="middle" style="padding-left:10px;font-size:13px;font-weight:700;color:#0ea5e9;text-transform:uppercase;letter-spacing:0.5px">Información del paciente</td>
                       </tr>
                     </table>
@@ -194,7 +186,7 @@ function buildHtml(data) {
                   <td style="padding:18px 22px 14px">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td valign="middle" width="36">${iconCircle('rgba(14,165,233,0.85)', icons.details)}</td>
+                        <td valign="middle" width="36">${iconCircle(uris.calendar)}</td>
                         <td valign="middle" style="padding-left:10px;font-size:13px;font-weight:700;color:#0ea5e9;text-transform:uppercase;letter-spacing:0.5px">Detalles de la cita</td>
                       </tr>
                     </table>
@@ -215,7 +207,7 @@ function buildHtml(data) {
                   <td style="padding:18px 22px 14px">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td valign="middle" width="36">${iconCircle('rgba(245,158,11,0.85)', icons.comment)}</td>
+                        <td valign="middle" width="36">${iconCircleColor(uris.comment, '#d97706')}</td>
                         <td valign="middle" style="padding-left:10px;font-size:13px;font-weight:700;color:#d97706;text-transform:uppercase;letter-spacing:0.5px">Motivo / Comentario</td>
                       </tr>
                     </table>
@@ -235,16 +227,13 @@ function buildHtml(data) {
               <!-- ROW: ESTADO + REGISTRADA -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px">
                 <tr>
-                  <!--[if !mso]><!-->
                   <td width="50%" valign="top" style="padding-right:9px">
-                  <!--<![endif]-->
-                  <!--[if mso]><td width="50%" valign="top"><![endif]-->
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #d1fae5;border-radius:14px;background-color:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,0.02);margin-bottom:14px;overflow:hidden">
                       <tr>
                         <td style="padding:14px 18px">
                           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td valign="middle" width="28">${iconCircle(ec.text, icons.check)}</td>
+                              <td valign="middle" width="28">${iconCircleColor(uris.check, ec.text, 28)}</td>
                               <td valign="middle" style="padding-left:10px;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Estado</td>
                             </tr>
                             <tr>
@@ -257,16 +246,13 @@ function buildHtml(data) {
                       </tr>
                     </table>
                   </td>
-                  <!--[if !mso]><!-->
                   <td width="50%" valign="top" style="padding-left:9px">
-                  <!--<![endif]-->
-                  <!--[if mso]><td width="50%" valign="top"><![endif]-->
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #dbeafe;border-radius:14px;background-color:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,0.02);margin-bottom:14px;overflow:hidden">
                       <tr>
                         <td style="padding:14px 18px">
                           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td valign="middle" width="28">${iconCircle('rgba(14,165,233,0.85)', icons.clock)}</td>
+                              <td valign="middle" width="28">${iconCircle(uris.clock, 28)}</td>
                               <td valign="middle" style="padding-left:10px;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px">Registrada</td>
                             </tr>
                             <tr>
