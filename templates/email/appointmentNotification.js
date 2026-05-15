@@ -23,15 +23,16 @@ function buildHtml(data) {
     </td></tr></table>`;
 
   const icons = {
-    heart: `<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    heart: `<svg width="84" height="84" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg" style="display:block">
       <defs>
-        <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="medGrad" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#0ea5e9"/>
           <stop offset="100%" stop-color="#06b6d4"/>
         </linearGradient>
       </defs>
-      <rect width="80" height="80" rx="20" fill="rgba(14,165,233,0.08)"/>
-      <path d="M40 58 C22 44 14 34 14 26 C14 20 18 16 24 16 C28 16 32 18 34 22 L40 30 L46 22 C48 18 52 16 56 16 C62 16 66 20 66 26 C66 34 58 44 40 58Z" fill="url(#hg)" opacity="0.9"/>
+      <circle cx="42" cy="42" r="40" fill="rgba(14,165,233,0.05)" stroke="rgba(14,165,233,0.08)" stroke-width="1"/>
+      <path d="M42 60 C26 49 18 39 18 32 C18 26 22 22 27 22 C31 22 35 24 37 27 L42 32 L47 27 C49 24 53 22 57 22 C62 22 66 26 66 32 C66 39 58 49 42 60Z" fill="url(#medGrad)"/>
+      <polyline points="24,37 30,37 32,37 34,30 36,37 39,37 42,37 44,40 46,37 49,37 52,37 54,30 56,37 60,37" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.93"/>
     </svg>`,
     ecgLine: `<svg width="100%" height="24" viewBox="0 0 740 24" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;max-width:740px">
       <path d="M0 18 L180 18 L200 18 L210 18 L215 8 L220 18 L230 18 L245 18 L260 18 L265 14 L270 18 L285 18 L310 18 L320 18 L325 8 L330 18 L340 18 L360 18" fill="none" stroke="rgba(14,165,233,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,7 +43,7 @@ function buildHtml(data) {
     patient:
       '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M8 8c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z" fill="#fff"/></svg>',
     details:
-      '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm1-9.5H7V9l3.5 2.1.5-.8-3-1.8V4.5z" fill="#fff"/></svg>',
+      '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M2 4h12v10a1 1 0 01-1 1H3a1 1 0 01-1-1V4zm3-3v4m6-4v4" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7h12" stroke="#fff" stroke-width="1"/></svg>',
     comment:
       '<svg width="16" height="16" viewBox="0 0 16 16" style="display:block;margin:8px auto"><path d="M14 0H2C.9 0 0 .9 0 2v10c0 1.1.9 2 2 2h3l3 3 3-3h3c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zm0 12H2V2h12v10z" fill="#fff"/></svg>',
     check:
@@ -102,7 +103,7 @@ function buildHtml(data) {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr><td style="padding:0;line-height:0;font-size:0">${icons.ecgLine}</td></tr>
               </table>
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:16px 36px 28px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:16px 36px 18px">
                 <tr>
                   <!-- Heart icon left -->
                   <td width="80" valign="middle" align="left" style="padding-right:20px">
@@ -129,7 +130,7 @@ function buildHtml(data) {
 
           <!-- ========== MAIN SECTION ========== -->
           <tr>
-            <td style="padding:32px 36px 0;text-align:center">
+            <td style="padding:22px 36px 0;text-align:center">
               <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                 <tr>
                   <td align="center" style="padding-bottom:12px">
