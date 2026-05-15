@@ -105,18 +105,25 @@ curl http://localhost:3000                  # Debe devolver HTML
 │       Diseno: sidebar blanco, metric cards, tabla con filtros.
 │       API calls: todas las rutas /api/admin/* con token JWT
 │
-├── services/
-│   └── emailService.js             (creado en sesion 2)
-│       Logica de envio de correos SMTP via nodemailer.
-│       Lee config desde .env, construye HTML desde template,
-│       envia notificacion al admin + CC a medico.
-│       Maneja errores sin crashear el servidor.
+├── utils/
+│   └── mailer.js                 (creado en sesion 2)
+│       Transporter SMTP con nodemailer. Lee config desde .env.
+│       Funcion getTransporter() con singleton pattern.
 │
-├── templates/
-│   └── emailCita.html              (creado en sesion 2)
-│       Plantilla HTML profesional para correo de nueva cita.
-│       Estilo medico premium inline (compatible Gmail/Outlook).
-│       15 placeholders. Boton CTA hacia panel admin.
+├── services/
+│   └── emailService.js           (actualizado en sesion 2)
+│       Logica de envio de correos. Usa mailer.js para transporter
+│       y appointmentNotification.js para la plantilla.
+│
+├── templates/email/
+│   └── appointmentNotification.js (creado en sesion 2)
+│       Genera HTML y texto plano para notificaciones de nueva cita.
+│       ─ SVG ECG wave inline + header degradado premium
+│       ─ Tarjetas con bordes redondeados, sombras, iconos
+│       ─ Boton CTA, footer profesional
+│       ─ Codigo unico destacado, datos del paciente y cita
+│       ─ buildHtml(data) → string HTML (inline styles, responsive)
+│       ─ buildText(data) → string texto plano (fallback)
 │
 ├── .env                             (creado en sesion 2, NO subir a Git)
 │   Variables de entorno: EMAIL_HOST, EMAIL_PORT, EMAIL_USER,

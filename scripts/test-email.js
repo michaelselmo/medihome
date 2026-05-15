@@ -30,6 +30,9 @@ if (process.env.EMAIL_APP_PASSWORD === 'COLOCAR_AQUI_EL_APP_PASSWORD') {
 }
 
 const { sendNewCitaNotification } = require('../services/emailService');
+const { buildHtml } = require('../templates/email/appointmentNotification');
+const fs = require('fs');
+const path = require('path');
 
 async function main() {
   console.log('=== MediHome - Prueba de envio de correo ===\n');
@@ -39,10 +42,33 @@ async function main() {
   console.log(`Admin:    ${process.env.EMAIL_ADMIN}\n`);
   console.log('Enviando correo de prueba...\n');
 
+  const previewPath = path.join(__dirname, '..', 'templates', 'email', 'preview.html');
+  const previewHtml = buildHtml({
+    nombre_paciente: 'Prueba Tecnica',
+    telefono: '809-555-0000',
+    correo: 'paciente@ejemplo.com',
+    direccion: 'Calle Principal #123, Ensanche Ozama',
+    ciudad: 'Santo Domingo Este',
+    servicio_nombre: 'Consulta Medica a Domicilio',
+    medico_nombre: 'Dr. Carlos Garcia',
+    fecha: '2026-06-01',
+    hora: '10:30',
+    modalidad: 'domicilio',
+    comentario: 'Prueba de configuracion de correo electronico.',
+    codigo_cita: 'MH-TEST01',
+    created_at: new Date().toISOString(),
+    estado: 'pendiente',
+    admin_url: 'http://localhost:3000/admin.html',
+  });
+  fs.writeFileSync(previewPath, previewHtml);
+  console.log(`Preview HTML guardado: templates/email/preview.html`);
+
   const result = await sendNewCitaNotification({
     nombre_paciente: 'Prueba Tecnica',
     telefono: '809-555-0000',
     correo: 'paciente@ejemplo.com',
+    direccion: 'Calle Principal #123, Ensanche Ozama',
+    ciudad: 'Santo Domingo Este',
     servicio_nombre: 'Consulta Medica a Domicilio',
     medico_nombre: 'Dr. Carlos Garcia',
     medico_correo: process.env.EMAIL_USER,

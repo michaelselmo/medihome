@@ -47,10 +47,12 @@ medihome/                        # RAIZ DEL PROYECTO
 ├── public/                      # Frontend (archivos estaticos)
 │   ├── index.html               # Landing page publica (agendar cita)
 │   └── admin.html               # Dashboard administrativo
+├── utils/
+│   └── mailer.js                 # Transporter SMTP (crea conexion con nodemailer)
 ├── services/
-│   └── emailService.js          # Logica de envio de correos SMTP
-├── templates/
-│   └── emailCita.html           # Plantilla HTML para correo de nueva cita
+│   └── emailService.js           # Logica de envio de correos SMTP
+├── templates/email/
+│   └── appointmentNotification.js # Generador de plantilla HTML/text para notificaciones
 ├── .env                         # Variables de entorno (NO SUBIR A GIT)
 ├── .env.example                 # Template del archivo .env
 ├── README.md                    # Este archivo
