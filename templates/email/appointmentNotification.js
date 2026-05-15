@@ -1,7 +1,7 @@
 function buildHtml(data) {
   const p = (v, fallback = '—') => (v && v !== 'undefined' ? v : fallback);
-  const now = new Date();
-  const year = now.getFullYear();
+  const year = new Date().getFullYear();
+
   const modalidadLabel =
     { domicilio: 'A domicilio', telemedicina: 'Telemedicina', consulta: 'En consultorio' }[
       data.modalidad
@@ -16,30 +16,49 @@ function buildHtml(data) {
   };
   const ec = estadoColors[data.estado] || estadoColors.pendiente;
 
-  const fields = [
-    { icon: '👤', label: 'Paciente', value: `${p(data.nombre_paciente)}` },
-    { icon: '📞', label: 'Teléfono', value: `${p(data.telefono)}` },
-    { icon: '✉️', label: 'Correo', value: `${p(data.correo)}` },
-    { icon: '📍', label: 'Dirección', value: `${p(data.direccion)}${data.ciudad ? ', ' + p(data.ciudad) : ''}` },
+  const pacienteFields = [
+    { label: 'Paciente', value: p(data.nombre_paciente) },
+    { label: 'Teléfono', value: p(data.telefono) },
+    { label: 'Correo', value: p(data.correo) },
+    { label: 'Dirección', value: `${p(data.direccion)}${data.ciudad ? ', ' + p(data.ciudad) : ''}` },
   ];
 
-  const details = [
-    { icon: '🩺', label: 'Servicio', value: `${p(data.servicio_nombre)}` },
-    { icon: '👨‍⚕️', label: 'Doctor', value: `${p(data.medico_nombre)}` },
-    { icon: '📅', label: 'Fecha', value: `${p(data.fecha)}` },
-    { icon: '⏰', label: 'Hora', value: `${p(data.hora)}` },
-    { icon: '🚗', label: 'Modalidad', value: `${modalidadLabel}` },
+  const citaFields = [
+    { label: 'Servicio', value: p(data.servicio_nombre) },
+    { label: 'Doctor', value: p(data.medico_nombre) },
+    { label: 'Fecha', value: p(data.fecha) },
+    { label: 'Hora', value: p(data.hora) },
+    { label: 'Modalidad', value: modalidadLabel },
   ];
 
-  function row(icon, label, value) {
-    return `<tr>
-      <td valign="top" style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:13px;color:#64748b;width:90px;white-space:nowrap">${icon} ${label}</td>
-      <td valign="top" style="padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#0f172a;font-weight:500">${value}</td>
-    </tr>`;
+  function rows(fields) {
+    return fields
+      .map(
+        (f, i) => `<tr>
+        <td valign="top" style="font-size:13px;color:#64748b;padding:7px 0;width:100px;white-space:nowrap;${i < fields.length - 1 ? 'border-bottom:1px solid #f1f5f9' : ''}">${f.label}</td>
+        <td valign="top" style="font-size:14px;color:#0f172a;font-weight:500;padding:7px 0;${i < fields.length - 1 ? 'border-bottom:1px solid #f1f5f9' : ''}">${f.value}</td>
+      </tr>`
+      )
+      .join('');
   }
 
-  const fieldsRows = fields.map(f => row(f.icon, f.label, f.value)).join('');
-  const detailsRows = details.map(f => row(f.icon, f.label, f.value)).join('');
+  function card(title, content) {
+    return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;margin-bottom:16px;padding:18px 20px">
+      <tr>
+        <td style="font-size:12px;font-weight:700;color:#0ea5e9;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:10px;border-bottom:2px solid #e2e8f0">${title}</td>
+      </tr>
+      <tr>
+        <td style="padding:4px 0 0">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            ${content}
+          </table>
+        </td>
+      </tr>
+    </table>`;
+  }
+
+  const pacienteRows = rows(pacienteFields);
+  const citaRows = rows(citaFields);
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -50,197 +69,100 @@ function buildHtml(data) {
 <meta name="supported-color-schemes" content="light">
 <title>Nueva cita - MediHome</title>
 </head>
-<body style="margin:0;padding:0;background-color:#f0f4f8;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;color:#0f172a">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f4f8;padding:20px 0">
+<body style="margin:0;padding:0;background-color:#f1f5f9;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;color:#0f172a">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:24px 0">
     <tr>
-      <td align="center" style="padding:0 10px">
-        <!-- MAIN CONTAINER -->
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.06)">
+      <td align="center" style="padding:0 12px">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.06)">
 
-          <!-- ===== HERO / HEADER ===== -->
+          <!-- HEADER -->
           <tr>
-            <td style="background:linear-gradient(135deg,#0ea5e9 0%,#06b6d4 50%,#14b8a6 100%);padding:0">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <td style="background:linear-gradient(135deg,#0284c7,#0ea5e9,#06b6d4);padding:32px 30px 28px;text-align:center">
+              <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                 <tr>
-                  <td align="center" style="padding:40px 30px 24px">
-                    <table role="presentation" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td align="center" style="font-size:32px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">MediHome</td>
-                      </tr>
-                      <tr>
-                        <td align="center" style="font-size:13px;color:rgba(255,255,255,0.8);padding-top:4px;font-weight:400;letter-spacing:0.3px">SERVICIOS MÉDICOS A DOMICILIO &amp; TELEMEDICINA</td>
-                      </tr>
-                    </table>
-                  </td>
+                  <td style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">MediHome</td>
                 </tr>
-
-                <!-- ECG WAVE DIVIDER -->
                 <tr>
-                  <td style="padding:0 30px 20px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="padding:0;height:48px;vertical-align:middle">
-                          <svg width="540" height="48" viewBox="0 0 540 48" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto;max-width:540px;margin:0 auto" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                              <linearGradient id="ecgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
-                                <stop offset="15%" stop-color="rgba(255,255,255,0.15)"/>
-                                <stop offset="35%" stop-color="rgba(255,255,255,0.9)"/>
-                                <stop offset="38%" stop-color="#ffffff"/>
-                                <stop offset="41%" stop-color="rgba(255,255,255,0.9)"/>
-                                <stop offset="60%" stop-color="rgba(255,255,255,0.15)"/>
-                                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-                              </linearGradient>
-                            </defs>
-                            <!-- base line -->
-                            <line x1="0" y1="36" x2="540" y2="36" stroke="url(#ecgGrad)" stroke-width="2" stroke-linecap="round"/>
-                            <!-- pulse spike -->
-                            <polyline points="120,36 140,36 148,36 154,10 160,36 168,36 180,36" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <!-- small spikes suggesting heartbeat rhythm -->
-                            <polyline points="210,36 220,36 224,28 228,36 235,36 240,32 245,36 255,36" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="320,36 330,36 334,28 338,36 345,36 350,32 355,36 365,36" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <!-- heart icon -->
-                            <text x="440" y="36" font-size="26" text-anchor="middle" dominant-baseline="central" fill="#ffffff" opacity="0.9">&#9829;</text>
-                          </svg>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
+                  <td style="font-size:12px;color:rgba(255,255,255,0.8);padding-top:4px;font-weight:400;letter-spacing:1px">SERVICIOS MÉDICOS A DOMICILIO &amp; TELEMEDICINA</td>
                 </tr>
-
-                <!-- HERO TEXT -->
+              </table>
+              <table role="presentation" width="80" cellpadding="0" cellspacing="0" align="center" style="margin-top:18px">
                 <tr>
-                  <td align="center" style="padding:0 30px 36px">
-                    <table role="presentation" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td align="center" style="font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px">Nueva cita agendada</td>
-                      </tr>
-                      <tr>
-                        <td align="center" style="font-size:14px;color:rgba(255,255,255,0.85);padding-top:6px;font-weight:400">
-                          Se ha registrado una nueva solicitud de atenci&oacute;n en la plataforma.
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
+                  <td style="height:2px;background:rgba(255,255,255,0.3);border-radius:1px"></td>
+                </tr>
+              </table>
+              <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin-top:16px">
+                <tr>
+                  <td style="font-size:18px;font-weight:600;color:#ffffff">Nueva cita agendada</td>
+                </tr>
+                <tr>
+                  <td style="font-size:13px;color:rgba(255,255,255,0.8);padding-top:4px">Se ha registrado una nueva solicitud en la plataforma.</td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- ===== BADGE: CODIGO UNICO ===== -->
+          <!-- CODIGO -->
           <tr>
-            <td style="padding:0 30px">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#eff6ff,#ecfeff);border-radius:14px;padding:18px 24px;margin-top:-18px;border:1px solid rgba(14,165,233,0.1)">
+            <td style="padding:20px 30px 0;text-align:center">
+              <span style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:1px">Código de seguimiento</span>
+              <br>
+              <span style="font-size:20px;font-weight:700;color:#0ea5e9;letter-spacing:1.5px;font-family:'Courier New',Courier,monospace">${p(data.codigo_cita)}</span>
+            </td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="padding:20px 30px 24px">
+
+              ${card('Información del paciente', pacienteRows)}
+
+              ${card('Detalles de la cita', citaRows)}
+
+              <!-- COMENTARIO -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;margin-bottom:16px;padding:18px 20px">
+                <tr>
+                  <td style="font-size:12px;font-weight:700;color:#0ea5e9;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:10px;border-bottom:2px solid #e2e8f0">Motivo / Comentario</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 0 0;font-size:14px;color:#475569;line-height:1.5;font-style:italic">${p(data.comentario, 'Sin comentario adicional')}</td>
+                </tr>
+              </table>
+
+              <!-- ESTADO + FECHA -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="48%" valign="top" style="padding-right:6px">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;padding:14px 12px;text-align:center">
+                      <tr>
+                        <td style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:6px">Estado</td>
+                      </tr>
+                      <tr>
+                        <td><span style="display:inline-block;background:${ec.bg};color:${ec.text};font-size:12px;font-weight:700;padding:3px 14px;border-radius:20px;text-transform:capitalize">${p(data.estado)}</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="48%" valign="top" style="padding-left:6px">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border-radius:10px;padding:14px 12px;text-align:center">
+                      <tr>
+                        <td style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding-bottom:6px">Registrada</td>
+                      </tr>
+                      <tr>
+                        <td style="font-size:12px;color:#0f172a;font-weight:600">${p(data.created_at)}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px">
                 <tr>
                   <td align="center">
-                    <span style="font-size:12px;color:#0ea5e9;font-weight:600;text-transform:uppercase;letter-spacing:1px">C&oacute;digo de seguimiento</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-top:6px">
-                    <span style="font-size:26px;font-weight:800;color:#0ea5e9;letter-spacing:2px;font-family:'Courier New',Courier,monospace">${p(data.codigo_cita)}</span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- ===== CONTENT BODY ===== -->
-          <tr>
-            <td style="padding:28px 30px 20px">
-
-              <!-- CARD: DATOS DEL PACIENTE -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:14px;border:1px solid #eef2f6;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-bottom:16px;overflow:hidden">
-                <tr>
-                  <td style="background:linear-gradient(90deg,#0ea5e9,#06b6d4);padding:10px 20px">
-                    <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:0.8px">Datos del paciente</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:8px 20px 12px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      ${fieldsRows}
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CARD: DETALLES DE LA CITA -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:14px;border:1px solid #eef2f6;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-bottom:16px;overflow:hidden">
-                <tr>
-                  <td style="background:linear-gradient(90deg,#14b8a6,#0ea5e9);padding:10px 20px">
-                    <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:0.8px">Detalles de la cita</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:8px 20px 12px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      ${detailsRows}
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CARD: COMENTARIO -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:14px;border:1px solid #eef2f6;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-bottom:16px;overflow:hidden">
-                <tr>
-                  <td style="background:linear-gradient(90deg,#f59e0b,#fbbf24);padding:10px 20px">
-                    <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:0.8px">Motivo / Comentario</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:14px 20px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="font-size:14px;color:#334155;line-height:1.6;font-style:italic">${p(data.comentario, 'Sin comentario adicional')}</td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- INFO ROW: ESTADO + FECHA REGISTRO -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px">
-                <tr>
-                  <td width="50%" valign="top" style="padding-right:8px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:14px;border:1px solid #eef2f6;box-shadow:0 2px 12px rgba(0,0,0,0.04);padding:14px 16px">
-                      <tr>
-                        <td align="center">
-                          <span style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Estado</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" style="padding-top:6px">
-                          <span style="display:inline-block;background:${ec.bg};color:${ec.text};font-size:13px;font-weight:700;padding:4px 16px;border-radius:20px;text-transform:capitalize">${p(data.estado)}</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td width="50%" valign="top" style="padding-left:8px">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:14px;border:1px solid #eef2f6;box-shadow:0 2px 12px rgba(0,0,0,0.04);padding:14px 16px">
-                      <tr>
-                        <td align="center">
-                          <span style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Registrada</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" style="padding-top:6px">
-                          <span style="font-size:13px;color:#0f172a;font-weight:600">${p(data.created_at)}</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA BUTTON -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td align="center" style="padding:8px 0 4px">
                     <table role="presentation" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td align="center" style="border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);box-shadow:0 4px 16px rgba(14,165,233,0.25)">
-                          <a href="${p(data.admin_url)}" target="_blank" style="display:inline-block;padding:15px 36px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:12px;white-space:nowrap">Ver cita en el panel &rarr;</a>
+                        <td style="border-radius:8px;background-color:#0ea5e9">
+                          <a href="${p(data.admin_url)}" target="_blank" style="display:inline-block;padding:12px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px">Ver cita en el panel</a>
                         </td>
                       </tr>
                     </table>
@@ -251,22 +173,20 @@ function buildHtml(data) {
             </td>
           </tr>
 
-          <!-- ===== FOOTER ===== -->
+          <!-- FOOTER -->
           <tr>
-            <td style="background-color:#f8fafc;padding:24px 30px;border-top:1px solid #eef2f6">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <td style="background-color:#f8fafc;padding:20px 30px;border-top:1px solid #e2e8f0;text-align:center">
+              <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                 <tr>
-                  <td align="center" style="font-size:14px;font-weight:700;color:#0ea5e9;letter-spacing:-0.3px">MediHome</td>
+                  <td style="font-size:13px;font-weight:600;color:#0ea5e9">MediHome</td>
                 </tr>
                 <tr>
-                  <td align="center" style="font-size:11px;color:#94a3b8;padding-top:2px;font-weight:500">Sistema de Gesti&oacute;n M&eacute;dica</td>
+                  <td style="font-size:11px;color:#94a3b8;padding-top:2px">Sistema de Gestión Médica</td>
                 </tr>
                 <tr>
-                  <td align="center" style="padding-top:12px">
-                    <span style="font-size:11px;color:#cbd5e1;line-height:1.6">
-                      Este correo fue generado autom&aacute;ticamente por MediHome.<br>
-                      &copy; ${year} MediHome &mdash; Todos los derechos reservados.
-                    </span>
+                  <td style="font-size:11px;color:#cbd5e1;padding-top:10px;line-height:1.5">
+                    Este correo fue generado automáticamente por MediHome.<br>
+                    &copy; ${year} MediHome. Todos los derechos reservados.
                   </td>
                 </tr>
               </table>
@@ -274,7 +194,6 @@ function buildHtml(data) {
           </tr>
 
         </table>
-        <!-- END MAIN CONTAINER -->
       </td>
     </tr>
   </table>
@@ -284,6 +203,9 @@ function buildHtml(data) {
 
 function buildText(data) {
   const p = (v, fallback = '—') => (v && v !== 'undefined' ? v : fallback);
+  const modalidadLabel = { domicilio: 'A domicilio', telemedicina: 'Telemedicina', consulta: 'En consultorio' }[
+    data.modalidad
+  ] || p(data.modalidad);
   return [
     '========================================',
     '  MEDIHOME - Nueva cita agendada',
@@ -291,24 +213,24 @@ function buildText(data) {
     '',
     `Código: ${p(data.codigo_cita)}`,
     '',
-    '--- DATOS DEL PACIENTE ---',
-    `Nombre:     ${p(data.nombre_paciente)}`,
-    `Teléfono:   ${p(data.telefono)}`,
-    `Correo:     ${p(data.correo)}`,
-    `Dirección:  ${p(data.direccion)}${data.ciudad ? ', ' + p(data.ciudad) : ''}`,
+    '--- INFORMACIÓN DEL PACIENTE ---',
+    `Paciente:     ${p(data.nombre_paciente)}`,
+    `Teléfono:     ${p(data.telefono)}`,
+    `Correo:       ${p(data.correo)}`,
+    `Dirección:    ${p(data.direccion)}${data.ciudad ? ', ' + p(data.ciudad) : ''}`,
     '',
     '--- DETALLES DE LA CITA ---',
-    `Servicio:   ${p(data.servicio_nombre)}`,
-    `Doctor:     ${p(data.medico_nombre)}`,
-    `Fecha:      ${p(data.fecha)}`,
-    `Hora:       ${p(data.hora)}`,
-    `Modalidad:  ${p(data.modalidad)}`,
+    `Servicio:     ${p(data.servicio_nombre)}`,
+    `Doctor:       ${p(data.medico_nombre)}`,
+    `Fecha:        ${p(data.fecha)}`,
+    `Hora:         ${p(data.hora)}`,
+    `Modalidad:    ${modalidadLabel}`,
     '',
     '--- INFORMACIÓN DEL REGISTRO ---',
-    `Estado:     ${p(data.estado)}`,
-    `Registrada: ${p(data.created_at)}`,
+    `Estado:       ${p(data.estado)}`,
+    `Registrada:   ${p(data.created_at)}`,
     '',
-    `Comentario: ${p(data.comentario, 'Sin comentario')}`,
+    `Comentario:   ${p(data.comentario, 'Sin comentario')}`,
     '',
     '---',
     `Panel admin: ${p(data.admin_url)}`,
