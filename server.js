@@ -1,14 +1,17 @@
+require('dotenv').config();
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const { sendNewCitaNotification } = require('./services/emailService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'medihome.db');
-const SECRET = 'medihome_secret_key_2026';
+const SECRET = process.env.SECRET || 'medihome_secret_key_2026';
 
 const db = new sqlite3.Database(DB_PATH);
 
@@ -192,7 +195,36 @@ app.post('/api/citas', (req, res) => {
       [codigo, nombre_paciente, telefono, correo || '', direccion || '', ciudad || '', servicio_id, fecha, hora, modalidad || 'domicilio', comentario || '', 'pendiente'],
       function(err) {
         if (err) return res.status(500).json({ error: 'Error al crear la cita' });
-        res.json({ id: this.lastID, codigo_cita: codigo, mensaje: 'Su solicitud fue recibida correctamente. Nos comunicaremos con usted para confirmar la cita.' });
+        const citaId = this.lastID;
+        res.json({ id: citaId, codigo_cita: codigo, mensaje: 'Su solicitud fue recibida correctamente. Nos comunicaremos con usted para confirmar la cita.' });
+
+        db.get("SELECT nombre FROM servicios WHERE id=?", [servicio_id], (err2, servicio) => {
+          const servicio_nombre = servicio ? servicio.nombre : '—';
+          db.all(`SELECT m.nombre, m.correo FROM medicos m
+            JOIN medico_servicios ms ON m.id=ms.medico_id
+            WHERE ms.servicio_id=? AND m.activo=1 AND m.correo IS NOT NULL AND m.correo != ''`,
+            [servicio_id], (err3, doctores) => {
+              const medico = doctores && doctores.length > 0 ? doctores[0] : null;
+              sendNewCitaNotification({
+                nombre_paciente,
+                telefono,
+                correo: correo || '',
+                servicio_nombre,
+                medico_nombre: medico ? medico.nombre : 'Por asignar',
+                medico_correo: medico ? medico.correo : null,
+                fecha,
+                hora,
+                direccion: direccion || '',
+                ciudad: ciudad || '',
+                modalidad: modalidad || 'domicilio',
+                comentario: comentario || '',
+                codigo_cita: codigo,
+                created_at: new Date().toISOString(),
+                estado: 'pendiente',
+                admin_url: `${req.protocol}://${req.get('host')}/admin.html`,
+              });
+            });
+        });
       });
   };
 
