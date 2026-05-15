@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediHome — Telemedicina & Servicios Medicos a Domicilio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8fafc;
+  --bg-secondary:#f1f5f9;
+  --surface:#ffffff;
+  --surface-hover:#f8fafc;
+  --border:#e2e8f0;
+  --border-light:#f1f5f9;
+  --primary:#0ea5e9;
+  --primary-dark:#0284c7;
+  --primary-light:rgba(14,165,233,0.08);
+  --primary-glow:rgba(14,165,233,0.15);
+  --secondary:#06b6d4;
+  --accent:#14b8a6;
+  --accent-light:rgba(20,184,166,0.08);
+  --success:#10b981;
+  --warning:#f59e0b;
+  --gradient-1:linear-gradient(135deg,#0ea5e9,#06b6d4);
+  --gradient-2:linear-gradient(135deg,#14b8a6,#0ea5e9);
+  --gradient-3:linear-gradient(135deg,#0ea5e9,#0284c7);
+  --text:#0f172a;
+  --text-secondary:#475569;
+  --text-muted:#94a3b8;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.05),0 2px 4px rgba(0,0,0,0.03);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.03);
+  --shadow-xl:0 20px 60px rgba(0,0,0,0.08);
+  --transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* ── Ambient bg ── */
+.ambient-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ambient-bg .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.1;will-change:transform}
+.ambient-bg .orb-1{width:600px;height:600px;top:-15%;left:-8%;background:var(--primary);animation:orbFloat 20s ease-in-out infinite}
+.ambient-bg .orb-2{width:450px;height:450px;bottom:-10%;right:-6%;background:var(--accent);animation:orbFloat 25s ease-in-out 5s infinite alternate}
+.ambient-bg .orb-3{width:350px;height:350px;top:45%;left:55%;background:var(--secondary);animation:orbFloat 18s ease-in-out 10s infinite alternate}
+@keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.95)}100%{transform:translate(25px,-15px) scale(1.02)}}
+.ambient-bg .grid-overlay{position:absolute;inset:0;background-image:linear-gradient(rgba(14,165,233,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.03) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 60% 50% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 50%,black,transparent)}
+
+/* ── Navbar ── */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1200px;z-index:1000;border-radius:16px;background:rgba(255,255,255,0.7);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--border);transition:all .5s cubic-bezier(.4,0,.2,1)}
+nav.scrolled{background:rgba(255,255,255,0.9);border-color:var(--border);box-shadow:var(--shadow-md)}
+nav .nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.3rem;font-weight:800;color:var(--text);text-decoration:none}
+.logo i{font-size:1.4rem;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo span{color:var(--text-muted);font-weight:300}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{color:var(--text-secondary);font-size:.82rem;font-weight:500;transition:all .3s;position:relative;text-decoration:none;padding:6px 0}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:50%;width:0;height:2px;background:var(--gradient-1);transition:all .4s cubic-bezier(.34,1.56,.64,1);transform:translateX(-50%);border-radius:2px}
+.nav-links a:hover{color:var(--primary)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--gradient-1);color:white!important;padding:10px 24px;border-radius:50px;font-weight:600!important;font-size:.82rem!important;transition:all .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 16px var(--primary-glow);border:none!important}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.25)!important;color:white!important}
+.nav-cta::after{display:none!important}
+.menu-toggle{display:none;font-size:1.3rem;background:none;border:none;color:var(--text);cursor:pointer;padding:4px}
+
+/* ── Hero ── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:80px}
+.hero .container{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:2}
+.hero-content{opacity:0;transform:translateY(40px);animation:heroReveal 1s .3s forwards}
+@keyframes heroReveal{to{opacity:1;transform:translateY(0)}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--primary-light);color:var(--primary);padding:8px 20px;border-radius:50px;font-size:.75rem;font-weight:600;margin-bottom:28px;border:1px solid rgba(14,165,233,0.12)}
+.hero-badge .pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;animation:badgePulse 1.5s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,165,233,0.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(14,165,233,0)}}
+.hero h1{font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:800;line-height:1.1;margin-bottom:20px;color:var(--text);letter-spacing:-0.5px}
+.hero h1 .gradient-text{background:var(--gradient-2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:gradientShift 4s ease-in-out infinite}
+@keyframes gradientShift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.hero p{font-size:1.05rem;color:var(--text-secondary);line-height:1.8;margin-bottom:36px;max-width:480px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:50px;font-weight:600;font-size:.85rem;border:none;cursor:pointer;transition:all .5s cubic-bezier(.34,1.56,.64,1);font-family:'Inter',sans-serif;position:relative;overflow:hidden;text-decoration:none}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%);transition:transform .6s}
+.btn:hover::before{transform:translateX(100%)}
+.btn-primary{background:var(--gradient-1);color:white;box-shadow:0 4px 20px var(--primary-glow)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 40px rgba(14,165,233,0.25)}
+.btn-primary:active{transform:translateY(-1px) scale(.98)}
+.btn-outline{background:var(--surface);color:var(--text-secondary);border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.btn-outline:hover{background:var(--surface);border-color:var(--primary);color:var(--primary);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E);color:white;box-shadow:0 4px 16px rgba(37,211,102,0.2);padding:14px 20px}
+.btn-whatsapp:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(37,211,102,0.3)}
+
+.hero-image{display:flex;align-items:center;justify-content:center;position:relative;opacity:0;animation:heroReveal 1s .6s forwards}
+.heart-monitor{width:100%;max-width:520px;height:480px;position:relative;display:flex;align-items:center;justify-content:center}
+.heart-glass{position:absolute;inset:0;background:var(--surface);backdrop-filter:blur(40px) saturate(120%);-webkit-backdrop-filter:blur(40px) saturate(120%);border:1px solid var(--border);border-radius:32px;box-shadow:var(--shadow-lg),inset 0 1px 0 rgba(255,255,255,0.8);overflow:hidden}
+.heart-glass::before{content:'';position:absolute;inset:-60%;background:radial-gradient(ellipse at 25% 30%,rgba(14,165,233,0.04),transparent 60%),radial-gradient(ellipse at 75% 70%,rgba(20,184,166,0.03),transparent 60%);animation:glassShift 10s ease-in-out infinite alternate}
+@keyframes glassShift{0%{transform:translate(0,0)}100%{transform:translate(-4%,-4%)}}
+.heart-glass-2{position:absolute;inset:6px;background:linear-gradient(180deg,rgba(255,255,255,0.5),transparent);border-radius:28px;pointer-events:none}
+
+.tech-grid{position:absolute;inset:0;border-radius:32px;overflow:hidden;pointer-events:none;z-index:1;opacity:.05}
+.tech-grid::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(14,165,233,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;animation:gridShift 20s linear infinite}
+@keyframes gridShift{0%{transform:translate(0,0)}100%{transform:translate(40px,40px)}}
+
+.scan-line{position:absolute;top:0;left:0;width:2px;height:100%;z-index:5;pointer-events:none;opacity:0;background:linear-gradient(to bottom,transparent 0%,rgba(6,182,212,0.3) 20%,rgba(14,165,233,0.6) 50%,rgba(6,182,212,0.3) 80%,transparent 100%);box-shadow:0 0 15px rgba(6,182,212,0.2),0 0 40px rgba(14,165,233,0.1);border-radius:2px;animation:scanSweep 4s ease-in-out infinite}
+.scan-line::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:80px;background:radial-gradient(ellipse,rgba(6,182,212,0.2),transparent 70%);filter:blur(10px)}
+@keyframes scanSweep{0%{transform:translateX(-10px);opacity:0}5%{opacity:1}45%{transform:translateX(510px);opacity:1}50%{transform:translateX(510px);opacity:0}100%{transform:translateX(510px);opacity:0}}
+
+.heart-svg-wrap{position:relative;z-index:3;width:260px;height:260px;animation:heartFloat 5s ease-in-out infinite}
+@keyframes heartFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.heart-svg-wrap svg{width:100%;height:100%;display:block;overflow:visible}
+.heart-svg-wrap svg .heart-bg{fill:url(#heartGrad);opacity:.1;transition:opacity .6s}
+.heart-svg-wrap svg .heart-stroke{fill:none;stroke:url(#heartGrad);stroke-width:2.5;opacity:.85;filter:url(#heartGlow);transition:all .6s}
+.heart-svg-wrap svg .ecg-line{fill:none;stroke:var(--primary);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:url(#ecgGlow);animation:scrollECG 2.8s linear infinite}
+@keyframes scrollECG{0%{transform:translateX(0)}100%{transform:translateX(-180px)}}
+.heart-beat{transform-origin:center;animation:heartPulse 1.2s ease-in-out infinite}
+@keyframes heartPulse{0%,100%{transform:scale(1)}12%{transform:scale(1.1)}24%{transform:scale(1)}36%{transform:scale(1.06)}48%{transform:scale(1)}}
+
+.pulse-ring{position:absolute;width:280px;height:280px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1}
+.pulse-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(14,165,233,0.08);animation:pulseExpand 2.8s ease-out infinite}
+.pulse-ring::after{content:'';position:absolute;inset:-16px;border-radius:50%;border:1px solid rgba(14,165,233,0.04);animation:pulseExpand 2.8s ease-out .9s infinite}
+.pulse-ring-2{position:absolute;width:320px;height:320px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0}
+.pulse-ring-2::before{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(20,184,166,0.06);animation:pulseExpand 3.5s ease-out .5s infinite}
+@keyframes pulseExpand{0%{transform:scale(1);opacity:1}100%{transform:scale(1.35);opacity:0}}
+
+.heart-corner{position:absolute;width:24px;height:24px;z-index:6;pointer-events:none;opacity:.25}
+.heart-corner.tl{top:12px;left:12px;border-top:2px solid var(--primary);border-left:2px solid var(--primary);border-radius:4px 0 0 0}
+.heart-corner.tr{top:12px;right:12px;border-top:2px solid var(--primary);border-right:2px solid var(--primary);border-radius:0 4px 0 0}
+.heart-corner.bl{bottom:12px;left:12px;border-bottom:2px solid var(--primary);border-left:2px solid var(--primary);border-radius:0 0 0 4px}
+.heart-corner.br{bottom:12px;right:12px;border-bottom:2px solid var(--primary);border-right:2px solid var(--primary);border-radius:0 0 4px 0}
+
+.hero-image .ill-card{position:absolute;background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:10px 18px;border-radius:12px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.9);z-index:10;transition:all .35s cubic-bezier(.34,1.56,.64,1)}
+.hero-image .ill-card:hover{transform:translateY(-4px) scale(1.04);box-shadow:var(--shadow-lg)}
+.hero-image .ill-card i{font-size:1.1rem;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-image .ill-card span{font-weight:500;font-size:.78rem;color:var(--text-secondary);white-space:nowrap}
+.hero-image .ill-card.ill-telemedicina{top:3%;right:-6px;animation:cardFloatA 4.5s ease-in-out infinite}
+.hero-image .ill-card.ill-domicilio{bottom:2%;left:-6px;animation:cardFloatB 4.5s ease-in-out 2.25s infinite}
+.hero-image .ill-card.ill-especialistas{top:46%;left:-8px;animation:cardFloatA 5s ease-in-out 1.2s infinite}
+@keyframes cardFloatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes cardFloatB{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.heart-monitor:hover .heart-svg-wrap{filter:drop-shadow(0 0 40px rgba(14,165,233,0.2));transition:all .6s cubic-bezier(.34,1.56,.64,1)}
+.heart-monitor:hover .heart-svg-wrap svg .heart-bg{opacity:.18}
+
+/* ── Sections ── */
+section{padding:100px 0;position:relative;z-index:1}
+.section-header{text-align:center;max-width:640px;margin:0 auto 56px;padding:0 24px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;background:var(--primary-light);color:var(--primary);padding:6px 18px;border-radius:50px;font-size:.72rem;font-weight:600;margin-bottom:16px}
+.section-header h2{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:-0.3px}
+.section-header h2 span{background:var(--gradient-2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-header p{color:var(--text-muted);font-size:1rem}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ── How It Works ── */
+.how-it-works{background:var(--bg-secondary)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+.steps::before{content:'';position:absolute;top:40px;left:calc(12.5% + 30px);right:calc(12.5% + 30px);height:2px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--secondary));opacity:.15;border-radius:2px}
+.step{text-align:center;padding:32px 20px;position:relative}
+.step-number{width:52px;height:52px;border-radius:50%;background:var(--gradient-1);color:white;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;margin:0 auto 20px;position:relative;z-index:2;box-shadow:0 4px 16px var(--primary-glow)}
+.step h3{font-size:1rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.step p{font-size:.85rem;color:var(--text-muted);line-height:1.7}
+
+/* ── Services ── */
+.services{background:var(--bg)}
+.services .section-tag{background:rgba(20,184,166,0.08);color:var(--accent)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.service-card{background:var(--surface);border-radius:var(--radius);padding:28px;transition:var(--transition);border:1px solid var(--border);display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.service-card:hover{transform:translateY(-6px);border-color:rgba(14,165,233,0.12);box-shadow:var(--shadow-lg)}
+.service-icon{width:48px;height:48px;border-radius:12px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;transition:var(--transition)}
+.service-card:hover .service-icon{background:var(--gradient-1);color:white;transform:scale(1.05);box-shadow:0 4px 16px var(--primary-glow)}
+.service-card h3{font-size:1rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.service-card p{font-size:.82rem;color:var(--text-muted);line-height:1.7;margin-bottom:16px;flex:1}
+.service-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:16px;border-top:1px solid var(--border-light)}
+.service-price{font-weight:700;font-size:1.05rem;color:var(--primary)}
+.service-btn{background:var(--primary-light);color:var(--primary);border:1px solid rgba(14,165,233,0.12);padding:8px 22px;border-radius:50px;font-size:.78rem;font-weight:600;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif}
+.service-btn:hover{background:var(--gradient-1);color:white;border-color:transparent;transform:translateY(-2px);box-shadow:0 4px 16px var(--primary-glow)}
+
+/* ── Stats ── */
+.stats{background:linear-gradient(135deg,rgba(14,165,233,0.04),rgba(20,184,166,0.04));position:relative;overflow:hidden}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:1}
+.stat-card{text-align:center;padding:36px 20px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);transition:var(--transition)}
+.stat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.stat-number{font-size:2.4rem;font-weight:800;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px}
+.stat-label{font-size:.85rem;color:var(--text-muted);font-weight:500}
+
+/* ── Specialists ── */
+.specialists{background:var(--bg-secondary)}
+.specialists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+.specialist-card{background:var(--surface);border-radius:var(--radius);padding:32px 24px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:var(--transition)}
+.specialist-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(14,165,233,0.1)}
+.specialist-avatar{width:72px;height:72px;border-radius:50%;background:var(--gradient-2);color:white;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;margin:0 auto 16px;box-shadow:0 4px 16px var(--primary-glow)}
+.specialist-card h3{font-size:1rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.specialist-card .specialty{font-size:.82rem;color:var(--primary);font-weight:500;margin-bottom:12px}
+.specialist-card p{font-size:.8rem;color:var(--text-muted);line-height:1.6}
+
+/* ── Appointment ── */
+.appointment{background:var(--bg);position:relative}
+.appointment .section-tag{background:rgba(20,184,166,0.08);color:var(--accent)}
+.form-card{max-width:740px;margin:0 auto;background:var(--surface);border-radius:var(--radius);padding:40px;border:1px solid var(--border);box-shadow:var(--shadow-lg);position:relative;z-index:1}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:4px}
+.form-group.full{grid-column:span 2}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.88rem;font-family:'Inter',sans-serif;transition:var(--transition);background:var(--bg);color:var(--text)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(14,165,233,0.06)}
+.form-group input::placeholder{color:var(--text-muted);opacity:.5}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.form-group .checkbox-label{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--text-muted);cursor:pointer}
+.form-group .checkbox-label input{margin-top:3px;width:auto;accent-color:var(--primary)}
+.submit-btn{width:100%;padding:14px;background:var(--gradient-1);color:white;border:none;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif;margin-top:8px;box-shadow:0 4px 16px var(--primary-glow)}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(14,165,233,0.25)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── Technology ── */
+.technology{background:var(--bg-secondary);position:relative}
+.tech-grid-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;position:relative;z-index:1}
+.tech-card{background:var(--surface);border-radius:var(--radius);padding:32px 24px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:var(--transition)}
+.tech-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(14,165,233,0.08)}
+.tech-card .tech-icon{width:56px;height:56px;border-radius:16px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;transition:var(--transition)}
+.tech-card .tech-icon.i1{background:var(--primary-light);color:var(--primary)}
+.tech-card .tech-icon.i2{background:rgba(20,184,166,0.08);color:var(--accent)}
+.tech-card .tech-icon.i3{background:rgba(6,182,212,0.08);color:var(--secondary)}
+.tech-card .tech-icon.i4{background:rgba(139,92,246,0.08);color:#8b5cf6}
+.tech-card:hover .tech-icon{transform:scale(1.08)}
+.tech-card h3{font-size:.95rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.tech-card p{font-size:.8rem;color:var(--text-muted);line-height:1.7}
+
+/* ── Testimonials ── */
+.testimonials{background:var(--bg)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.testimonial-card{background:var(--surface);border-radius:var(--radius);padding:32px;border:1px solid var(--border);box-shadow:var(--shadow);transition:var(--transition)}
+.testimonial-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(14,165,233,0.06)}
+.testimonial-stars{color:#f59e0b;margin-bottom:14px;font-size:.9rem;letter-spacing:2px}
+.testimonial-text{font-size:.88rem;color:var(--text-secondary);line-height:1.8;margin-bottom:20px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:14px}
+.testimonial-avatar{width:46px;height:46px;border-radius:50%;background:var(--gradient-2);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.testimonial-name{font-weight:600;font-size:.88rem;color:var(--text)}
+.testimonial-role{font-size:.78rem;color:var(--text-muted)}
+
+/* ── Tracking ── */
+.tracking{background:var(--bg-secondary)}
+.tracking-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.tracking-search{background:var(--surface);padding:32px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.tracking-search h3{font-size:.95rem;font-weight:600;margin-bottom:16px;color:var(--text);display:flex;align-items:center;gap:8px}
+.tracking-search h3 i{color:var(--primary)}
+.tracking-input-group{display:flex;gap:10px;margin-bottom:12px}
+.tracking-input-group input{flex:1;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);transition:var(--transition)}
+.tracking-input-group input:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(14,165,233,0.06)}
+.tracking-input-group input::placeholder{color:var(--text-muted);opacity:.5}
+.tracking-input-group button{padding:12px 20px;background:var(--gradient-1);color:white;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:var(--transition);box-shadow:0 4px 12px var(--primary-glow)}
+.tracking-input-group button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(14,165,233,0.25)}
+.tracking-divider{text-align:center;color:var(--text-muted);font-size:.8rem;padding:8px 0}
+.tracking-result{margin-top:20px}
+.tracking-card{background:var(--surface);border-radius:var(--radius-sm);padding:20px;border-left:3px solid var(--primary);border:1px solid var(--border);border-left-width:3px;margin-bottom:16px;box-shadow:var(--shadow);transition:var(--transition)}
+.tracking-card:hover{box-shadow:var(--shadow-md)}
+.status{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:50px;font-size:.72rem;font-weight:600}
+.status-pendiente{background:#fef3c7;color:#d97706}
+.status-confirmada{background:#e0f2fe;color:#0284c7}
+.status-en_proceso{background:#ede9fe;color:#7c3aed}
+.status-completada{background:#d1fae5;color:#059669}
+.status-cancelada{background:#fee2e2;color:#dc2626}
+
+/* ── FAQ ── */
+.faq{background:var(--bg)}
+.faq-list{max-width:740px;margin:0 auto}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);transition:var(--transition)}
+.faq-item:hover{border-color:rgba(14,165,233,0.08)}
+.faq-question{width:100%;padding:18px 24px;background:transparent;border:none;text-align:left;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'Inter',sans-serif;transition:var(--transition)}
+.faq-question:hover{color:var(--primary)}
+.faq-question i{transition:var(--transition);color:var(--text-muted);font-size:.8rem}
+.faq-item.active .faq-question i{transform:rotate(180deg);color:var(--primary)}
+.faq-answer{padding:0 24px;max-height:0;overflow:hidden;transition:all .4s ease}
+.faq-item.active .faq-answer{padding:0 24px 18px;max-height:300px}
+.faq-answer p{font-size:.85rem;color:var(--text-muted);line-height:1.8}
+
+/* ── Contact ── */
+.contact{background:var(--bg-secondary)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-info h3{font-size:1.1rem;font-weight:600;margin-bottom:24px;color:var(--text)}
+.contact-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px}
+.contact-icon{width:44px;height:44px;border-radius:12px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.contact-item h4{font-size:.85rem;font-weight:600;margin-bottom:2px;color:var(--text)}
+.contact-item p{font-size:.82rem;color:var(--text-muted)}
+.contact-item a{color:var(--primary);transition:var(--transition)}
+.contact-item a:hover{color:var(--primary-dark)}
+.contact-form input,.contact-form textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;font-family:'Inter',sans-serif;margin-bottom:14px;background:var(--bg);color:var(--text);transition:var(--transition)}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(14,165,233,0.06)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--text-muted);opacity:.5}
+
+/* ── Footer ── */
+footer{background:var(--surface);color:var(--text);padding:80px 0 0;position:relative;z-index:1;border-top:1px solid var(--border)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--border)}
+.footer-brand .logo{color:var(--text);margin-bottom:16px}
+.footer-brand p{color:var(--text-muted);font-size:.85rem;line-height:1.8;max-width:320px}
+.footer-social{display:flex;gap:12px;margin-top:24px}
+.footer-social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:var(--transition)}
+.footer-social a:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-3px);background:var(--primary-light)}
+.footer-col h4{font-size:.82rem;font-weight:600;margin-bottom:20px;color:var(--text)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{color:var(--text-muted);font-size:.82rem;transition:var(--transition)}
+.footer-col ul li a:hover{color:var(--primary)}
+.footer-bottom{padding:24px 0;display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--text-muted)}
+.footer-bottom a{color:var(--text-secondary);transition:var(--transition)}
+.footer-bottom a:hover{color:var(--primary)}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.4);display:none;align-items:center;justify-content:center;z-index:2000;padding:24px;backdrop-filter:blur(8px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius);padding:48px;max-width:480px;width:100%;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow-xl);animation:modalIn .4s forwards}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-icon{width:72px;height:72px;border-radius:50%;background:#d1fae5;color:var(--success);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px}
+.modal h3{font-size:1.3rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.modal p{color:var(--text-muted);font-size:.88rem;margin-bottom:20px;line-height:1.7}
+.modal .codigo{display:inline-block;background:var(--bg);padding:10px 24px;border-radius:10px;font-size:1.2rem;font-weight:700;color:var(--primary);letter-spacing:3px;margin-bottom:20px;border:1px solid var(--border);font-family:monospace}
+.modal .btn-primary{background:var(--gradient-1);display:inline-flex;box-shadow:0 4px 16px var(--primary-glow)}
+
+/* ── WhatsApp FAB ── */
+.whatsapp-fab{position:fixed;bottom:28px;right:28px;z-index:999;display:flex;flex-direction:column;gap:12px;align-items:center}
+.whatsapp-fab a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:white;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:var(--transition);text-decoration:none}
+.whatsapp-fab .wa{background:linear-gradient(135deg,#25D366,#128C7E);box-shadow:0 4px 16px rgba(37,211,102,0.25)}
+.whatsapp-fab .call{background:var(--gradient-1);box-shadow:0 4px 16px var(--primary-glow)}
+.whatsapp-fab a:hover{transform:scale(1.1) translateY(-2px)}
+
+/* ── Toast ── */
+.toast{position:fixed;top:90px;right:24px;z-index:3000;padding:14px 24px;border-radius:var(--radius-sm);color:white;font-weight:500;font-size:.85rem;box-shadow:var(--shadow-lg);transform:translateX(120%);transition:transform .4s cubic-bezier(.4,0,.2,1);max-width:360px}
+.toast.show{transform:translateX(0)}
+.toast-success{background:#059669}
+.toast-error{background:#dc2626}
+.toast-info{background:var(--primary)}
+
+/* ── Scroll reveal ── */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ── */
+@media(max-width:1024px){
+  .hero .container{gap:40px;padding:0 24px}
+  .heart-monitor{max-width:420px;height:400px}
+  .heart-svg-wrap{width:220px;height:220px}
+  .pulse-ring{width:240px;height:240px}
+  .pulse-ring-2{width:270px;height:270px}
+}
+@media(max-width:768px){
+  .menu-toggle{display:block}
+  .nav-links{display:none;position:absolute;top:100%;left:-1px;right:-1px;background:rgba(255,255,255,0.98);backdrop-filter:blur(24px);flex-direction:column;padding:20px 24px;gap:16px;border:1px solid var(--border);border-radius:0 0 16px 16px}
+  .nav-links.open{display:flex}
+  nav{border-radius:16px;top:12px;width:calc(100% - 24px)}
+  .hero{min-height:auto;padding:100px 0 60px}
+  .hero .container{grid-template-columns:1fr;gap:32px;text-align:center}
+  .hero-content{max-width:500px;margin:0 auto}
+  .hero p{margin:0 auto 32px}
+  .hero-btns{justify-content:center}
+  .hero-btns .btn{font-size:.8rem;padding:12px 22px}
+  .hero-image{max-width:380px;margin:0 auto}
+  .heart-monitor{max-width:380px;height:340px}
+  .heart-svg-wrap{width:200px;height:200px}
+  .pulse-ring{width:220px;height:220px}
+  .pulse-ring-2{width:250px;height:250px}
+  .scan-line{animation:none!important;display:none!important}
+  .hero-image .ill-card.ill-especialistas{display:none}
+  section{padding:64px 0}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .steps::before{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+  .services-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full{grid-column:span 1}
+  .form-card{padding:24px}
+  .tracking-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .specialists-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .hero{min-height:auto;padding:90px 0 48px}
+  .hero h1{font-size:1.7rem}
+  .hero p{font-size:.92rem}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:10px}
+  .hero-btns .btn{justify-content:center}
+  .hero-image{max-width:320px}
+  .heart-monitor{max-width:320px;height:300px}
+  .heart-svg-wrap{width:170px;height:170px}
+  .pulse-ring{width:190px;height:190px}
+  .pulse-ring-2{width:210px;height:210px}
+  .hero-image .ill-card{display:none}
+  .heart-corner{display:none}
+  .steps{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .stat-number{font-size:1.8rem}
+  .footer-grid{grid-template-columns:1fr}
+  .testimonials-grid{grid-template-columns:1fr}
+  .specialists-grid{grid-template-columns:1fr}
+  section{padding:48px 0}
+  .form-card{padding:20px}
+  .modal{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo"><i class="fas fa-heartbeat"></i> Medi<span>Home</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#especialistas">Especialistas</a></li>
+      <li><a href="#tecnologia">Tecnologia</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#citas" class="nav-cta"><i class="fas fa-calendar-plus"></i> Solicitar Cita</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="pulse-dot"></span> Profesionales Certificados</div>
+      <h1>Medicina de <span class="gradient-text">Precision</span><br>en tu <span class="highlight">Hogar</span></h1>
+      <p>Atencion medica profesional a domicilio y telemedicina con los mejores especialistas. Diagnostico avanzado, tecnologia de punta y cuidado humano.</p>
+      <div class="hero-btns">
+        <a href="#citas" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Agendar Cita</a>
+        <a href="#servicios" class="btn btn-outline"><i class="fas fa-stethoscope"></i> Ver Servicios</a>
+        <a href="https://wa.me/18299017488?text=%C2%A1Hola%21%20Quiero%20informaci%C3%B3n%20sobre%20servicios%20m%C3%A9dicos%20a%20domicilio" target="_blank" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="heart-monitor">
+        <div class="heart-glass"></div>
+        <div class="heart-glass-2"></div>
+        <div class="tech-grid"></div>
+        <div class="scan-line"></div>
+        <div class="heart-corner tl"></div>
+        <div class="heart-corner tr"></div>
+        <div class="heart-corner bl"></div>
+        <div class="heart-corner br"></div>
+
+        <div class="heart-svg-wrap heart-beat">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0ea5e9"/>
+                <stop offset="50%" stop-color="#14b8a6"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+              <filter id="heartGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="ecgGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <clipPath id="heartClip">
+                <path d="M50,85 C22,63 5,47 5,30 C5,16 18,5 32,5 C42,5 49,12 50,18 C51,12 58,5 68,5 C82,5 95,16 95,30 C95,47 78,63 50,85 Z"/>
+              </clipPath>
+            </defs>
+            <g clip-path="url(#heartClip)">
+              <path class="heart-bg" d="M50,85 C22,63 5,47 5,30 C5,16 18,5 32,5 C42,5 49,12 50,18 C51,12 58,5 68,5 C82,5 95,16 95,30 C95,47 78,63 50,85 Z"/>
+              <polyline class="ecg-line" points="-180,52 -170,52 -167,47 -164,52 -161,52 -158,62 -152,28 -146,66 -142,52 -132,52 -129,47 -126,52 -123,52 -120,62 -114,28 -108,66 -104,52 -94,52 -91,47 -88,52 -85,52 -82,62 -76,28 -70,66 -66,52 -56,52 -53,47 -50,52 -47,52 -44,62 -38,28 -32,66 -28,52 -18,52 -15,47 -12,52 -9,52 -6,62 0,28 6,66 10,52 20,52 23,47 26,52 29,52 32,62 38,28 44,66 48,52 58,52 61,47 64,52 67,52 70,62 76,28 82,66 86,52 96,52 99,47 102,52 105,52 108,62 114,28 120,66 124,52 140,52"/>
+            </g>
+            <path class="heart-stroke" d="M50,85 C22,63 5,47 5,30 C5,16 18,5 32,5 C42,5 49,12 50,18 C51,12 58,5 68,5 C82,5 95,16 95,30 C95,47 78,63 50,85 Z"/>
+          </svg>
+        </div>
+
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring-2"></div>
+      </div>
+
+      <div class="ill-card ill-telemedicina"><i class="fas fa-video"></i><span>Telemedicina</span></div>
+      <div class="ill-card ill-domicilio"><i class="fas fa-truck-medical"></i><span>A Domicilio</span></div>
+      <div class="ill-card ill-especialistas"><i class="fas fa-user-md"></i><span>+50 Especialistas</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works" id="como-funciona">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-infinity"></i> Proceso Simple</div>
+      <h2>Como <span>Funciona</span></h2>
+      <p>En MediHome facilitamos el acceso a la salud con un proceso simple, rapido y transparente.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-number"><i class="fas fa-calendar-plus"></i></div>
+        <h3>Solicita tu cita</h3>
+        <p>Completa el formulario con tus datos y el servicio que necesitas. Toma solo 2 minutos.</p>
+      </div>
+      <div class="step">
+        <div class="step-number"><i class="fas fa-check-circle"></i></div>
+        <h3>Recibe confirmacion</h3>
+        <p>Te contactaremos para confirmar la fecha, hora y asignar el medico especialista.</p>
+      </div>
+      <div class="step">
+        <div class="step-number"><i class="fas fa-user-md"></i></div>
+        <h3>Atencion profesional</h3>
+        <p>Recibe la visita a domicilio o conectate a la videoconsulta en el horario acordado.</p>
+      </div>
+      <div class="step">
+        <div class="step-number"><i class="fas fa-file-medical"></i></div>
+        <h3>Resultados digitales</h3>
+        <p>Accede a tus resultados y observaciones medicas desde cualquier dispositivo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat-card">
+        <div class="stat-number" data-target="2500">0</div>
+        <div class="stat-label">Pacientes Atendidos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="50">0</div>
+        <div class="stat-label">Especialistas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="8500">0</div>
+        <div class="stat-label">Citas Completadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="1200">0</div>
+        <div class="stat-label">Visitas a Domicilio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="services" id="servicios">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-stethoscope"></i> Nuestros Servicios</div>
+      <h2>Diagnostico y <span>Consulta</span></h2>
+      <p>Ofrecemos una amplia gama de servicios medicos a domicilio y por telemedicina con equipo de vanguardia.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid">
+    </div>
+  </div>
+</section>
+
+<!-- Specialists -->
+<section class="specialists" id="especialistas">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-user-md"></i> Equipo Medico</div>
+      <h2>Nuestros <span>Especialistas</span></h2>
+      <p>Profesionales certificados con amplia experiencia en diagnostico y atencion medica domiciliaria.</p>
+    </div>
+    <div class="specialists-grid reveal" id="specialistsGrid">
+    </div>
+  </div>
+</section>
+
+<!-- Appointment -->
+<section class="appointment" id="citas">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-calendar-plus"></i> Agenda tu Cita</div>
+      <h2>Solicita tu <span>Servicio Medico</span></h2>
+      <p>Completa el formulario y nos pondremos en contacto contigo para confirmar tu cita.</p>
+    </div>
+    <div class="form-card reveal">
+      <form id="citaForm">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Nombre completo del paciente</label>
+            <input type="text" id="nombre_paciente" placeholder="Ej: Maria Garcia" required>
+          </div>
+          <div class="form-group">
+            <label>Telefono / WhatsApp</label>
+            <input type="tel" id="telefono" placeholder="809-555-0100" required>
+          </div>
+          <div class="form-group">
+            <label>Correo electronico</label>
+            <input type="email" id="correo" placeholder="ejemplo@correo.com">
+          </div>
+          <div class="form-group">
+            <label>Direccion</label>
+            <input type="text" id="direccion" placeholder="Calle, numero, sector">
+          </div>
+          <div class="form-group">
+            <label>Sector / Ciudad</label>
+            <input type="text" id="ciudad" placeholder="Ej: Santo Domingo">
+          </div>
+          <div class="form-group full">
+            <label>Servicio solicitado</label>
+            <select id="servicio_id" required>
+              <option value="">Selecciona un servicio</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha deseada</label>
+            <input type="date" id="fecha" required>
+          </div>
+          <div class="form-group">
+            <label>Hora deseada</label>
+            <input type="time" id="hora" required>
+          </div>
+          <div class="form-group">
+            <label>Modalidad</label>
+            <select id="modalidad">
+              <option value="domicilio">A domicilio</option>
+              <option value="telemedicina">Telemedicina</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Comentario (opcional)</label>
+            <input type="text" id="comentario" placeholder="Describe tus sintomas brevemente">
+          </div>
+          <div class="form-group full">
+            <label class="checkbox-label">
+              <input type="checkbox" id="acepto_privacidad" required>
+              <span>Acepto la politica de privacidad y el tratamiento de mis datos personales para la gestion de la cita.</span>
+            </label>
+          </div>
+          <div class="form-group full">
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <i class="fas fa-paper-plane"></i> Enviar Solicitud
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Technology -->
+<section class="technology" id="tecnologia">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-microchip"></i> Innovacion</div>
+      <h2>Tecnologia <span>Medica</span></h2>
+      <p>Plataforma digital de salud con los estandares mas avanzados de seguridad y diagnostico remoto.</p>
+    </div>
+    <div class="tech-grid-cards reveal">
+      <div class="tech-card">
+        <div class="tech-icon i1"><i class="fas fa-video"></i></div>
+        <h3>Telemedicina</h3>
+        <p>Consultas virtuales seguras con especialistas desde cualquier lugar, sin necesidad de desplazarte.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon i2"><i class="fas fa-microchip"></i></div>
+        <h3>Diagnostico Remoto</h3>
+        <p>Equipos portatiles de diagnostico que permiten realizar estudios en la comodidad de tu hogar.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon i3"><i class="fas fa-shield-alt"></i></div>
+        <h3>Plataforma Segura</h3>
+        <p>Tus datos medicos protegidos con encriptacion de nivel bancario y cumplimiento HIPAA.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon i4"><i class="fas fa-robot"></i></div>
+        <h3>IA en Salud</h3>
+        <p>Sistema inteligente de apoyo al diagnostico que asiste a nuestros medicos en cada consulta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials" id="testimonios">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-comment-dots"></i> Testimonios</div>
+      <h2>Lo que dicen nuestros <span>Pacientes</span></h2>
+      <p>La satisfaccion de nuestros pacientes es nuestra mejor carta de presentacion.</p>
+    </div>
+    <div class="testimonials-grid reveal">
+      <div class="testimonial-card">
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="testimonial-text">"Excelente servicio. El medico llego puntual, muy profesional y con todos los equipos. Me hicieron la sonografia en casa sin ningun problema."</p>
+        <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div><div class="testimonial-name">Maria Rodriguez</div><div class="testimonial-role">Paciente</div></div></div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="testimonial-text">"La telemedicina me salvo. No tenia que salir de casa y el medico me atendio con mucha paciencia. Me envio la receta digital al instante."</p>
+        <div class="testimonial-author"><div class="testimonial-avatar">JP</div><div><div class="testimonial-name">Juan Perez</div><div class="testimonial-role">Paciente</div></div></div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="testimonial-text">"Rapidos, eficientes y muy humanos. Recomiendo MediHome a todos mis familiares. La atencion a domicilio es de primera calidad."</p>
+        <div class="testimonial-author"><div class="testimonial-avatar">CG</div><div><div class="testimonial-name">Carmen Gonzalez</div><div class="testimonial-role">Paciente</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tracking -->
+<section class="tracking" id="seguimiento">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-search"></i> Seguimiento</div>
+      <h2>Consulta el estado de tu <span>Cita</span></h2>
+      <p>Ingresa tu numero de telefono o codigo de cita para ver el estado actual de tu solicitud.</p>
+    </div>
+    <div class="tracking-grid reveal">
+      <div class="tracking-search">
+        <h3><i class="fas fa-hashtag"></i> Por codigo de cita</h3>
+        <div class="tracking-input-group">
+          <input type="text" id="codigoBusqueda" placeholder="Ej: MH-ABCD12">
+          <button onclick="buscarPorCodigo()"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="tracking-divider">— o —</div>
+        <h3><i class="fas fa-phone"></i> Por telefono</h3>
+        <div class="tracking-input-group">
+          <input type="tel" id="telefonoBusqueda" placeholder="809-555-0100">
+          <button onclick="buscarPorTelefono()"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+      <div id="trackingResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-question-circle"></i> FAQ</div>
+      <h2>Preguntas <span>Frecuentes</span></h2>
+      <p>Resolvemos tus dudas sobre nuestros servicios medicos.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item active">
+        <button class="faq-question">¿Como funcionan las citas a domicilio? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Seleccionas el servicio y horario, nosotros confirmamos y enviamos un medico certificado a tu domicilio. Todo el equipo es portable y profesional.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Que necesito para una consulta de telemedicina? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Solo necesitas un dispositivo con camara y conexion a internet. Te enviaremos un enlace seguro para la videollamada en el horario agendado.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Como recibo los resultados de mis estudios? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Los resultados se entregan digitalmente en un plazo de 24-48 horas habiles. Los recibes por correo electronico y tambien puedes consultarlos desde aqui.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Cuanto tiempo toma la confirmacion de mi cita? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Generalmente confirmamos tu cita en menos de 2 horas durante horario laboral. Recibiras una llamada o mensaje de WhatsApp con la confirmacion.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Que zonas geograficas cubren? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Cubrimos todo el Gran Santo Domingo y zonas aledanas. Para otras areas, consulta via WhatsApp para verificar disponibilidad.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">¿Aceptan seguros medicos? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Si, trabajamos con las principales aseguradoras del pais. Consulta con nuestro equipo para verificar la cobertura de tu seguro.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contacto">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag"><i class="fas fa-envelope"></i> Contacto</div>
+      <h2>Estamos aqui para <span>Ayudarte</span></h2>
+      <p>Comunicate con nosotros por cualquiera de estos canales.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Informacion de contacto</h3>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><h4>Telefono</h4><p><a href="tel:+18299017488">+1 (829) 901-7488</a></p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fab fa-whatsapp"></i></div><div><h4>WhatsApp</h4><p><a href="https://wa.me/18299017488" target="_blank">+1 (829) 901-7488</a></p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><h4>Correo Electronico</h4><p><a href="mailto:info@medihome.com">info@medihome.com</a></p></div></div>
+        <div class="contact-item"><div class="contact-icon"><i class="fas fa-clock"></i></div><div><h4>Horario de Atencion</h4><p>Lunes a Viernes: 8:00 AM - 7:00 PM<br>Sabados: 8:00 AM - 4:00 PM</p></div></div>
+      </div>
+      <div class="contact-form">
+        <h3>Envanos un mensaje</h3>
+        <input type="text" id="contactNombre" placeholder="Tu nombre">
+        <input type="email" id="contactEmail" placeholder="Tu correo electronico">
+        <textarea id="contactMensaje" rows="4" placeholder="Escribe tu mensaje aqui..."></textarea>
+        <button class="btn btn-primary" onclick="enviarContacto()" style="width:100%;justify-content:center"><i class="fas fa-paper-plane"></i> Enviar Mensaje</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><i class="fas fa-heartbeat"></i> Medi<span>Home</span></div>
+        <p>Servicios medicos a domicilio y telemedicina. Atencion profesional, humana y tecnologica para cuidar de ti y tu familia.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/18299017488" aria-label="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="#servicios">Sonografia</a></li>
+          <li><a href="#servicios">Consulta a Domicilio</a></li>
+          <li><a href="#servicios">Telemedicina</a></li>
+          <li><a href="#servicios">Doppler</a></li>
+          <li><a href="#servicios">Mapa Cardiologico</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Enlaces</h4>
+        <ul>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+          <li><a href="#tecnologia">Tecnologia</a></li>
+          <li><a href="#faq">Preguntas Frecuentes</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="/admin.html">Panel Administrativo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Horario</h4>
+        <ul>
+          <li><a href="#">Lun - Vie: 8:00 AM - 7:00 PM</a></li>
+          <li><a href="#">Sab: 8:00 AM - 4:00 PM</a></li>
+          <li><a href="#">Dom: Urgencias</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 MediHome. Todos los derechos reservados.</p>
+      <a href="#hero"><i class="fas fa-arrow-up"></i> Volver arriba</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon"><i class="fas fa-check"></i></div>
+    <h3>Solicitud Recibida</h3>
+    <p>Su solicitud fue recibida correctamente. Nos comunicaremos con usted para confirmar la cita.</p>
+    <div class="codigo" id="codigoGenerado">MH-XXXXXX</div>
+    <p style="font-size:.82rem;color:var(--text-muted)">Guarde este codigo para dar seguimiento a su cita.</p>
+    <br>
+    <button class="btn btn-primary" onclick="cerrarModal()" style="display:inline-flex"><i class="fas fa-check"></i> Entendido</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- WhatsApp FAB -->
+<div class="whatsapp-fab">
+  <a href="tel:+18299017488" class="call" target="_blank" title="Llamar ahora"><i class="fas fa-phone"></i></a>
+  <a href="https://wa.me/18299017488?text=%C2%A1Hola%21%20Quiero%20informaci%C3%B3n%20sobre%20servicios%20m%C3%A9dicos%20a%20domicilio" class="wa" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<script>
+let servicios = [];
+let medicos = [];
+
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
+
+const toggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+toggle.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+  const icon = toggle.querySelector('i');
+  icon.classList.toggle('fa-bars');
+  icon.classList.toggle('fa-times');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  toggle.querySelector('i').className = 'fas fa-bars';
+}));
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.parentElement.classList.toggle('active');
+  });
+});
+
+function animateCounters() {
+  document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target.toLocaleString() + '+';
+    }
+    requestAnimationFrame(update);
+  });
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { animateCounters(); statsObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.3 });
+const statsSection = document.querySelector('.stats-grid');
+if (statsSection) statsObserver.observe(statsSection);
+
+async function cargarServicios() {
+  try {
+    const res = await fetch('/api/servicios');
+    servicios = await res.json();
+    const grid = document.getElementById('servicesGrid');
+    const select = document.getElementById('servicio_id');
+    grid.innerHTML = '';
+    select.innerHTML = '<option value="">Selecciona un servicio</option>';
+
+    servicios.forEach(s => {
+      const iconsMap = {
+        'fa-baby': 'fa-baby', 'fa-ribbon': 'fa-ribbon', 'fa-heart-pulse': 'fa-heart-pulse',
+        'fa-heart-circle-check': 'fa-heart-circle-check', 'fa-heart': 'fa-heart',
+        'fa-virus': 'fa-virus', 'fa-user-doctor': 'fa-user-doctor', 'fa-video': 'fa-video',
+        'fa-stethoscope': 'fa-stethoscope'
+      };
+      const icon = iconsMap[s.icono] || 'fa-stethoscope';
+
+      const card = document.createElement('div');
+      card.className = 'service-card';
+      card.innerHTML = `
+        <div class="service-icon"><i class="fas ${icon}"></i></div>
+        <h3>${s.nombre}</h3>
+        <p>${s.descripcion}</p>
+        <div class="service-footer">
+          <span class="service-price">${s.precio ? 'RD$' + s.precio.toLocaleString() : 'Consultar'}</span>
+          <button class="service-btn" onclick="seleccionarServicio(${s.id})">Solicitar</button>
+        </div>`;
+      grid.appendChild(card);
+
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = s.nombre + (s.precio ? ' — RD$' + s.precio.toLocaleString() : '');
+      select.appendChild(opt);
+    });
+  } catch (e) { console.error('Error al cargar servicios', e); }
+}
+
+async function cargarMedicos() {
+  try {
+    const res = await fetch('/api/medicos');
+    medicos = await res.json();
+    const grid = document.getElementById('specialistsGrid');
+    if (!medicos || medicos.length === 0) { grid.innerHTML = ''; return; }
+    grid.innerHTML = medicos.map(m => `
+      <div class="specialist-card">
+        <div class="specialist-avatar"><i class="fas fa-user-md"></i></div>
+        <h3>${m.nombre}</h3>
+        <div class="specialty">${m.especialidad || 'Medicina General'}</div>
+        <p><i class="fas fa-phone" style="font-size:.7rem;opacity:.5"></i> ${m.telefono || '—'}</p>
+      </div>
+    `).join('');
+  } catch (e) { console.error('Error al cargar medicos', e); }
+}
+
+function seleccionarServicio(id) {
+  document.getElementById('servicio_id').value = id;
+  document.getElementById('citas').scrollIntoView({ behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
+});
+
+document.getElementById('citaForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+  const data = {
+    nombre_paciente: document.getElementById('nombre_paciente').value.trim(),
+    telefono: document.getElementById('telefono').value.trim(),
+    correo: document.getElementById('correo').value.trim(),
+    direccion: document.getElementById('direccion').value.trim(),
+    ciudad: document.getElementById('ciudad').value.trim(),
+    servicio_id: parseInt(document.getElementById('servicio_id').value),
+    fecha: document.getElementById('fecha').value,
+    hora: document.getElementById('hora').value,
+    modalidad: document.getElementById('modalidad').value,
+    comentario: document.getElementById('comentario').value.trim(),
+    acepto_privacidad: document.getElementById('acepto_privacidad').checked
+  };
+
+  try {
+    const res = await fetch('/api/citas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if (res.ok) {
+      document.getElementById('codigoGenerado').textContent = result.codigo_cita;
+      document.getElementById('successModal').classList.add('open');
+      document.getElementById('citaForm').reset();
+    } else {
+      mostrarToast(result.error || 'Error al crear la cita', 'error');
+    }
+  } catch (err) {
+    mostrarToast('Error de conexion. Intente nuevamente.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud';
+  }
+});
+
+function cerrarModal() {
+  document.getElementById('successModal').classList.remove('open');
+}
+
+async function buscarPorCodigo() {
+  const codigo = document.getElementById('codigoBusqueda').value.trim();
+  if (!codigo) return mostrarToast('Ingrese un codigo de cita', 'error');
+  await buscarCitas('codigo=' + encodeURIComponent(codigo));
+}
+
+async function buscarPorTelefono() {
+  const tel = document.getElementById('telefonoBusqueda').value.trim();
+  if (!tel) return mostrarToast('Ingrese un telefono', 'error');
+  await buscarCitas('telefono=' + encodeURIComponent(tel));
+}
+
+async function buscarCitas(params) {
+  try {
+    const res = await fetch('/api/citas/seguimiento?' + params);
+    const citas = await res.json();
+    const div = document.getElementById('trackingResult');
+
+    if (!citas || citas.length === 0) {
+      div.innerHTML = '<div class="tracking-card" style="border-color:#dc2626"><p style="color:var(--text-muted)">No se encontraron citas con esos datos.</p></div>';
+      return;
+    }
+
+    const estados = { pendiente: 'Pendiente', confirmada: 'Confirmada', en_proceso: 'En Proceso', completada: 'Completada', cancelada: 'Cancelada' };
+    const modos = { domicilio: 'A domicilio', telemedicina: 'Telemedicina' };
+
+    div.innerHTML = citas.map(c => `
+      <div class="tracking-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <strong style="font-size:.88rem;color:var(--primary)">${c.codigo_cita}</strong>
+          <span class="status status-${c.estado}">${estados[c.estado] || c.estado}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.82rem;color:var(--text-secondary)">
+          <span><i class="fas fa-user" style="width:16px;opacity:.5"></i> ${c.nombre_paciente}</span>
+          <span><i class="fas fa-phone" style="width:16px;opacity:.5"></i> ${c.telefono}</span>
+          <span><i class="fas fa-stethoscope" style="width:16px;opacity:.5"></i> ${c.servicio_nombre || '—'}</span>
+          <span><i class="fas fa-calendar" style="width:16px;opacity:.5"></i> ${c.fecha} — ${c.hora}</span>
+          <span><i class="fas fa-map-marker-alt" style="width:16px;opacity:.5"></i> ${modos[c.modalidad] || c.modalidad}</span>
+          <span><i class="fas fa-user-md" style="width:16px;opacity:.5"></i> ${c.medico_nombre || 'Por asignar'}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('trackingResult').innerHTML = '<div class="tracking-card" style="border-color:#dc2626"><p style="color:var(--text-muted)">Error al consultar. Intente nuevamente.</p></div>';
+  }
+}
+
+function enviarContacto() {
+  const nombre = document.getElementById('contactNombre').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const mensaje = document.getElementById('contactMensaje').value.trim();
+  if (!nombre || !email || !mensaje) return mostrarToast('Complete todos los campos', 'error');
+  mostrarToast('Mensaje enviado correctamente. Le responderemos pronto.', 'success');
+  document.getElementById('contactNombre').value = '';
+  document.getElementById('contactEmail').value = '';
+  document.getElementById('contactMensaje').value = '';
+}
+
+function mostrarToast(mensaje, tipo = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = mensaje;
+  toast.className = 'toast toast-' + tipo + ' show';
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+cargarServicios();
+cargarMedicos();
+</script>
+</body>
+</html>
