@@ -449,6 +449,33 @@ app.post('/api/admin/medicos/:id/servicios', authMiddleware, (req, res) => {
   });
 });
 
+// ── Diagnóstico de entorno ──
+console.log('\n✦ Diagnóstico de configuración:');
+['EMAIL_HOST','EMAIL_PORT','EMAIL_USER','EMAIL_APP_PASSWORD','EMAIL_ADMIN','SECRET'].forEach(v =>
+  console.log(`  ${v}: ${process.env[v] ? '✓ presente' : '✗ faltante'}`)
+);
+console.log('');
+
+// ── Ruta de prueba de correo (solo admin) ──
+app.get('/api/test-email', authMiddleware, async (req, res) => {
+  console.log('[test-email] Iniciando prueba de envío...');
+  const result = await sendNewCitaNotification({
+    nombre_paciente: 'Test Render',
+    telefono: '809-000-0000',
+    correo: 'test@render.com',
+    servicio_nombre: 'Prueba de diagnóstico',
+    medico_nombre: 'Dr. Diagnóstico',
+    fecha: new Date().toISOString().split('T')[0],
+    hora: '12:00 PM',
+    codigo_cita: 'MH-TEST',
+    created_at: new Date().toISOString(),
+    estado: 'pendiente',
+    admin_url: `${req.protocol}://${req.get('host')}/admin.html`,
+  });
+  console.log(`[test-email] Resultado: enviado=${result.sent}${result.reason ? ', razón: ' + result.reason : ''}`);
+  res.json(result);
+});
+
 // Serve static files or 404
 app.use('/api', (req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
 
