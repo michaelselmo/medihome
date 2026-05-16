@@ -181,6 +181,8 @@ app.post('/api/citas', (req, res) => {
     return res.status(400).json({ error: 'Campos obligatorios: nombre, teléfono, servicio, fecha y hora' });
   }
 
+  console.log(`[appointment] Cita recibida - paciente: ${nombre_paciente}, servicio: ${servicio_id}, fecha: ${fecha} ${hora}`);
+
   let codigo = generarCodigoCita();
   const checkCodigo = () => {
     db.get("SELECT id FROM citas WHERE codigo_cita=?", [codigo], (err, row) => {
@@ -196,6 +198,7 @@ app.post('/api/citas', (req, res) => {
       function(err) {
         if (err) return res.status(500).json({ error: 'Error al crear la cita' });
         const citaId = this.lastID;
+        console.log(`[appointment] Cita guardada correctamente - id: ${citaId}, codigo: ${codigo}`);
         res.json({ id: citaId, codigo_cita: codigo, mensaje: 'Su solicitud fue recibida correctamente. Nos comunicaremos con usted para confirmar la cita.' });
 
         db.get("SELECT nombre FROM servicios WHERE id=?", [servicio_id], (err2, servicio) => {
@@ -205,6 +208,7 @@ app.post('/api/citas', (req, res) => {
             WHERE ms.servicio_id=? AND m.activo=1 AND m.correo IS NOT NULL AND m.correo != ''`,
             [servicio_id], (err3, doctores) => {
               const medico = doctores && doctores.length > 0 ? doctores[0] : null;
+              console.log(`[email] Intentando enviar correo para cita ${codigo}...`);
               sendNewCitaNotification({
                 nombre_paciente,
                 telefono,
@@ -456,8 +460,15 @@ console.log('\n✦ Diagnóstico de configuración:');
 );
 console.log('');
 
-// ── Ruta de prueba de correo (solo admin) ──
-app.get('/api/test-email', authMiddleware, async (req, res) => {
+// ── Ruta de prueba de correo (protegida con token desde .env) ──
+app.get('/api/test-email', async (req, res) => {
+  const expectedToken = process.env.TEST_EMAIL_TOKEN;
+  if (!expectedToken) {
+    return res.status(503).json({ success: false, mensaje: 'Ruta no disponible: TEST_EMAIL_TOKEN no configurado' });
+  }
+  if (req.query.token !== expectedToken) {
+    return res.status(401).json({ success: false, mensaje: 'Token inválido' });
+  }
   console.log('[test-email] Iniciando prueba de envío...');
   const result = await sendNewCitaNotification({
     nombre_paciente: 'Test Render',
@@ -473,7 +484,11 @@ app.get('/api/test-email', authMiddleware, async (req, res) => {
     admin_url: `${req.protocol}://${req.get('host')}/admin.html`,
   });
   console.log(`[test-email] Resultado: enviado=${result.sent}${result.reason ? ', razón: ' + result.reason : ''}`);
-  res.json(result);
+  res.json({
+    success: result.sent,
+    mensaje: result.sent ? 'Correo de prueba enviado correctamente' : 'Error al enviar correo de prueba',
+    error: result.sent ? null : (result.code || result.reason),
+  });
 });
 
 // Serve static files or 404
