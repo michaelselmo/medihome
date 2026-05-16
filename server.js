@@ -6,7 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const { sendNewCitaNotification } = require('./services/emailService');
+const { sendAdminNotification, sendNewCitaNotification } = require('./services/emailService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -143,6 +143,20 @@ db.serialize(() => {
   });
 });
 
+function sanitizar(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/<[^>]*>/g, '').replace(/[<>"'\\]/g, '').trim();
+}
+
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validarTelefonoRD(tel) {
+  const limpio = tel.replace(/[\s\-\ ()\+]/g, '');
+  return /^\d{10,12}$/.test(limpio);
+}
+
 function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'No autorizado' });
@@ -175,10 +189,35 @@ app.get('/api/medicos', (req, res) => {
 });
 
 app.post('/api/citas', (req, res) => {
-  const { nombre_paciente, telefono, correo, direccion, ciudad, servicio_id, fecha, hora, modalidad, comentario, acepto_privacidad } = req.body;
+  let { nombre_paciente, telefono, correo, direccion, ciudad, servicio_id, fecha, hora, modalidad, comentario, acepto_privacidad } = req.body;
 
-  if (!nombre_paciente || !telefono || !servicio_id || !fecha || !hora) {
-    return res.status(400).json({ error: 'Campos obligatorios: nombre, teléfono, servicio, fecha y hora' });
+  nombre_paciente = sanitizar(nombre_paciente || '');
+  telefono = sanitizar(telefono || '');
+  correo = sanitizar(correo || '');
+  direccion = sanitizar(direccion || '');
+  ciudad = sanitizar(ciudad || '');
+  comentario = sanitizar(comentario || '');
+  modalidad = sanitizar(modalidad || '');
+  servicio_id = parseInt(servicio_id, 10);
+  acepto_privacidad = !!acepto_privacidad;
+
+  const errores = [];
+
+  if (!nombre_paciente) errores.push('Nombre del paciente');
+  if (!telefono) errores.push('Teléfono');
+  else if (!validarTelefonoRD(telefono)) errores.push('Teléfono inválido (10 dígitos)');
+  if (!correo) errores.push('Correo electrónico');
+  else if (!validarEmail(correo)) errores.push('Correo electrónico inválido');
+  if (!direccion) errores.push('Dirección');
+  if (!ciudad) errores.push('Sector / Ciudad');
+  if (!servicio_id || isNaN(servicio_id)) errores.push('Servicio');
+  if (!fecha) errores.push('Fecha');
+  if (!hora) errores.push('Hora');
+  if (!['domicilio', 'telemedicina'].includes(modalidad)) errores.push('Modalidad (domicilio o telemedicina)');
+  if (!acepto_privacidad) errores.push('Aceptación de política de privacidad');
+
+  if (errores.length > 0) {
+    return res.status(400).json({ error: `Campos obligatorios: ${errores.join(', ')}` });
   }
 
   console.log(`[appointment] Cita recibida - paciente: ${nombre_paciente}, servicio: ${servicio_id}, fecha: ${fecha} ${hora}`);
@@ -194,34 +233,34 @@ app.post('/api/citas', (req, res) => {
   const insertar = () => {
     db.run(`INSERT INTO citas (codigo_cita, nombre_paciente, telefono, correo, direccion, ciudad, servicio_id, fecha, hora, modalidad, comentario, estado)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
-      [codigo, nombre_paciente, telefono, correo || '', direccion || '', ciudad || '', servicio_id, fecha, hora, modalidad || 'domicilio', comentario || '', 'pendiente'],
+      [codigo, nombre_paciente, telefono, correo, direccion, ciudad, servicio_id, fecha, hora, modalidad, comentario, 'pendiente'],
       function(err) {
         if (err) return res.status(500).json({ error: 'Error al crear la cita' });
         const citaId = this.lastID;
         console.log(`[appointment] Cita guardada correctamente - id: ${citaId}, codigo: ${codigo}`);
         res.json({ id: citaId, codigo_cita: codigo, mensaje: 'Su solicitud fue recibida correctamente. Nos comunicaremos con usted para confirmar la cita.' });
 
-        db.get("SELECT nombre FROM servicios WHERE id=?", [servicio_id], (err2, servicio) => {
+        db.get("SELECT s.nombre as servicio_nombre, s.precio FROM servicios s WHERE s.id=?", [servicio_id], (err2, servicio) => {
           const servicio_nombre = servicio ? servicio.nombre : '—';
           db.all(`SELECT m.nombre, m.correo FROM medicos m
             JOIN medico_servicios ms ON m.id=ms.medico_id
             WHERE ms.servicio_id=? AND m.activo=1 AND m.correo IS NOT NULL AND m.correo != ''`,
             [servicio_id], (err3, doctores) => {
               const medico = doctores && doctores.length > 0 ? doctores[0] : null;
-              console.log(`[email] Intentando enviar correo para cita ${codigo}...`);
+              console.log(`[email] Enviando notificaciones para cita ${codigo}...`);
               sendNewCitaNotification({
                 nombre_paciente,
                 telefono,
-                correo: correo || '',
+                correo,
                 servicio_nombre,
                 medico_nombre: medico ? medico.nombre : 'Por asignar',
                 medico_correo: medico ? medico.correo : null,
                 fecha,
                 hora,
-                direccion: direccion || '',
-                ciudad: ciudad || '',
-                modalidad: modalidad || 'domicilio',
-                comentario: comentario || '',
+                direccion,
+                ciudad,
+                modalidad,
+                comentario,
                 codigo_cita: codigo,
                 created_at: new Date().toISOString(),
                 estado: 'pendiente',
@@ -470,7 +509,7 @@ app.get('/api/test-email', async (req, res) => {
     return res.status(401).json({ success: false, mensaje: 'Token inválido' });
   }
   console.log('[test-email] Iniciando prueba de envío...');
-  const result = await sendNewCitaNotification({
+  const result = await sendAdminNotification({
     nombre_paciente: 'Test Render',
     telefono: '809-000-0000',
     correo: 'test@render.com',

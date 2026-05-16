@@ -207,14 +207,7 @@ section{padding:100px 0;position:relative;z-index:1}
 .form-group input::placeholder{color:var(--text-muted);opacity:.5}
 .form-group textarea{resize:vertical;min-height:80px}
 .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-.form-group .time-row{display:flex;align-items:stretch}
-.form-group .time-wrap{display:flex;flex:1;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;transition:var(--transition);background:var(--bg)}
-.form-group .time-wrap:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(14,165,233,0.06);background:var(--surface)}
-.form-group .time-wrap input[type=time]{flex:1;padding:12px 14px;border:none;font-size:.88rem;font-family:'Inter',sans-serif;background:transparent;color:var(--text);outline:none;min-width:0}
-.form-group .time-wrap .ampm-group{display:flex;border-left:1px solid var(--border);flex-shrink:0}
-.form-group .ampm-btn{padding:12px 14px;font-size:.8rem;font-weight:600;font-family:'Inter',sans-serif;border:none;background:transparent;color:var(--text-muted);cursor:pointer;transition:all .2s;min-width:48px;text-align:center;letter-spacing:.3px}
-.form-group .ampm-btn:first-child{border-right:1px solid var(--border)}
-.form-group .ampm-btn.active{background:var(--primary);color:#fff;font-weight:700}
+
 .form-group .checkbox-label{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--text-muted);cursor:pointer}
 .form-group .checkbox-label input{margin-top:3px;width:auto;accent-color:var(--primary)}
 .submit-btn{width:100%;padding:14px;background:var(--gradient-1);color:white;border:none;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif;margin-top:8px;box-shadow:0 4px 16px var(--primary-glow)}
@@ -601,16 +594,16 @@ footer{background:var(--surface);color:var(--text);padding:80px 0 0;position:rel
             <input type="tel" id="telefono" placeholder="809-555-0100" required>
           </div>
           <div class="form-group">
-            <label>Correo electronico</label>
-            <input type="email" id="correo" placeholder="ejemplo@correo.com">
+            <label>Correo electronico <span style="color:#dc2626">*</span></label>
+            <input type="email" id="correo" placeholder="ejemplo@correo.com" required>
           </div>
           <div class="form-group">
-            <label>Direccion</label>
-            <input type="text" id="direccion" placeholder="Calle, numero, sector">
+            <label>Direccion <span style="color:#dc2626">*</span></label>
+            <input type="text" id="direccion" placeholder="Calle, numero, sector" required>
           </div>
           <div class="form-group">
-            <label>Sector / Ciudad</label>
-            <input type="text" id="ciudad" placeholder="Ej: Santo Domingo">
+            <label>Sector / Ciudad <span style="color:#dc2626">*</span></label>
+            <input type="text" id="ciudad" placeholder="Ej: Santo Domingo" required>
           </div>
           <div class="form-group full">
             <label>Servicio solicitado</label>
@@ -623,20 +616,39 @@ footer{background:var(--surface);color:var(--text);padding:80px 0 0;position:rel
             <input type="date" id="fecha" required>
           </div>
           <div class="form-group">
-            <label>Hora deseada</label>
-            <div class="time-row">
-              <div class="time-wrap">
-                <input type="time" id="hora" step="1800" required>
-                <div class="ampm-group">
-                  <button type="button" class="ampm-btn active" data-value="AM">AM</button>
-                  <button type="button" class="ampm-btn" data-value="PM">PM</button>
-                </div>
-              </div>
-            </div>
+            <label>Hora deseada <span style="color:#dc2626">*</span></label>
+            <select id="hora" required>
+              <option value="">Selecciona un horario</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="8:30 AM">8:30 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="9:30 AM">9:30 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="10:30 AM">10:30 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="11:30 AM">11:30 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="12:30 PM">12:30 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="1:30 PM">1:30 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="2:30 PM">2:30 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="3:30 PM">3:30 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="4:30 PM">4:30 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+              <option value="5:30 PM">5:30 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="6:30 PM">6:30 PM</option>
+              <option value="7:00 PM">7:00 PM</option>
+              <option value="7:30 PM">7:30 PM</option>
+            </select>
           </div>
           <div class="form-group">
-            <label>Modalidad</label>
-            <select id="modalidad">
+            <label>Modalidad <span style="color:#dc2626">*</span></label>
+            <select id="modalidad" required>
+              <option value="">Selecciona una modalidad</option>
               <option value="domicilio">A domicilio</option>
               <option value="telemedicina">Telemedicina</option>
             </select>
@@ -1001,45 +1013,17 @@ function seleccionarServicio(id) {
   document.getElementById('citas').scrollIntoView({ behavior: 'smooth' });
 }
 
-function formatearHora12h(valor24h, ampm) {
-  if (!valor24h) return '';
-  const [h, m] = valor24h.split(':');
-  let hour = parseInt(h, 10);
-  if (ampm === 'AM' && hour >= 12) hour -= 12;
-  if (ampm === 'PM' && hour < 12) hour += 12;
-  const h12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-  return `${h12}:${m} ${ampm}`;
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function autoDetectarAmpm(valor24h) {
-  if (!valor24h) return 'AM';
-  const hour = parseInt(valor24h.split(':')[0], 10);
-  return hour >= 12 ? 'PM' : 'AM';
+function validarTelefonoRD(tel) {
+  const limpio = tel.replace(/[\s\-\ ()\+]/g, '');
+  return /^\d{10,12}$/.test(limpio);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
-
-  const horaInput = document.getElementById('hora');
-  const ampmBtns = document.querySelectorAll('.ampm-btn');
-
-  ampmBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      ampmBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-
-  horaInput.addEventListener('change', () => {
-    const detected = autoDetectarAmpm(horaInput.value);
-    ampmBtns.forEach(b => b.classList.toggle('active', b.dataset.value === detected));
-  });
-
-  document.getElementById('citaForm').addEventListener('reset', () => {
-    setTimeout(() => {
-      ampmBtns.forEach(b => b.classList.toggle('active', b.dataset.value === 'AM'));
-    }, 0);
-  });
 });
 
 document.getElementById('citaForm').addEventListener('submit', async (e) => {
@@ -1048,25 +1032,56 @@ document.getElementById('citaForm').addEventListener('submit', async (e) => {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
-  const data = {
-    nombre_paciente: document.getElementById('nombre_paciente').value.trim(),
-    telefono: document.getElementById('telefono').value.trim(),
-    correo: document.getElementById('correo').value.trim(),
-    direccion: document.getElementById('direccion').value.trim(),
-    ciudad: document.getElementById('ciudad').value.trim(),
-    servicio_id: parseInt(document.getElementById('servicio_id').value),
-    fecha: document.getElementById('fecha').value,
-    hora: formatearHora12h(document.getElementById('hora').value, document.querySelector('.ampm-btn.active').dataset.value),
-    modalidad: document.getElementById('modalidad').value,
-    comentario: document.getElementById('comentario').value.trim(),
-    acepto_privacidad: document.getElementById('acepto_privacidad').checked
-  };
+  const nombre = document.getElementById('nombre_paciente').value.trim();
+  const tel = document.getElementById('telefono').value.trim();
+  const email = document.getElementById('correo').value.trim();
+  const dir = document.getElementById('direccion').value.trim();
+  const ciu = document.getElementById('ciudad').value.trim();
+  const servId = parseInt(document.getElementById('servicio_id').value);
+  const fec = document.getElementById('fecha').value;
+  const hor = document.getElementById('hora').value;
+  const mod = document.getElementById('modalidad').value;
+  const com = document.getElementById('comentario').value.trim();
+  const priv = document.getElementById('acepto_privacidad').checked;
+
+  const faltan = [];
+  if (!nombre) faltan.push('Nombre del paciente');
+  if (!tel) faltan.push('Teléfono');
+  else if (!validarTelefonoRD(tel)) { mostrarToast('Teléfono inválido. Debe tener 10 dígitos (ej: 8095550100)', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud'; return; }
+  if (!email) faltan.push('Correo electrónico');
+  else if (!validarEmail(email)) { mostrarToast('Correo electrónico inválido', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud'; return; }
+  if (!dir) faltan.push('Dirección');
+  if (!ciu) faltan.push('Sector / Ciudad');
+  if (!servId || isNaN(servId)) faltan.push('Servicio');
+  if (!fec) faltan.push('Fecha');
+  if (!hor) faltan.push('Hora');
+  if (!mod) faltan.push('Modalidad');
+  if (!priv) faltan.push('Aceptar política de privacidad');
+
+  if (faltan.length > 0) {
+    mostrarToast('Campos obligatorios: ' + faltan.join(', '), 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud';
+    return;
+  }
 
   try {
     const res = await fetch('/api/citas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        nombre_paciente: nombre,
+        telefono: tel,
+        correo: email,
+        direccion: dir,
+        ciudad: ciu,
+        servicio_id: servId,
+        fecha: fec,
+        hora: hor,
+        modalidad: mod,
+        comentario: com,
+        acepto_privacidad: priv
+      })
     });
     const result = await res.json();
     if (res.ok) {

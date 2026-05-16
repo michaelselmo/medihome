@@ -493,27 +493,28 @@ function verDetalle(id) {
   fetch('/api/admin/citas/' + id, { headers: apiHeaders() })
     .then(r => r.json())
     .then(c => {
+      const p = (v, fb) => (v && v !== 'undefined' && v !== 'null' ? v : (fb || 'No especificado'));
       const estados = { pendiente: 'Pendiente', confirmada: 'Confirmada', en_proceso: 'En Proceso', completada: 'Completada', cancelada: 'Cancelada' };
       const modos = { domicilio: 'A domicilio', telemedicina: 'Telemedicina' };
       document.getElementById('modalContent').innerHTML = `
         <div class="modal-header"><h3><i class="fas fa-file-medical"></i> Detalle de Cita</h3><button class="modal-close" onclick="cerrarModal()">&times;</button></div>
         <div class="modal-body">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-            <strong style="font-size:1.05rem;color:var(--primary)">${c.codigo_cita}</strong>
+            <strong style="font-size:1.05rem;color:var(--primary)">${p(c.codigo_cita)}</strong>
             <span class="badge badge-${c.estado}">${estados[c.estado] || c.estado}</span>
           </div>
           <div class="detail-grid">
-            <div class="detail-item"><div class="detail-label">Paciente</div><div class="detail-value">${c.nombre_paciente}</div></div>
-            <div class="detail-item"><div class="detail-label">Telefono</div><div class="detail-value">${c.telefono}</div></div>
-            <div class="detail-item"><div class="detail-label">Correo</div><div class="detail-value">${c.correo || '—'}</div></div>
-            <div class="detail-item"><div class="detail-label">Direccion</div><div class="detail-value">${c.direccion || '—'}, ${c.ciudad || ''}</div></div>
-            <div class="detail-item"><div class="detail-label">Servicio</div><div class="detail-value">${c.servicio_nombre || '—'}</div></div>
-            <div class="detail-item"><div class="detail-label">Precio</div><div class="detail-value">${c.precio ? 'RD$' + c.precio.toLocaleString() : '—'}</div></div>
-            <div class="detail-item"><div class="detail-label">Fecha</div><div class="detail-value">${c.fecha}</div></div>
-            <div class="detail-item"><div class="detail-label">Hora</div><div class="detail-value">${c.hora}</div></div>
-            <div class="detail-item"><div class="detail-label">Modalidad</div><div class="detail-value">${modos[c.modalidad] || c.modalidad}</div></div>
-            <div class="detail-item"><div class="detail-label">Medico</div><div class="detail-value">${c.medico_nombre || 'Por asignar'}</div></div>
-            <div class="detail-item" style="grid-column:span 2"><div class="detail-label">Comentarios del paciente</div><div class="detail-value">${c.comentario || 'Ninguno'}</div></div>
+            <div class="detail-item"><div class="detail-label">Paciente</div><div class="detail-value">${p(c.nombre_paciente)}</div></div>
+            <div class="detail-item"><div class="detail-label">Telefono</div><div class="detail-value">${p(c.telefono)}</div></div>
+            <div class="detail-item"><div class="detail-label">Correo</div><div class="detail-value">${p(c.correo, 'No especificado')}</div></div>
+            <div class="detail-item"><div class="detail-label">Direccion</div><div class="detail-value">${p(c.direccion, 'No especificado')}${c.ciudad ? ', ' + p(c.ciudad) : ''}</div></div>
+            <div class="detail-item"><div class="detail-label">Servicio</div><div class="detail-value">${p(c.servicio_nombre, 'No especificado')}</div></div>
+            <div class="detail-item"><div class="detail-label">Precio</div><div class="detail-value">${c.precio ? 'RD$' + Number(c.precio).toLocaleString() : 'No especificado'}</div></div>
+            <div class="detail-item"><div class="detail-label">Fecha</div><div class="detail-value">${p(c.fecha)}</div></div>
+            <div class="detail-item"><div class="detail-label">Hora</div><div class="detail-value">${p(c.hora)}</div></div>
+            <div class="detail-item"><div class="detail-label">Modalidad</div><div class="detail-value">${modos[c.modalidad] || p(c.modalidad)}</div></div>
+            <div class="detail-item"><div class="detail-label">Medico</div><div class="detail-value">${p(c.medico_nombre, 'Por asignar')}</div></div>
+            <div class="detail-item" style="grid-column:span 2"><div class="detail-label">Comentarios del paciente</div><div class="detail-value">${p(c.comentario, 'Ninguno')}</div></div>
             ${c.observaciones ? `<div class="detail-item" style="grid-column:span 2"><div class="detail-label">Observaciones medicas</div><div class="detail-value">${c.observaciones}</div></div>` : ''}
           </div>
           <hr style="border:none;border-top:1px solid var(--border);margin:20px 0">
