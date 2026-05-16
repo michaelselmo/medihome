@@ -494,7 +494,7 @@ app.post('/api/admin/medicos/:id/servicios', authMiddleware, (req, res) => {
 
 // ── Diagnóstico de entorno ──
 console.log('\n✦ Diagnóstico de configuración:');
-['EMAIL_HOST','EMAIL_PORT','EMAIL_USER','EMAIL_APP_PASSWORD','EMAIL_ADMIN','SECRET'].forEach(v =>
+['RESEND_API_KEY','EMAIL_FROM','EMAIL_ADMIN','SECRET'].forEach(v =>
   console.log(`  ${v}: ${process.env[v] ? '✓ presente' : '✗ faltante'}`)
 );
 console.log('');

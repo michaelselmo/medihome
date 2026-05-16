@@ -27,7 +27,7 @@ Sistema full-stack para gestion de citas medicas, con landing publica, panel adm
 | `bcryptjs` | ^3.0.3 | Hashing de contrasenas |
 | `jsonwebtoken` | ^9.0.3 | Tokens JWT |
 | `cors` | ^2.8.6 | CORS para peticiones cross-origin |
-| `nodemailer` | ^8.0.7 | Envio de correos electronicos |
+| `resend` | ^4.x | Envio de correos transaccionales (API) |
 | `dotenv` | ^16.4.7 | Variables de entorno (.env) |
 
 ## Estructura del proyecto
@@ -48,9 +48,9 @@ medihome/                        # RAIZ DEL PROYECTO
 │   ├── index.html               # Landing page publica (agendar cita)
 │   └── admin.html               # Dashboard administrativo
 ├── utils/
-│   └── mailer.js                 # Transporter SMTP (crea conexion con nodemailer)
+│   └── mailer.js                 # Cliente Resend (API de correos transaccionales)
 ├── services/
-│   └── emailService.js           # Logica de envio de correos SMTP
+│   └── emailService.js           # Logica de envio de correos (admin + paciente)
 ├── templates/email/
 │   └── appointmentNotification.js # Generador de plantilla HTML/text para notificaciones
 ├── .env                         # Variables de entorno (NO SUBIR A GIT)
@@ -275,24 +275,22 @@ Cuando un cliente agenda una cita, el sistema envia automaticamente un correo de
 # 1. Copiar el template
 cp .env.example .env
 
-# 2. Editar .env con tus credenciales de Gmail
-#    EMAIL_APP_PASSWORD debe ser un App Password de Gmail
-#    (NO la contraseña normal de la cuenta)
+# 2. Obtener una API Key en https://resend.com/api-keys
+#    (requiere crear cuenta gratuita en Resend)
 
-# 3. Obtener App Password en:
-#    https://myaccount.google.com/apppasswords
-#    Requisito: tener verificacion en 2 pasos activada
+# 3. Editar .env:
+#    RESEND_API_KEY=re_... (la key obtenida en Resend)
+#    EMAIL_FROM=MediHome <onboarding@resend.dev> (o tu dominio verificado)
 ```
+
+> **Nota:** Para produccion, verifica un dominio en Resend y usa `EMAIL_FROM=MediHome <notificaciones@tudominio.com>`. Para pruebas locales usa `onboarding@resend.dev`.
 
 ### Variables .env
 
 | Variable | Descripcion |
 |----------|-------------|
-| `EMAIL_HOST` | Servidor SMTP (smtp.gmail.com) |
-| `EMAIL_PORT` | Puerto SMTP (587 para TLS) |
-| `EMAIL_SECURE` | false para TLS, true para SSL |
-| `EMAIL_USER` | Correo remitente |
-| `EMAIL_APP_PASSWORD` | App Password de Gmail (16 caracteres) |
+| `RESEND_API_KEY` | API Key de Resend (comienza con `re_`) |
+| `EMAIL_FROM` | Direccion del remitente (verificada en Resend) |
 | `EMAIL_ADMIN` | Correo del administrador que recibe notificaciones |
 
 ### Comportamiento
@@ -322,7 +320,7 @@ cp .env.example .env
 ## Funcionalidades pendientes
 
 - [ ] Mover SECRET a variable de entorno (.env)
-- [ ] Envio de notificaciones por correo (nodemailer ya instalado)
+- [x] Envio de notificaciones por correo (Resend)
 - [ ] Envio de notificaciones SMS/WhatsApp
 - [ ] Panel de perfil de medico (ver solo sus citas)
 - [ ] Recordatorio automatico de citas (cron job)

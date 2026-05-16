@@ -1,28 +1,55 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-let transporter = null;
+let client = null;
 
-function getTransporter() {
-  if (transporter) return transporter;
-
-  const required = ['EMAIL_HOST', 'EMAIL_PORT', 'EMAIL_USER', 'EMAIL_APP_PASSWORD'];
-  const missing = required.filter(k => !process.env[k]);
-  if (missing.length > 0) {
-    console.warn(`[mailer] Variables .env faltantes: ${missing.join(', ')}. Correos no disponibles.`);
+function getClient() {
+  if (client) return client;
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('[mailer] RESEND_API_KEY no configurada. Correos no disponibles.');
     return null;
   }
-
-  transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT, 10),
-    secure: process.env.EMAIL_SECURE === 'true',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_APP_PASSWORD,
-    },
-  });
-
-  return transporter;
+  client = new Resend(process.env.RESEND_API_KEY);
+  return client;
 }
 
-module.exports = { getTransporter };
+async function sendEmail({ to, subject, html, text, cc }) {
+  const r = getClient();
+  if (!r) {
+    return { sent: false, reason: 'RESEND_API_KEY no configurada' };
+  }
+
+  if (!to) {
+    return { sent: false, reason: 'Destinatario no especificado' };
+  }
+
+  const from = process.env.EMAIL_FROM;
+  if (!from) {
+    return { sent: false, reason: 'EMAIL_FROM no configurado' };
+  }
+
+  const payload = {
+    from,
+    to: Array.isArray(to) ? to : [to],
+    subject,
+    html,
+    text,
+  };
+
+  if (cc && cc.length > 0) {
+    payload.cc = Array.isArray(cc) ? cc : [cc];
+  }
+
+  try {
+    const { data, error } = await r.emails.send(payload);
+    if (error) {
+      console.error(`[mailer] Error Resend: ${error.name || ''} ${error.message || ''}`);
+      return { sent: false, reason: error.message || 'Error desconocido de Resend', code: error.name || 'RESEND_ERROR' };
+    }
+    return { sent: true, messageId: data?.id };
+  } catch (err) {
+    console.error(`[mailer] Error inesperado: ${err.message}`);
+    return { sent: false, reason: err.message, code: err.code || 'UNEXPECTED' };
+  }
+}
+
+module.exports = { sendEmail };

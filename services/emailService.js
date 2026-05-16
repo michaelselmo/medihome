@@ -1,79 +1,63 @@
-const { getTransporter } = require('../utils/mailer');
+const { sendEmail } = require('../utils/mailer');
 const { buildHtml, buildText } = require('../templates/email/appointmentNotification');
 const { buildPatientHtml, buildPatientText } = require('../templates/email/patientConfirmation');
 
 async function sendAdminNotification(citaData) {
-  const transport = getTransporter();
-  if (!transport) {
-    console.warn('[email] Transporter no configurado. Correo admin NO enviado.');
-    return { sent: false, reason: 'SMTP no configurado' };
-  }
-
   const adminEmail = process.env.EMAIL_ADMIN;
   if (!adminEmail) {
     console.warn('[email] EMAIL_ADMIN no definido. Correo admin NO enviado.');
     return { sent: false, reason: 'EMAIL_ADMIN no definido' };
   }
 
-  const html = buildHtml(citaData);
-  const text = buildText(citaData);
+  if (!citaData.nombre_paciente) {
+    console.warn('[email] Datos de cita incompletos. Correo admin NO enviado.');
+    return { sent: false, reason: 'Datos de cita incompletos' };
+  }
 
-  const mailOptions = {
-    from: `"MediHome" <${process.env.EMAIL_USER}>`,
+  console.log('[email] Intentando enviar correo admin...');
+
+  const cc = citaData.medico_correo ? [citaData.medico_correo] : undefined;
+
+  const result = await sendEmail({
     to: adminEmail,
-    subject: `Nueva cita agendada - ${citaData.nombre_paciente || 'Paciente'}`,
-    html,
-    text,
-  };
+    subject: `Nueva cita agendada - ${citaData.nombre_paciente}`,
+    html: buildHtml(citaData),
+    text: buildText(citaData),
+    cc,
+  });
 
-  if (citaData.medico_correo) {
-    mailOptions.cc = citaData.medico_correo;
+  if (result.sent) {
+    console.log(`[email] Admin: enviado a ${adminEmail}${cc ? `, CC: ${cc.join(', ')}` : ''} | ID: ${result.messageId}`);
+  } else {
+    console.error(`[email] Error enviando correo admin: ${result.reason}`);
   }
 
-  try {
-    const info = await transport.sendMail(mailOptions);
-    console.log(`[email] Admin: enviado a ${adminEmail}${mailOptions.cc ? `, CC: ${mailOptions.cc}` : ''} | ID: ${info.messageId}`);
-    return { sent: true, messageId: info.messageId };
-  } catch (err) {
-    const code = err.code || 'UNKNOWN';
-    console.error(`[email] Error enviando correo admin: código=${code} mensaje=${err.message}`);
-    return { sent: false, reason: err.message, code };
-  }
+  return result;
 }
 
 async function sendPatientConfirmation(citaData) {
-  const transport = getTransporter();
-  if (!transport) {
-    console.warn('[email] Transporter no configurado. Correo paciente NO enviado.');
-    return { sent: false, reason: 'SMTP no configurado' };
-  }
-
   const patientEmail = citaData.correo;
   if (!patientEmail) {
-    console.warn('[email] Paciente sin correo. Correo NO enviado.');
+    console.warn('[email] Paciente sin correo. Confirmación NO enviada.');
     return { sent: false, reason: 'Paciente sin correo' };
   }
 
-  const html = buildPatientHtml(citaData);
-  const text = buildPatientText(citaData);
+  console.log('[email] Intentando enviar confirmación al paciente...');
 
-  const mailOptions = {
-    from: `"MediHome" <${process.env.EMAIL_USER}>`,
+  const result = await sendEmail({
     to: patientEmail,
     subject: `Solicitud recibida - MediHome (Código: ${citaData.codigo_cita || ''})`,
-    html,
-    text,
-  };
+    html: buildPatientHtml(citaData),
+    text: buildPatientText(citaData),
+  });
 
-  try {
-    const info = await transport.sendMail(mailOptions);
-    console.log(`[email] Paciente: enviado a ${patientEmail} | ID: ${info.messageId}`);
-    return { sent: true, messageId: info.messageId };
-  } catch (err) {
-    const code = err.code || 'UNKNOWN';
-    console.error(`[email] Error enviando correo paciente: código=${code} mensaje=${err.message}`);
-    return { sent: false, reason: err.message, code };
+  if (result.sent) {
+    console.log(`[email] Paciente: enviado a ${patientEmail} | ID: ${result.messageId}`);
+  } else {
+    console.error(`[email] Error enviando correo paciente: ${result.reason}`);
   }
+
+  return result;
 }
 
 async function sendNewCitaNotification(citaData) {
