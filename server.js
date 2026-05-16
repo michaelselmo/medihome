@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
 const { sendAdminNotification, sendNewCitaNotification } = require('./services/emailService');
 
 const app = express();
@@ -18,6 +19,39 @@ const db = new sqlite3.Database(DB_PATH);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ── Rate limiters ──
+const limiterGeneral = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas solicitudes. Intente de nuevo en 15 minutos.' },
+});
+
+const limiterCitas = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas solicitudes de cita. Espere 15 minutos.' },
+});
+
+const limiterLogin = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos de inicio de sesión. Espere 15 minutos.' },
+});
+
+const limiterTestEmail = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 3,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, mensaje: 'Demasiadas solicitudes de prueba. Espere 15 minutos.' },
+});
 
 function generarCodigoCita() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -169,7 +203,7 @@ function authMiddleware(req, res, next) {
 
 // --- PUBLIC ROUTES ---
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', limiterLogin, (req, res) => {
   const { usuario, password } = req.body;
   db.get("SELECT * FROM usuarios_admin WHERE usuario=? AND activo=1", [usuario], (err, user) => {
     if (!user || !bcrypt.compareSync(password, user.password))
@@ -188,7 +222,7 @@ app.get('/api/medicos', (req, res) => {
   db.all("SELECT * FROM medicos WHERE activo=1 ORDER BY nombre", (err, rows) => res.json(rows));
 });
 
-app.post('/api/citas', (req, res) => {
+app.post('/api/citas', limiterCitas, (req, res) => {
   let { nombre_paciente, telefono, correo, direccion, ciudad, servicio_id, fecha, hora, modalidad, comentario, acepto_privacidad } = req.body;
 
   nombre_paciente = sanitizar(nombre_paciente || '');
@@ -500,7 +534,7 @@ console.log('\n✦ Diagnóstico de configuración:');
 console.log('');
 
 // ── Ruta de prueba de correo (protegida con token desde .env) ──
-app.get('/api/test-email', async (req, res) => {
+app.get('/api/test-email', limiterTestEmail, async (req, res) => {
   const expectedToken = process.env.TEST_EMAIL_TOKEN;
   if (!expectedToken) {
     return res.status(503).json({ success: false, mensaje: 'Ruta no disponible: TEST_EMAIL_TOKEN no configurado' });
@@ -529,6 +563,9 @@ app.get('/api/test-email', async (req, res) => {
     error: result.sent ? null : (result.code || result.reason),
   });
 });
+
+// General rate limiter for all /api routes
+app.use('/api', limiterGeneral);
 
 // Serve static files or 404
 app.use('/api', (req, res) => res.status(404).json({ error: 'Ruta no encontrada' }));
