@@ -7,7 +7,8 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
-const { sendAdminNotification, sendNewCitaNotification } = require('./services/emailService');
+const { sendAdminNotification, sendNewCitaNotification, sendResultadoNotification } = require('./services/emailService');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,11 @@ const db = new sqlite3.Database(DB_PATH);
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req, res, next) {
+  res.charset = 'utf-8';
+  next();
+});
 
 // ── Rate limiters ──
 const limiterGeneral = rateLimit({
@@ -51,6 +57,33 @@ const limiterTestEmail = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, mensaje: 'Demasiadas solicitudes de prueba. Espere 15 minutos.' },
+});
+
+const RESULTADOS_DIR = path.join(__dirname, 'uploads', 'resultados');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const fs = require('fs');
+    if (!fs.existsSync(RESULTADOS_DIR)) fs.mkdirSync(RESULTADOS_DIR, { recursive: true });
+    cb(null, RESULTADOS_DIR);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const citaId = req.params.id || 'unknown';
+    const date = new Date().toISOString().split('T')[0].replace(/-/g, '');
+    const safeName = 'resultado_cita_' + citaId + '_' + date + ext;
+    cb(null, safeName);
+  }
+});
+const fileFilter = (req, file, cb) => {
+  const allowed = ['.pdf', '.jpg', '.jpeg', '.png'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (allowed.includes(ext)) cb(null, true);
+  else cb(new Error('Tipo de archivo no permitido. Solo PDF, JPG, JPEG, PNG.'), false);
+};
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 }
 });
 
 function generarCodigoCita() {
@@ -128,6 +161,19 @@ db.serialize(() => {
     tipo TEXT DEFAULT 'admin',
     contenido TEXT,
     created_by TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(cita_id) REFERENCES citas(id)
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS resultados_citas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cita_id INTEGER NOT NULL,
+    archivo_original TEXT NOT NULL,
+    archivo_guardado TEXT NOT NULL,
+    ruta_archivo TEXT NOT NULL,
+    mime_type TEXT,
+    size_bytes INTEGER,
+    nota TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(cita_id) REFERENCES citas(id)
   )`);
@@ -331,33 +377,75 @@ app.get('/api/citas/seguimiento', (req, res) => {
 
 // --- ADMIN ROUTES ---
 
-app.get('/api/admin/stats', authMiddleware, (req, res) => {
-  db.get("SELECT COUNT(*) as total FROM citas", [], (err, total) => {
-    db.get("SELECT COUNT(*) as pendientes FROM citas WHERE estado='pendiente'", [], (err, pend) => {
-      db.get("SELECT COUNT(*) as confirmadas FROM citas WHERE estado='confirmada'", [], (err, conf) => {
-        db.get("SELECT COUNT(*) as completadas FROM citas WHERE estado='completada'", [], (err, comp) => {
-          db.get("SELECT COUNT(*) as canceladas FROM citas WHERE estado='cancelada'", [], (err, canc) => {
-            db.get("SELECT COUNT(*) as en_proceso FROM citas WHERE estado='en_proceso'", [], (err, proc) => {
-              db.all(`SELECT s.nombre, COUNT(c.id) as total FROM citas c JOIN servicios s ON c.servicio_id=s.id GROUP BY c.servicio_id ORDER BY total DESC LIMIT 5`, [], (err, topServicios) => {
-                db.all(`SELECT DATE(created_at) as dia, COUNT(*) as total FROM citas GROUP BY dia ORDER BY dia DESC LIMIT 7`, [], (err, tendencia) => {
-                  res.json({
-                    total: total?.total || 0,
-                    pendientes: pend?.pendientes || 0,
-                    confirmadas: conf?.confirmadas || 0,
-                    completadas: comp?.completadas || 0,
-                    canceladas: canc?.canceladas || 0,
-                    en_proceso: proc?.en_proceso || 0,
-                    topServicios: topServicios || [],
-                    tendencia: tendencia || []
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
+app.get('/api/admin/stats', authMiddleware, async (req, res) => {
+  try {
+    const q = {
+      get: (sql, params = []) => new Promise((resolve, reject) =>
+        db.get(sql, params, (err, row) => err ? reject(err) : resolve(row))),
+      all: (sql, params = []) => new Promise((resolve, reject) =>
+        db.all(sql, params, (err, rows) => err ? reject(err) : resolve(rows)))
+    };
+
+    const [
+      total, pend, conf, comp, canc, proc,
+      topServicios, tendencia, actividadReciente,
+      citasPorDia, pacientesCount, medicosCount,
+      hoyTotal, ayerTotal
+    ] = await Promise.all([
+      q.get("SELECT COUNT(*) as total FROM citas"),
+      q.get("SELECT COUNT(*) as pendientes FROM citas WHERE estado='pendiente'"),
+      q.get("SELECT COUNT(*) as confirmadas FROM citas WHERE estado='confirmada'"),
+      q.get("SELECT COUNT(*) as completadas FROM citas WHERE estado='completada'"),
+      q.get("SELECT COUNT(*) as canceladas FROM citas WHERE estado='cancelada'"),
+      q.get("SELECT COUNT(*) as en_proceso FROM citas WHERE estado='en_proceso'"),
+      q.all(`SELECT s.nombre, COUNT(c.id) as total FROM citas c JOIN servicios s ON c.servicio_id=s.id GROUP BY c.servicio_id ORDER BY total DESC LIMIT 5`),
+      q.all(`SELECT DATE(created_at) as dia, COUNT(*) as total FROM citas GROUP BY dia ORDER BY dia DESC LIMIT 7`),
+      q.all(`SELECT 'cita' as tipo, c.nombre_paciente as paciente, COALESCE(s.nombre,'') as servicio, c.estado, c.created_at as fecha
+        FROM citas c LEFT JOIN servicios s ON c.servicio_id=s.id
+        ORDER BY c.created_at DESC LIMIT 5`),
+      q.all(`SELECT CASE CAST(strftime('%w',fecha) AS INTEGER)
+        WHEN 0 THEN 'Dom' WHEN 1 THEN 'Lun' WHEN 2 THEN 'Mar' WHEN 3 THEN 'Mié'
+        WHEN 4 THEN 'Jue' WHEN 5 THEN 'Vie' WHEN 6 THEN 'Sáb' END as dia,
+        COUNT(*) as total FROM citas
+        WHERE fecha >= DATE('now','-7 days')
+        GROUP BY strftime('%w',fecha) ORDER BY strftime('%w',fecha)`),
+      q.get("SELECT COUNT(DISTINCT nombre_paciente || telefono) as total FROM citas"),
+      q.get("SELECT COUNT(*) as total FROM medicos WHERE activo=1"),
+      q.get("SELECT COUNT(*) as total FROM citas WHERE DATE(created_at)=DATE('now')"),
+      q.get("SELECT COUNT(*) as total FROM citas WHERE DATE(created_at)=DATE('now','-1 day')"),
+    ]);
+
+    const variacion = ayerTotal?.total > 0
+      ? Math.round(((hoyTotal?.total || 0) - ayerTotal.total) / ayerTotal.total * 100)
+      : 0;
+
+    const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    const citasMap = {};
+    (citasPorDia || []).forEach(d => { citasMap[d.dia] = d.total; });
+    const citasPorDiaCompleto = diasSemana.map(dia => ({ dia, total: citasMap[dia] || 0 }));
+
+    res.json({
+      total: total?.total || 0,
+      pendientes: pend?.pendientes || 0,
+      confirmadas: conf?.confirmadas || 0,
+      completadas: comp?.completadas || 0,
+      canceladas: canc?.canceladas || 0,
+      en_proceso: proc?.en_proceso || 0,
+      variacion,
+      topServicios: topServicios || [],
+      tendencia: tendencia || [],
+      actividadReciente: actividadReciente || [],
+      citasPorDia: citasPorDiaCompleto,
+      resumenRapido: {
+        totalPacientes: pacientesCount?.total || 0,
+        medicosActivos: medicosCount?.total || 0,
+        satisfaccion: 4.8
+      }
     });
-  });
+  } catch (err) {
+    console.error('[stats] Error:', err);
+    res.status(500).json({ error: 'Error al cargar estadísticas' });
+  }
 });
 
 app.get('/api/admin/citas', authMiddleware, (req, res) => {
@@ -389,7 +477,9 @@ app.get('/api/admin/citas/:id', authMiddleware, (req, res) => {
     [req.params.id], (err, cita) => {
       if (err || !cita) return res.status(404).json({ error: 'Cita no encontrada' });
       db.all("SELECT * FROM observaciones_cita WHERE cita_id=? ORDER BY created_at DESC", [req.params.id], (err, obs) => {
-        res.json({ ...cita, observaciones_lista: obs || [] });
+        db.get("SELECT * FROM resultados_citas WHERE cita_id=? ORDER BY created_at DESC LIMIT 1", [req.params.id], (err, resultado) => {
+          res.json({ ...cita, observaciones_lista: obs || [], resultado: resultado || null });
+        });
       });
     });
 });
@@ -415,13 +505,58 @@ app.put('/api/admin/citas/:id', authMiddleware, (req, res) => {
       db.run("INSERT INTO observaciones_cita (cita_id, tipo, contenido, created_by) VALUES (?,?,?,?)",
         [req.params.id, 'admin', observaciones, req.admin.nombre]);
     }
-    if (resultado) {
-      db.run("INSERT INTO observaciones_cita (cita_id, tipo, contenido, created_by) VALUES (?,?,?,?)",
-        [req.params.id, 'resultado', resultado, req.admin.nombre]);
-    }
-
     res.json({ mensaje: 'Cita actualizada correctamente' });
   });
+});
+
+// --- ADMIN RESULTADOS (FILE UPLOAD) ---
+
+app.post('/api/admin/citas/:id/resultado', authMiddleware, (req, res) => {
+  upload.single('archivo')(req, res, function(err) {
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ error: 'El archivo supera el tamaño máximo de 10 MB' });
+        return res.status(400).json({ error: err.message });
+      }
+      return res.status(400).json({ error: err.message });
+    }
+
+    if (!req.file) return res.status(400).json({ error: 'Debe seleccionar un archivo (PDF, JPG, JPEG o PNG)' });
+
+    const nota = req.body.nota ? String(req.body.nota).trim() : '';
+
+    db.get("SELECT * FROM citas WHERE id=?", [req.params.id], (err, cita) => {
+      if (err || !cita) return res.status(404).json({ error: 'Cita no encontrada' });
+
+      db.run(`INSERT INTO resultados_citas (cita_id, archivo_original, archivo_guardado, ruta_archivo, mime_type, size_bytes, nota) VALUES (?,?,?,?,?,?,?)`,
+        [req.params.id, req.file.originalname, req.file.filename, req.file.path, req.file.mimetype, req.file.size, nota],
+        function(err) {
+          if (err) return res.status(500).json({ error: 'Error al guardar el resultado' });
+
+          db.run("UPDATE citas SET estado='completada', updated_at=CURRENT_TIMESTAMP WHERE id=? AND estado!='cancelada'", [req.params.id]);
+
+          const resultData = {
+            cita_id: parseInt(req.params.id),
+            nombre_paciente: cita.nombre_paciente,
+            correo: cita.correo,
+            codigo_cita: cita.codigo_cita,
+            archivo_original: req.file.originalname,
+            archivo_guardado: req.file.filename,
+            nota: nota,
+          };
+
+          sendResultadoNotification(resultData);
+
+          res.json({ id: this.lastID, mensaje: 'Resultado registrado correctamente', archivo: req.file.filename });
+        });
+    });
+  });
+});
+
+app.get('/api/admin/resultados/:archivo', authMiddleware, (req, res) => {
+  const filePath = path.join(RESULTADOS_DIR, req.params.archivo);
+  if (!require('fs').existsSync(filePath)) return res.status(404).json({ error: 'Archivo no encontrado' });
+  res.sendFile(filePath);
 });
 
 // --- ADMIN SERVICES ---

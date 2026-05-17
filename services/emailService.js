@@ -66,4 +66,38 @@ async function sendNewCitaNotification(citaData) {
   return { admin: adminResult, patient: patientResult };
 }
 
-module.exports = { sendNewCitaNotification, sendAdminNotification, sendPatientConfirmation };
+async function sendResultadoNotification(resultData) {
+  const adminEmail = process.env.EMAIL_ADMIN;
+  if (adminEmail) {
+    sendEmail({
+      to: adminEmail,
+      subject: 'Resultado medico registrado - ' + (resultData.codigo_cita || ''),
+      html: '<div style="font-family:sans-serif;padding:24px;max-width:560px;margin:0 auto">' +
+        '<h2 style="color:#0f172a">Resultado Medico Registrado</h2>' +
+        '<p style="color:#475569">Se ha registrado un resultado medico para la cita <strong>' + (resultData.codigo_cita || '') + '</strong>.</p>' +
+        '<table style="width:100%;border-collapse:collapse;margin:16px 0">' +
+        '<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#64748b">Paciente</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#0f172a">' + (resultData.nombre_paciente || '') + '</td></tr>' +
+        '<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#64748b">Archivo</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#0f172a">' + (resultData.archivo_original || '') + '</td></tr>' +
+        '<tr><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#64748b">Nota</td><td style="padding:8px 12px;border:1px solid #e2e8f0;font-size:13px;color:#0f172a">' + (resultData.nota || 'Sin nota') + '</td></tr>' +
+        '</table></div>',
+      text: 'Resultado medico registrado para ' + (resultData.nombre_paciente || '') + ' - Cita: ' + (resultData.codigo_cita || ''),
+    });
+  }
+
+  const patientEmail = resultData.correo;
+  if (patientEmail) {
+    sendEmail({
+      to: patientEmail,
+      subject: 'Su resultado medico ha sido registrado - MediHome',
+      html: '<div style="font-family:sans-serif;padding:24px;max-width:560px;margin:0 auto;background:#f8fafc;border-radius:12px">' +
+        '<h2 style="color:#0f172a">Resultado Medico Disponible</h2>' +
+        '<p style="color:#475569">Su resultado medico para la cita <strong>' + (resultData.codigo_cita || '') + '</strong> ha sido registrado.</p>' +
+        '<p style="color:#475569">Puede contactar a su medico para obtener mas informacion sobre los resultados.</p>' +
+        '<hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0">' +
+        '<p style="font-size:12px;color:#94a3b8">MediHome - Servicios Medicos a Domicilio</p></div>',
+      text: 'Su resultado medico para la cita ' + (resultData.codigo_cita || '') + ' ha sido registrado. Contacte a su medico para mas informacion.',
+    });
+  }
+}
+
+module.exports = { sendNewCitaNotification, sendAdminNotification, sendPatientConfirmation, sendResultadoNotification };

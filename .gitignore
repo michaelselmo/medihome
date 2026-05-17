@@ -26,6 +26,9 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Uploads
+uploads/
+
 # Temp
 tmp/
 temp/
