@@ -1,7 +1,7 @@
 # PROJECT CONTEXT — MediHome
 
 > Documento de contexto completo para retomar el proyecto en sesiones limpias.
-> Fecha: 2026-05-15 | Ultima sesion: Sesion 2 (notificaciones por correo)
+> Fecha: 2026-06-06 | Ultima sesion: Sesion 3 (notificaciones push + banners)
 
 ---
 
@@ -250,6 +250,7 @@ CREATE TABLE citas (
   direccion        TEXT,
   ciudad           TEXT,
   servicio_id      INTEGER,
+  cedula           TEXT,
   fecha            TEXT NOT NULL,           -- YYYY-MM-DD
   hora             TEXT NOT NULL,           -- HH:MM
   modalidad        TEXT DEFAULT 'domicilio', -- 'domicilio' | 'telemedicina' | 'consulta'
@@ -616,7 +617,60 @@ curl -s -X POST http://localhost:3000/api/citas \
 
 ---
 
-## 12. NOTAS ADICIONALES
+## 12. SESION 3 — Notificaciones push + banners (2026-06-06)
+
+### 12.1 Problema
+Mostrar en el panel admin una notificacion en tiempo real (badge + banner) cuando un paciente agenda una nueva cita desde la pagina publica, sin recargar la pagina ni interrumpir flujos activos.
+
+### 12.2 Decisiones de diseno
+- **Polling (15s)** sobre WebSocket/SSE: no hay infraestructura real-time, es mas simple y estable.
+- **Proteccion de proceso via busyFlags**: objeto global `{ isEditing, isSaving, isCreating, isUploading, isGeneratingPDF, isSendingEmail, isProcessingPayment }`; se chequea antes de cada ciclo de polling.
+- **Notificaciones reutilizan tabla `notificaciones`** existente, con 3 columnas nuevas (`cita_id`, `paciente_nombre`, `servicio`).
+- **Endpoint ligero `/api/admin/citas/ultima`** para polling (solo `SELECT MAX(id)`), sin JOINs.
+- **Banners via DOM append/remove**, no slots predefinidos, permiten apilamiento.
+
+### 12.3 Cambios en backend (`server.js`)
+- CREATE TABLE `notificaciones` actualizado con columnas `cita_id INTEGER`, `paciente_nombre TEXT`, `servicio TEXT`.
+- Migracion ALTER TABLE para BDs existentes (via `PRAGMA table_info`).
+- Nuevo endpoint `GET /api/admin/citas/ultima` → `{ maxId, total }`.
+- En `POST /api/citas`, despues de crear factura, se inserta notificacion para usuarios con `rol != 'medico'`.
+- Bug preexistente corregido: `servicio.nombre` → `servicio.servicio_nombre` (alias de columna incorrecto).
+- Bug corregido en creacion de notificaciones: `WHERE id = ? AND id = ?` (siempre falso) → `WHERE rol != 'medico'`.
+
+### 12.4 Cambios en frontend (`admin.html`)
+- Objeto global `busyFlags` + funcion `isBusy()`.
+- Variables `pollingInterval`, `lastCitaId`, `setInterval(actualizarBadgeMensajes, 30000)`.
+- Icono de campana: `toggleNotifPanel(event)`, badge inicial en `0`.
+- Dropdown de notificaciones: header ("Marcar todas leidas") + scrollable body.
+- Contenedor de banners: fixed bottom-right, apilable, auto-dismiss a 7s, botones "Ver cita" / "Cerrar".
+- CSS: `.notif-dropdown`, `.notif-item`, `.notif-item.no-leido`, `.notif-empty`, `.banner-container`, `.banner`, `.banner.show`.
+- JS: `toggleNotifPanel`, `cargarNotificaciones`, `getNotifIcon`, `formatFechaNotif`, `marcarLeida`, `marcarTodasLeidas`, `verCitaNotif`, `mostrarBanner`, `startPolling`, `stopPolling`, `checkForNewCitas`.
+- `actualizarBadgeMensajes` combina mensajes no leidos + notificaciones no leidas.
+- `cargarCitas(silent)` acepta parametro `silent` para suprimir toasts en refrescos silenciosos.
+- Navegacion: polling se inicia al hacer login (no solo en pagina de citas), el banner funciona desde cualquier pagina.
+- `busyFlags` seteado en `cambiarEstado`, `confirmarPago`, `enviarFacturaEmail`, `descargarPDF`, `validarCobertura`, `rechazarCobertura`.
+- Click handler en documento cierra panel de notificaciones al hacer click fuera.
+
+### 12.5 Bugs corregidos en esta sesion
+1. **Badge no incrementaba al cargar pagina**: `actualizarBadgeMensajes()` nunca se llamaba al inicio. Solucion: llamado en `showApp()` y en `login()`.
+2. **Banner no aparecia**: polling solo se iniciaba al navegar a citas. Solucion: `startPolling()` se llama al hacer login, y la actualizacion de tabla en citas es condicional.
+3. **Dropdown mostraba "No hay notificaciones" aunque hubiera notificaciones**: el panel de notificaciones no renderizaba correctamente. Se agrego try-catch con console.error para depuracion.
+4. **Faltaban notificaciones para cambios de estado**: se agregaron notificaciones automaticas para:
+   - Cambios de estado (pendiente, confirmada, completada, cancelada, etc.)
+   - Registro de pago
+   - Validacion/rechazo de cobertura ARS
+   - Reprogramacion de citas
+   - Confirmacion manual de citas
+
+### 12.6 Contexto critico
+- `SECRET` falta en `.env` — server funciona pero JWT usa fallback. Considerar agregar.
+- Express 5: rutas literales (`/api/admin/citas/ultima`) antes que parametrizadas (`/api/admin/citas/:id`).
+- Rol admin es `administrador` (no `admin`). Query de notificaciones usa `rol != 'medico'`.
+- `apiHeaders()` es funcion declarada, hoisted, disponible desde cualquier punto del script.
+
+---
+
+## 13. NOTAS ADICIONALES
 
 ### 12.1 Proyectos relacionados
 

@@ -33,3 +33,17 @@ uploads/
 tmp/
 temp/
 preview.html
+.gstack/
+
+# Backups
+*.bak
+*.backup2
+backups/
+BackUP/
+
+# Database snapshots
+*.db.pre-availability
+
+# Admin SPA deps
+admin-spa/node_modules/
+admin-spa/dist/

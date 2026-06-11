@@ -21,6 +21,7 @@ function buildHtml(data) {
 
   const pacienteFields = [
     { label: 'Paciente', value: p(data.nombre_paciente) },
+    { label: 'C\u00e9dula', value: p(data.cedula) },
     { label: 'Tel\u00e9fono', value: p(data.telefono) },
     { label: 'Correo', value: p(data.correo) },
     { label: 'Direcci\u00f3n', value: `${p(data.direccion)}${data.ciudad ? ', ' + p(data.ciudad) : ''}` },
@@ -70,7 +71,7 @@ function buildHtml(data) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
-<title>Nueva cita - MediHome</title>
+<title>Nueva cita - MediHomeRD</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f1f5f9;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;color:#0f172a">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9;padding:24px 0">
@@ -78,18 +79,30 @@ function buildHtml(data) {
       <td align="center" style="padding:0 12px">
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.06)">
 
+          <!-- ===== GRADIENT ACCENT TOP BAR ===== -->
+          <tr>
+            <td style="height:4px;background:linear-gradient(90deg, #0F172A, #0EA5E9, #06B6D4);font-size:0;line-height:0"></td>
+          </tr>
+
           <!-- ===== HEADER ===== -->
           <tr>
-            <td style="background-color:#ffffff;padding:28px 30px 20px">
+            <td style="padding:28px 30px 20px">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-0.8px"><span style="color:#0b7ee8">Medi</span><span style="color:#14b8a6">Home</span></td>
+                  <td style="font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-0.8px">
+                    <span style="color:#0F172A;font-weight:800">Medi</span><span style="color:#94A3B8;font-weight:300">Home</span><span style="color:#0EA5E9;font-weight:800">RD</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td style="font-size:14px;color:#64748b;padding-top:2px;font-weight:400;letter-spacing:0.3px">Servicios M&eacute;dicos a Domicilio &amp; Telemedicina</td>
+                  <td style="font-size:14px;color:#64748b;padding-top:2px;font-weight:400;letter-spacing:0.3px">Plataforma de Salud Digital</td>
                 </tr>
               </table>
             </td>
+          </tr>
+
+          <!-- ===== GRADIENT ACCENT BAR ===== -->
+          <tr>
+            <td style="height:2px;background:linear-gradient(90deg, #0EA5E9, #06B6D4);font-size:0;line-height:0"></td>
           </tr>
 
           <!-- ===== TITLE ===== -->
@@ -165,7 +178,7 @@ function buildHtml(data) {
                   <td align="center">
                     <table role="presentation" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="border-radius:8px;background-color:#0ea5e9">
+                        <td style="border-radius:8px;background:linear-gradient(135deg, #0EA5E9, #06B6D4)">
                           <a href="${p(adminUrl)}" target="_blank" style="display:inline-block;padding:12px 28px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px">Ver cita en el panel</a>
                         </td>
                       </tr>
@@ -182,15 +195,15 @@ function buildHtml(data) {
             <td style="background-color:#f8fafc;padding:20px 30px;border-top:1px solid #e2e8f0;text-align:center">
               <table role="presentation" cellpadding="0" cellspacing="0" align="center">
                 <tr>
-                  <td style="font-size:13px;font-weight:600;color:#0ea5e9">MediHome</td>
+                  <td style="font-size:13px;font-weight:600;color:#0EA5E9">MediHomeRD</td>
                 </tr>
                 <tr>
-                  <td style="font-size:11px;color:#94a3b8;padding-top:2px">Sistema de Gesti&oacute;n M&eacute;dica</td>
+                  <td style="font-size:11px;color:#94a3b8;padding-top:2px">Plataforma de Salud Digital</td>
                 </tr>
                 <tr>
                   <td style="font-size:11px;color:#cbd5e1;padding-top:10px;line-height:1.5">
-                    Este correo fue generado autom&aacute;ticamente por MediHome.<br>
-                    &copy; ${year} MediHome. Todos los derechos reservados.
+                    Este correo fue generado autom&aacute;ticamente por MediHomeRD.<br>
+                    &copy; ${year} MediHomeRD. Todos los derechos reservados.
                   </td>
                 </tr>
               </table>
@@ -218,7 +231,7 @@ function buildText(data) {
 
   return [
     '========================================',
-    '  MEDIHOME - Nueva cita agendada',
+    '  MEDI HOME RD - Nueva cita agendada',
     '========================================',
     '',
     `C\u00f3digo: ${p(codigo)}`,
@@ -245,7 +258,7 @@ function buildText(data) {
     '---',
     `Panel admin: ${p(adminUrl)}`,
     '',
-    'Este correo fue generado autom\u00e1ticamente por MediHome.',
+    'Este correo fue generado autom\u00e1ticamente por MediHomeRD.',
     '',
   ].join('\n');
 }

@@ -1,54 +1,56 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-let client = null;
+let transporter = null;
 
-function getClient() {
-  if (client) return client;
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('[mailer] RESEND_API_KEY no configurada. Correos no disponibles.');
+function getTransporter() {
+  if (transporter) return transporter;
+  if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER) {
+    console.warn('[mailer] EMAIL_HOST o EMAIL_USER no configurados. Correos no disponibles.');
     return null;
   }
-  client = new Resend(process.env.RESEND_API_KEY);
-  return client;
+  transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT) || 587,
+    secure: process.env.EMAIL_SECURE === 'true',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_APP_PASSWORD || process.env.EMAIL_PASS,
+    },
+  });
+  return transporter;
 }
 
 async function sendEmail({ to, subject, html, text, cc }) {
-  const r = getClient();
-  if (!r) {
-    return { sent: false, reason: 'RESEND_API_KEY no configurada' };
+  const t = getTransporter();
+  if (!t) {
+    return { sent: false, reason: 'Correo no configurado' };
   }
 
   if (!to) {
     return { sent: false, reason: 'Destinatario no especificado' };
   }
 
-  const from = process.env.EMAIL_FROM;
+  const from = process.env.EMAIL_FROM || process.env.EMAIL_USER;
   if (!from) {
     return { sent: false, reason: 'EMAIL_FROM no configurado' };
   }
 
-  const payload = {
-    from,
-    to: Array.isArray(to) ? to : [to],
-    subject,
-    html,
-    text,
-  };
-
-  if (cc && cc.length > 0) {
-    payload.cc = Array.isArray(cc) ? cc : [cc];
-  }
+  console.log("Intentando enviar correo al destinatario:", to);
 
   try {
-    const { data, error } = await r.emails.send(payload);
-    if (error) {
-      console.error(`[mailer] Error Resend: ${error.name || ''} ${error.message || ''}`);
-      return { sent: false, reason: error.message || 'Error desconocido de Resend', code: error.name || 'RESEND_ERROR' };
-    }
-    return { sent: true, messageId: data?.id };
+    const info = await t.sendMail({
+      from: `"MediHomeRD" <${from}>`,
+      to: Array.isArray(to) ? to : [to],
+      subject,
+      html,
+      text,
+      cc: cc ? (Array.isArray(cc) ? cc : [cc]) : undefined,
+    });
+    console.log("Correo enviado correctamente - ID:", info.messageId);
+    return { sent: true, messageId: info.messageId };
   } catch (err) {
-    console.error(`[mailer] Error inesperado: ${err.message}`);
-    return { sent: false, reason: err.message, code: err.code || 'UNEXPECTED' };
+    console.error("Error enviando correo:", err.message);
+    return { sent: false, reason: err.message };
   }
 }
 

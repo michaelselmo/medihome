@@ -1,0 +1,18 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="50%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path d="M50,88 C18,62 0,44 0,26 C0,10 14,0 28,0 C38,0 46,8 50,16 C54,8 62,0 72,0 C86,0 100,10 100,26 C100,44 82,62 50,88Z" fill="url(#logoGrad)" opacity="0.12"/>
+  <path d="M50,85 C22,63 5,47 5,30 C5,16 18,5 32,5 C42,5 49,12 50,18 C51,12 58,5 68,5 C82,5 95,16 95,30 C95,47 78,63 50,85Z" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" filter="url(#glow)"/>
+  <path d="M4,32 C4,18 15,8 28,8 C38,8 46,15 50,22 C54,15 62,8 72,8 C85,8 96,18 96,32" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.3"/>
+  <polyline points="10,38 18,38 22,32 26,38 30,38 34,48 38,22 42,52 46,38 52,38 56,32 60,38 64,38 68,48 72,22 76,52 80,38 86,38 90,32 94,38" fill="none" stroke="#0EA5E9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.8" transform="translate(-6,6)"/>
+  <path d="M38,30 L44,30 L44,22 L56,22 L56,30 L62,30 L62,42 L56,42 L56,50 L44,50 L44,42 L38,42Z" fill="#0EA5E9" opacity="0.9" filter="url(#glow)"/>
+</svg>
