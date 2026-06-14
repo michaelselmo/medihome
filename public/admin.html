@@ -999,6 +999,10 @@
         background: var(--danger-bg);
         color: #dc2626;
       }
+      .badge-reagendada {
+        background: #FEF3C7;
+        color: #D97706;
+      }
       .action-group {
         display: flex;
         gap: 4px;
@@ -3336,53 +3340,77 @@
 
       /* ── Wizard Dashboard ── */
       .dashboard-mode .modal {
-        max-width: 1500px;
+        max-width: 1400px;
         width: 92vw;
         height: 90vh;
-        border-radius: 16px;
-        padding: 24px;
+        border-radius: 20px;
+        padding: 28px 32px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        animation: modalIn 0.25s ease;
+        animation: modalIn 0.2s ease;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.12);
       }
       .wiz-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 0 16px;
-        border-bottom: 1px solid #e5e7eb;
+        padding: 0 0 20px;
+        border-bottom: 1px solid #f1f5f9;
         flex-shrink: 0;
       }
       .wiz-header h3 {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #1e293b;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #0f172a;
         display: flex;
         align-items: center;
         gap: 8px;
         margin: 0;
+        letter-spacing: -0.01em;
       }
       .wiz-header h3 i {
         color: #2563eb;
+        font-size: 1rem;
       }
+      .wiz-header .modal-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: none;
+        background: #f1f5f9;
+        color: #64748b;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+      .wiz-header .modal-close:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+
+      /* ── Progress bar ── */
       .wiz-progress {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: 20px 0;
+        margin: 20px 0 16px;
         padding: 0;
         position: relative;
         flex-shrink: 0;
+        max-width: 640px;
       }
       .wiz-progress::before {
         content: "";
         position: absolute;
-        top: 15px;
+        top: 11px;
         left: 0;
         right: 0;
         height: 2px;
-        background: #cbd5e1;
+        background: #e2e8f0;
         z-index: 0;
       }
       .wiz-step {
@@ -3396,13 +3424,13 @@
         flex: 1;
       }
       .wiz-step-circle {
-        width: 30px;
-        height: 30px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         font-weight: 700;
         border: 2px solid #cbd5e1;
         background: white;
@@ -3413,34 +3441,41 @@
         background: #2563eb;
         border-color: #2563eb;
         color: white;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
       }
       .wiz-step.completed .wiz-step-circle {
         background: #10b981;
         border-color: #10b981;
         color: white;
-        font-size: 0.6rem;
+        font-size: 0.55rem;
       }
       .wiz-step-label {
         font-size: 0.6rem;
-        font-weight: 600;
+        font-weight: 500;
         color: #94a3b8;
         white-space: nowrap;
         text-align: center;
       }
       .wiz-step.active .wiz-step-label {
         color: #2563eb;
+        font-weight: 600;
       }
       .wiz-step.completed .wiz-step-label {
         color: #10b981;
       }
+      .wiz-step-number {
+        display: none;
+      }
+
+      /* ── Dashboard 3-column grid ── */
       .wiz-dashboard {
         display: grid;
-        grid-template-columns: 280px 1fr 300px;
-        gap: 20px;
+        grid-template-columns: 280px 1fr 280px;
+        gap: 24px;
         flex: 1;
         overflow: hidden;
         min-height: 0;
+        padding-top: 4px;
       }
       .wiz-col {
         min-width: 0;
@@ -3451,31 +3486,38 @@
         width: 4px;
       }
       .wiz-col::-webkit-scrollbar-thumb {
-        background: #e5e7eb;
+        background: #e2e8f0;
         border-radius: 4px;
       }
+
+      /* ── Premium card base ── */
       .wiz-card {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 12px;
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
       }
       .wiz-card h5 {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         font-weight: 700;
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin: 0 0 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #e5e7eb;
+        margin: 0 0 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .wiz-card h5 i {
+        color: #94a3b8;
+        font-size: 0.7rem;
       }
       .wiz-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 5px 0;
+        padding: 6px 0;
         font-size: 0.8rem;
         gap: 8px;
       }
@@ -3490,6 +3532,7 @@
       .wiz-row .l i {
         width: 14px;
         text-align: center;
+        color: #94a3b8;
       }
       .wiz-row .v {
         font-weight: 500;
@@ -3512,7 +3555,7 @@
       }
       .wiz-divider {
         border: none;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #f1f5f9;
         margin: 8px 0;
       }
       .wiz-badge {
@@ -3531,65 +3574,46 @@
         color: #c2410c;
       }
       .wiz-badge.green {
-        background: #ecfdf5;
-        color: #065f46;
+        background: #dcfce7;
+        color: #15803d;
       }
       .wiz-badge.blue {
         background: #eff6ff;
         color: #1d4ed8;
       }
-      .wiz-price-card {
-        background: linear-gradient(135deg, #eff6ff, #dbeafe);
-        border: 1px solid #bfdbfe;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        margin-bottom: 12px;
-      }
-      .wiz-price-card .label {
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 4px;
-      }
-      .wiz-price-card .amount {
-        font-size: 1.6rem;
-        font-weight: 700;
-        color: #2563eb;
-        margin: 4px 0;
-      }
-      .wiz-price-card .sub {
-        font-size: 0.72rem;
-        color: #64748b;
-      }
+
+      /* ── Economic summary (right column) ── */
       .wiz-econ-card {
         background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 12px;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
       }
       .wiz-econ-card h5 {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         font-weight: 700;
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin: 0 0 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #e5e7eb;
+        margin: 0 0 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .wiz-econ-card h5 i {
+        color: #94a3b8;
+        font-size: 0.7rem;
       }
       .wiz-econ-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 5px 0;
-        font-size: 0.82rem;
+        font-size: 0.78rem;
       }
       .wiz-econ-row .l {
-        color: #64748b;
+        color: #94a3b8;
       }
       .wiz-econ-row .v {
         font-weight: 600;
@@ -3604,21 +3628,52 @@
       .wiz-econ-total {
         margin-top: 8px;
         padding-top: 12px;
-        border-top: 2px solid #2563eb;
+        border-top: 1.5px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       .wiz-econ-total .l {
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 600;
         color: #64748b;
       }
       .wiz-econ-total .v {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         font-weight: 700;
         color: #2563eb;
       }
+
+      /* ── Price card ── */
+      .wiz-price-card {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .wiz-price-card .label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .wiz-price-card .amount {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2563eb;
+        margin: 4px 0;
+      }
+      .wiz-price-card .sub {
+        font-size: 0.72rem;
+        color: #94a3b8;
+      }
+
+      /* ── Status card ── */
       .wiz-status-card {
         background: #fef3c7;
-        border: 1px solid #fde68a;
         border-radius: 12px;
         padding: 14px;
         display: flex;
@@ -3645,75 +3700,16 @@
         color: #b45309;
         line-height: 1.4;
       }
-      .wiz-flow-section {
-        margin-top: 16px;
-        padding-top: 16px;
-        border-top: 1px solid #e5e7eb;
-        flex-shrink: 0;
-      }
-      .wiz-flow-title {
-        text-align: center;
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 16px;
-      }
-      .wiz-flow-cards {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        gap: 0;
-      }
-      .wiz-fc {
-        flex: 1;
-        max-width: 180px;
-        text-align: center;
-        padding: 10px 8px;
-      }
-      .wiz-fc-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: #eff6ff;
-        color: #2563eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 6px;
-        font-size: 0.8rem;
-      }
-      .wiz-fc.active .wiz-fc-icon {
-        background: #2563eb;
-        color: white;
-      }
-      .wiz-fc.completed .wiz-fc-icon {
-        background: #10b981;
-        color: white;
-      }
-      .wiz-fc-title {
-        font-size: 0.68rem;
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 2px;
-      }
-      .wiz-fc-desc {
-        font-size: 0.58rem;
-        color: #94a3b8;
-        line-height: 1.3;
-      }
-      .wiz-fc-arrow {
-        color: #cbd5e1;
-        font-size: 0.6rem;
-        display: flex;
-        align-items: center;
-      }
+
+      /* ── Progress bar (thin) ── */
       .wiz-progress-bar-wrap {
-        background: #e5e7eb;
+        background: #f1f5f9;
         border-radius: 99px;
-        height: 6px;
-        margin: -10px 0 16px;
+        height: 4px;
+        margin: 0 0 20px;
         overflow: hidden;
         flex-shrink: 0;
+        max-width: 640px;
       }
       .wiz-progress-bar-fill {
         height: 100%;
@@ -3721,33 +3717,652 @@
         background: linear-gradient(90deg, #2563eb, #3b82f6);
         transition: width 0.4s ease;
       }
+
+      /* ── Info note ── */
       .wiz-note {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
-        padding: 12px 16px;
-        background: #eff6ff;
-        border: 1px solid #bfdbfe;
+        gap: 8px;
+        padding: 12px 14px;
+        background: #f0f5ff;
         border-radius: 10px;
-        margin: 12px 0 0;
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         color: #1e40af;
+        line-height: 1.5;
         flex-shrink: 0;
       }
       .wiz-note i {
-        color: #2563eb;
-        font-size: 0.85rem;
-        margin-top: 1px;
+        color: #3b82f6;
+        font-size: 0.8rem;
         flex-shrink: 0;
+        margin-top: 1px;
       }
       .wiz-note span {
         line-height: 1.5;
       }
+
+      /* ── Left column: Patient summary card ── */
+      .wiz-card-summary {
+        background: white;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      }
+      .wiz-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0 auto 12px;
+        flex-shrink: 0;
+        letter-spacing: 0.5px;
+      }
+      .wiz-patient-name {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 2px;
+      }
+      .wiz-patient-contact {
+        text-align: center;
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+      .wiz-patient-contact i {
+        width: 12px;
+        text-align: center;
+        color: #94a3b8;
+      }
+      .wiz-summary-divider {
+        border: none;
+        border-top: 1px solid #f1f5f9;
+        margin: 14px 0;
+      }
+      .wiz-summary-block {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 0;
+      }
+      .wiz-summary-block-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 0.7rem;
+      }
+      .wiz-summary-block-icon.service { background: #eff6ff; color: #2563eb; }
+      .wiz-summary-block-icon.date { background: #fef3c7; color: #d97706; }
+      .wiz-summary-block-icon.ars { background: #f0fdf4; color: #10b981; }
+      .wiz-summary-block-icon.status { background: #f5f3ff; color: #7c3aed; }
+      .wiz-summary-block-icon.invoice { background: #fef2f2; color: #ef4444; }
+      .wiz-summary-block-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .wiz-summary-block-label {
+        font-size: 0.6rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 1px;
+      }
+      .wiz-summary-block-value {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #0f172a;
+      }
+      .wiz-summary-block-sub {
+        font-size: 0.7rem;
+        color: #94a3b8;
+      }
+
+      /* ── Reagendar button ── */
+      .wiz-btn-reagendar {
+        width: 100%;
+        height: 40px;
+        border-radius: 10px;
+        background: #f59e0b;
+        color: white;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-family: Inter, sans-serif;
+        transition: all 0.15s;
+        margin-top: 4px;
+      }
+      .wiz-btn-reagendar:hover {
+        background: #d97706;
+      }
+
+      /* ── Alert banners ── */
+      .wiz-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .wiz-alert i {
+        font-size: 1rem;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .wiz-alert-success {
+        background: #f0fdf4;
+      }
+      .wiz-alert-success i {
+        color: #10b981;
+      }
+      .wiz-alert-title {
+        font-weight: 600;
+        color: #065f46;
+        font-size: 0.8rem;
+      }
+      .wiz-alert-desc {
+        font-size: 0.72rem;
+        color: #047857;
+        line-height: 1.5;
+      }
+
+      /* ── Two-column info card (patient + service) ── */
+      .wiz-info-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        margin-bottom: 20px;
+        background: #fafbfc;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .wiz-info-col {
+        padding: 18px;
+      }
+      .wiz-info-col + .wiz-info-col {
+        border-left: 1px solid #edf2f7;
+      }
+      .wiz-info-label {
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 10px;
+      }
+      .wiz-info-field {
+        margin-bottom: 8px;
+      }
+      .wiz-info-field:last-child {
+        margin-bottom: 0;
+      }
+      .wiz-info-field-label {
+        font-size: 0.62rem;
+        color: #94a3b8;
+        font-weight: 500;
+        margin-bottom: 1px;
+      }
+      .wiz-info-field-value {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      /* ── Doctor card (premium, green tint) ── */
+      .wiz-doctor-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+        background: #f0fdf4;
+        border-radius: 14px;
+        margin-bottom: 20px;
+      }
+      .wiz-doctor-unassigned {
+        background: #fff7ed;
+      }
+      .wiz-doctor-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba(16,185,129,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #10b981;
+        font-size: 0.95rem;
+      }
+      .wiz-doctor-unassigned .wiz-doctor-icon {
+        background: rgba(217,119,6,0.12);
+        color: #d97706;
+      }
+      .wiz-doctor-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .wiz-doctor-title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #15803d;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 2px;
+      }
+      .wiz-doctor-unassigned .wiz-doctor-title {
+        color: #b45309;
+      }
+      .wiz-doctor-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 1px;
+      }
+      .wiz-doctor-spec {
+        font-size: 0.72rem;
+        color: #15803d;
+        margin-bottom: 10px;
+      }
+      .wiz-doctor-unassigned .wiz-doctor-desc {
+        font-size: 0.7rem;
+        color: #b45309;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+      .wiz-doctor-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .wiz-doctor-actions .btn {
+        font-size: 0.7rem;
+        padding: 5px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: Inter, sans-serif;
+        font-weight: 600;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.15s;
+      }
+      .wiz-doctor-actions .btn-warning {
+        background: #f59e0b;
+        color: white;
+      }
+      .wiz-doctor-actions .btn-warning:hover {
+        background: #d97706;
+      }
+      .wiz-doctor-actions .btn-outline-primary {
+        background: transparent;
+        color: #2563eb;
+        border: 1.5px solid #2563eb;
+      }
+      .wiz-doctor-actions .btn-outline-primary:hover {
+        background: #eff6ff;
+      }
+
+      /* ── Action bar (confirm/cancel) ── */
+      .wiz-action-bar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .wiz-action-bar .btn {
+        font-size: 0.8rem;
+        padding: 8px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: Inter, sans-serif;
+        font-weight: 600;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+      }
+      .wiz-action-bar .btn-success {
+        background: #10b981;
+        color: white;
+      }
+      .wiz-action-bar .btn-success:hover {
+        background: #059669;
+      }
+      .wiz-action-bar .btn-outline-danger {
+        background: transparent;
+        color: #dc2626;
+        border: 1.5px solid #dc2626;
+      }
+      .wiz-action-bar .btn-outline-danger:hover {
+        background: #fef2f2;
+      }
+
+      /* ── Last change card ── */
+      .wiz-card-change {
+        background: white;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      }
+      .wiz-card-change h5 {
+        margin: 0 0 12px;
+      }
+      .wiz-card-change h5 i {
+        color: #d97706;
+      }
+      .wiz-change-empty {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: #94a3b8;
+        padding: 4px 0;
+      }
+      .wiz-change-empty i {
+        color: #cbd5e1;
+        font-size: 0.9rem;
+      }
+
+      /* ── Coverage status inline ── */
+      .wiz-coverage-inline {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #64748b;
+        padding: 4px 0 8px;
+      }
+      .wiz-coverage-inline i {
+        font-size: 0.75rem;
+      }
+
+      /* ── Calendar picker (reagendar) ── */
+      .reag-calendar {
+        margin-bottom: 16px;
+        user-select: none;
+      }
+      .reag-cal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .reag-cal-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #1E293B;
+      }
+      .reag-cal-nav {
+        display: flex;
+        gap: 4px;
+      }
+      .reag-cal-nav button {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #E5E7EB;
+        background: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+        font-size: 0.8rem;
+        transition: all 0.15s;
+      }
+      .reag-cal-nav button:hover {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+      }
+      .reag-cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+      }
+      .reag-cal-dow {
+        text-align: center;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #94A3B8;
+        padding: 6px 0;
+        text-transform: uppercase;
+      }
+      .reag-cal-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 0.78rem;
+        font-weight: 500;
+        transition: all 0.15s;
+        cursor: default;
+        color: #CBD5E1;
+        background: transparent;
+        width: 100%;
+        max-width: 40px;
+        margin: 0 auto;
+      }
+      .reag-cal-day.available {
+        color: white;
+        background: #3B82F6;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .reag-cal-day.available:hover {
+        background: #2563EB;
+        transform: scale(1.08);
+      }
+      .reag-cal-day.selected {
+        background: #1D4ED8;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        transform: scale(1.08);
+      }
+      .reag-cal-day.unavailable {
+        color: #CBD5E1;
+      }
+      .reag-cal-day.past {
+        color: #E5E7EB;
+      }
+      .reag-cal-day.today {
+        outline: 2px solid #3B82F6;
+        outline-offset: 2px;
+      }
+      .reag-cal-day.empty {
+        visibility: hidden;
+      }
+      .reag-slots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+      .reag-slot {
+        padding: 8px 6px;
+        text-align: center;
+        border: 1.5px solid #E5E7EB;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        color: #1E293B;
+        background: white;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .reag-slot:hover {
+        border-color: #3B82F6;
+        background: #EFF6FF;
+      }
+      .reag-slot.selected {
+        border-color: #2563EB;
+        background: #2563EB;
+        color: white;
+        font-weight: 600;
+      }
+      .reag-slot.ocupado {
+        border-color: #FCA5A5;
+        background: #FEF2F2;
+        color: #CBD5E1;
+        cursor: not-allowed;
+        text-decoration: line-through;
+      }
+      .reag-slot.ocupado:hover {
+        border-color: #FCA5A5;
+        background: #FEF2F2;
+      }
+      .reag-slot.ocupado::after {
+        content: " (Ocupado)";
+        font-size: 0.55rem;
+        display: block;
+        color: #EF4444;
+        font-weight: 400;
+      }
+
+      .reag-doctor-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .reag-doctor-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1.5px solid #E5E7EB;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-size: 0.85rem;
+        color: #1E293B;
+        background: white;
+      }
+      .reag-doctor-option:hover {
+        border-color: #93C5FD;
+        background: #EFF6FF;
+      }
+      .reag-doctor-option.selected {
+        border-color: #2563EB;
+        background: #EFF6FF;
+        font-weight: 600;
+      }
+      .reag-doctor-option input[type="radio"] {
+        accent-color: #2563EB;
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        flex-shrink: 0;
+      }
+      .reag-doctor-option .doc-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .reag-doctor-option .doc-name {
+        font-weight: 600;
+        color: #1E293B;
+      }
+      .reag-doctor-option .doc-spec {
+        font-size: 0.72rem;
+        color: #64748B;
+      }
+      .reag-auto-assign {
+        background: #ECFDF5;
+        border: 1px solid #A7F3D0;
+        border-radius: 10px;
+        padding: 14px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .reag-auto-assign i {
+        color: #10B981;
+        font-size: 1.2rem;
+      }
+      .reag-auto-assign .aa-text {
+        font-size: 0.82rem;
+        color: #065F46;
+      }
+      .reag-auto-assign .aa-text strong {
+        display: block;
+        font-size: 0.9rem;
+        color: #047857;
+      }
+
       .wiz-footer-cerrar {
         display: flex;
         justify-content: flex-end;
         padding: 12px 0 0;
         flex-shrink: 0;
+      }
+
+      /* ── Navigation buttons (inside stepContent) ── */
+      .wiz-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0 0;
+        margin-top: auto;
+        flex-shrink: 0;
+        border-top: 1px solid #f1f5f9;
+      }
+      .btn-nav {
+        font-size: 0.78rem;
+        padding: 9px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: Inter, sans-serif;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+        border: none;
+      }
+      .btn-nav-back {
+        background: #f1f5f9;
+        color: #475569;
+      }
+      .btn-nav-back:hover {
+        background: #e2e8f0;
+      }
+      .btn-nav-next {
+        background: #2563eb;
+        color: white;
+      }
+      .btn-nav-next:hover {
+        background: #1d4ed8;
+      }
+      .btn-nav-next:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      #stepContent {
+        display: flex;
+        flex-direction: column;
       }
       .no-print { display: block; }
       /* ── Expediente sub-modal ── */
@@ -5966,6 +6581,7 @@
             f = results[1];
             if (!c || c.error)
               throw new Error(c ? c.error : "Respuesta invalida");
+            window._currentCita = c;
 
             // Determine starting step based on current state
             if (c.estado === "cancelada") {
@@ -6008,51 +6624,13 @@
             en_proceso: "En Proceso",
             completada: "Completada",
             cancelada: "Cancelada",
+            reagendada: "Reagendada",
           };
           var modos = {
             domicilio: "A domicilio",
             telemedicina: "Telemedicina",
+            presencial: "Presencial",
           };
-          function flowCardsHtml(activeStep) {
-            var icons = [
-              "fa-calendar-check",
-              "fa-shield-alt",
-              "fa-money-bill-wave",
-              "fa-file-invoice",
-              "fa-check-double",
-            ];
-            var descs = [
-              "Confirme la cita y datos del paciente",
-              "Valide la cobertura del seguro",
-              "Registre el pago correspondiente",
-              "Genere y envie la factura",
-              "Proceso finalizado",
-            ];
-            var h =
-              '<div class="wiz-flow-section"><div class="wiz-flow-title">Asi es el flujo completo</div><div class="wiz-flow-cards">';
-            for (var fi = 0; fi < stepLabels.length; fi++) {
-              var fn = fi + 1;
-              var fc = "wiz-fc";
-              if (fn === activeStep) fc += " active";
-              else if (fn < activeStep) fc += " completed";
-              h +=
-                '<div class="' +
-                fc +
-                '"><div class="wiz-fc-icon"><i class="fas ' +
-                icons[fi] +
-                '"></i></div><div class="wiz-fc-title">' +
-                stepLabels[fi] +
-                '</div><div class="wiz-fc-desc">' +
-                descs[fi] +
-                "</div></div>";
-              if (fi < stepLabels.length - 1)
-                h +=
-                  '<span class="wiz-fc-arrow"><i class="fas fa-chevron-right"></i></span>';
-            }
-            h += "</div></div>";
-            return h;
-          }
-
           // Canceled cita — simplified view
           if (step === 0) {
             document.getElementById("modalContent").innerHTML = [
@@ -6075,93 +6653,101 @@
             return;
           }
 
-          var left = "";
-          left +=
-            '<div class="wiz-card"><h5><i class="fas fa-info-circle"></i> Resumen de la cita</h5>';
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-user"></i> Paciente</span><span class="v">' +
-            p(c.nombre_paciente) +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-phone" style="color:#10B981"></i> ' +
-            p(c.telefono) +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-concierge-bell"></i> Servicio</span><span class="v">' +
-            p(c.servicio_nombre, "No especificado") +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-calendar"></i> Fecha</span><span class="v">' +
-            p(c.fecha) +
-            " " +
-            p(c.hora) +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-globe-americas"></i> Modalidad</span><span class="v">' +
-            (modos[c.modalidad] || p(c.modalidad)) +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-user-md"></i> Medico</span><span class="v">' +
-            p(c.medico_nombre, "Por asignar") +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-shield-alt"></i> ARS</span><span class="v">' +
-            (f && f.ars_nombre ? p(f.ars_nombre) : "Sin seguro") +
-            "</span></div>";
-          left +=
-            '<div class="wiz-row"><span class="l"><i class="fas fa-tag"></i> Estado</span><span class="v"><span class="wiz-badge yellow">' +
-            (estados[c.estado] || c.estado) +
-            "</span></span></div>";
-          left += "</div>";
-
-          if (f) {
-            left +=
-              '<div class="wiz-card"><h5><i class="fas fa-file-invoice"></i> Factura</h5>';
-            left +=
-              '<div class="wiz-row"><span class="l">Numero</span><span class="v pri">' +
-              (f.numero_factura || "—") +
-              "</span></div>";
-            left +=
-              '<div class="wiz-row"><span class="l">Estado</span><span class="v"><span class="wiz-badge orange">' +
-              ((f.estado || "pendiente").charAt(0).toUpperCase() +
-                (f.estado || "pendiente").slice(1)) +
-              "</span></span></div>";
-            left +=
-              '<div class="wiz-row"><span class="l">Fecha</span><span class="v">' +
-              (f.fecha_creacion
-                ? new Date(f.fecha_creacion + "Z").toLocaleDateString("es-ES")
-                : "—") +
-              "</span></div>";
-            left += "</div>";
-
-            var durMap = {
-              "Rayos X": 15,
-              Ecografia: 30,
-              Sonografia: 30,
-              Resonancia: 45,
-              Tomografia: 45,
-              Laboratorio: 20,
-              Consulta: 30,
-              Electrocardiograma: 20,
-            };
-            var durMin = 30;
-            for (var dk in durMap) {
-              if (c.servicio_nombre && c.servicio_nombre.indexOf(dk) !== -1) {
-                durMin = durMap[dk];
-                break;
-              }
+          var durMap = {
+            "Rayos X": 15,
+            Ecografia: 30,
+            Sonografia: 30,
+            Resonancia: 45,
+            Tomografia: 45,
+            Laboratorio: 20,
+            Consulta: 30,
+            Electrocardiograma: 20,
+          };
+          var durMin = 30;
+          for (var dk in durMap) {
+            if (c.servicio_nombre && c.servicio_nombre.indexOf(dk) !== -1) {
+              durMin = durMap[dk];
+              break;
             }
-            left +=
-              '<div class="wiz-price-card"><div class="label">Precio del servicio</div><div class="amount">RD$ ' +
-              Number(f.precio_base || 0).toLocaleString() +
-              '</div><div class="sub">' +
-              p(c.servicio_nombre) +
-              "</div>";
-            left +=
-              '<div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid #BFDBFE;font-size:.72rem;color:#64748B"><i class="far fa-clock" style="color:#2563EB;font-size:.75rem"></i> Duracion estimada: <strong style="color:#1E293B">' +
-              durMin +
-              " minutos</strong></div></div>";
           }
+
+          var arsNombre = f && f.ars_nombre ? p(f.ars_nombre) : "Sin seguro";
+          var facturaStr = f
+            ? (f.numero_factura || "—") +
+              " · " +
+              ((f.estado || "pendiente").charAt(0).toUpperCase() +
+                (f.estado || "pendiente").slice(1))
+            : "Sin factura";
+
+          var initials = (c.nombre_paciente || "?").split(" ").map(function(w){return w.charAt(0)}).join("").substring(0,2).toUpperCase();
+
+          var left = "";
+          left += '<div class="wiz-card-summary">';
+
+          // Avatar
+          left += '<div class="wiz-avatar">' + initials + "</div>";
+
+          // Patient centered info
+          left += '<div class="wiz-patient-name">' + p(c.nombre_paciente) + "</div>";
+          left += '<div class="wiz-patient-contact"><i class="fas fa-phone"></i> ' + p(c.telefono) + "</div>";
+          left += '<div class="wiz-patient-contact" style="margin-bottom:6px"><i class="fas fa-envelope"></i> ' + p(c.correo || "No especificado") + "</div>";
+
+          left += '<hr class="wiz-summary-divider">';
+
+          // Service block
+          left += '<div class="wiz-summary-block">';
+          left += '<div class="wiz-summary-block-icon service"><i class="fas fa-stethoscope"></i></div>';
+          left += '<div class="wiz-summary-block-body">';
+          left += '<div class="wiz-summary-block-label">Servicio</div>';
+          left += '<div class="wiz-summary-block-value">' + p(c.servicio_nombre, "No especificado") + "</div>";
+          left += '<div class="wiz-summary-block-sub">' + (modos[c.modalidad] || p(c.modalidad)) + " &middot; " + durMin + " min</div>";
+          left += '</div></div>';
+
+          // Date/Time block
+          left += '<div class="wiz-summary-block">';
+          left += '<div class="wiz-summary-block-icon date"><i class="fas fa-calendar"></i></div>';
+          left += '<div class="wiz-summary-block-body">';
+          left += '<div class="wiz-summary-block-label">Fecha y hora</div>';
+          left += '<div class="wiz-summary-block-value">' + p(c.fecha) + " &middot; " + p(c.hora) + "</div>";
+          left += '</div></div>';
+
+          // ARS block
+          left += '<div class="wiz-summary-block">';
+          left += '<div class="wiz-summary-block-icon ars"><i class="fas fa-shield-alt"></i></div>';
+          left += '<div class="wiz-summary-block-body">';
+          left += '<div class="wiz-summary-block-label">ARS</div>';
+          left += '<div class="wiz-summary-block-value">' + arsNombre + "</div>";
+          left += '</div></div>';
+
+          // Status block
+          left += '<div class="wiz-summary-block">';
+          left += '<div class="wiz-summary-block-icon status"><i class="fas fa-tag"></i></div>';
+          left += '<div class="wiz-summary-block-body">';
+          left += '<div class="wiz-summary-block-label">Estado</div>';
+          left += '<div><span class="wiz-badge ' +
+            (c.estado === "reagendada" ? "orange" : c.estado === "confirmada" ? "green" : c.estado === "cancelada" ? "" : "yellow") +
+            '">' +
+            (estados[c.estado] || c.estado) +
+            "</span></div>";
+          left += '</div></div>';
+
+          // Invoice block
+          if (f) {
+            left += '<hr class="wiz-summary-divider">';
+            left += '<div class="wiz-summary-block">';
+            left += '<div class="wiz-summary-block-icon invoice"><i class="fas fa-file-invoice"></i></div>';
+            left += '<div class="wiz-summary-block-body">';
+            left += '<div class="wiz-summary-block-label">Factura</div>';
+            left += '<div class="wiz-summary-block-value" style="font-size:0.78rem">' + facturaStr + "</div>";
+            left += '</div></div>';
+          }
+
+          // Reagendar button
+          if (c.estado !== "completada" && c.estado !== "cancelada") {
+            left += '<button class="wiz-btn-reagendar" onclick="abrirReagendar(' + c.id + ');return false"><i class="fas fa-calendar-alt"></i> Reagendar cita</button>';
+          }
+
+          left += "</div>";
 
           var right = "";
           if (f) {
@@ -6183,233 +6769,86 @@
                 ? f.monto_pagar || 0
                 : f.precio_base || 0;
 
-            // Economic summary
-            right +=
-              '<div class="wiz-econ-card"><h5><i class="fas fa-chart-pie"></i> Resumen economico</h5>';
-            right +=
-              '<div class="wiz-econ-row"><span class="l">ARS</span><span class="v">' +
-              esc(arsName) +
-              "</span></div>";
-            right +=
-              '<div class="wiz-econ-row"><span class="l">Precio servicio</span><span class="v">RD$ ' +
-              Number(f.precio_base || 0).toLocaleString() +
-              "</span></div>";
+            right += '<div class="wiz-econ-card"><h5><i class="fas fa-chart-pie"></i> Resumen economico</h5>';
+            right += '<div class="wiz-econ-row"><span class="l">Precio servicio</span><span class="v">RD$ ' + Number(f.precio_base || 0).toLocaleString() + "</span></div>";
+            var covLabel = "Cobertura";
+            var covValue = "";
+            var covColor = "";
             if (f.cobertura_estado === "autorizada") {
-              right +=
-                '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v green">' +
-                coberturaPct +
-                "%</span></div>";
+              covLabel = "Cobertura (" + coberturaPct + "%)";
+              covValue = "RD$ " + Number(montoCubierto).toLocaleString();
+              covColor = "green";
+              right += '<div class="wiz-econ-row"><span class="l">' + covLabel + '</span><span class="v ' + covColor + '">' + covValue + "</span></div>";
             } else if (f.cobertura_estado === "rechazada" || isNoSeguro) {
-              right +=
-                '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:#EF4444">0%</span></div>';
+              right += '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:#EF4444">0%</span></div>';
             } else {
-              right +=
-                '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:var(--text-muted)">Pendiente</span></div>';
+              right += '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:#94a3b8">Pendiente</span></div>';
             }
-            right +=
-              '<div class="wiz-econ-row"><span class="l">Copago</span><span class="v blue">RD$ ' +
-              Number(copago).toLocaleString() +
-              "</span></div>";
-            right +=
-              '<div class="wiz-econ-total"><span class="l">Total a pagar</span><span class="v">RD$ ' +
-              Number(copago).toLocaleString() +
-              "</span></div>";
+            right += '<div class="wiz-econ-row"><span class="l">Copago</span><span class="v blue">RD$ ' + Number(copago).toLocaleString() + "</span></div>";
+            right += '<div class="wiz-econ-total"><span class="l">Total a pagar</span><span class="v">RD$ ' + Number(copago).toLocaleString() + "</span></div>";
             right += "</div>";
-
-            var statusBg =
-              f.cobertura_estado === "autorizada" ? "#ECFDF5" : "#FEF3C7";
-            var statusBd =
-              f.cobertura_estado === "autorizada" ? "#A7F3D0" : "#FDE68A";
-            var statusIcon =
-              f.cobertura_estado === "autorizada"
-                ? "fa-check-circle"
-                : "fa-shield-alt";
-            var statusIconColor =
-              f.cobertura_estado === "autorizada" ? "#10B981" : "#D97706";
-            var statusTitle =
-              f.cobertura_estado === "autorizada"
-                ? "Cobertura aplicada"
-                : "Sin cobertura aplicada";
-            var statusTitleColor =
-              f.cobertura_estado === "autorizada" ? "#065F46" : "#92400E";
-            var statusDesc =
-              f.cobertura_estado === "autorizada"
-                ? "La ARS cubre RD$ " +
-                  Number(montoCubierto).toLocaleString() +
-                  " del servicio (" +
-                  coberturaPct +
-                  "%)."
-                : isNoSeguro
-                  ? "El paciente no tiene seguro medico."
-                  : "La cobertura esta pendiente de validacion.";
-            right +=
-              '<div class="wiz-status-card" style="background:' +
-              statusBg +
-              ";border-color:" +
-              statusBd +
-              '"><i class="fas ' +
-              statusIcon +
-              '" style="color:' +
-              statusIconColor +
-              '"></i><div class="content"><div class="title" style="color:' +
-              statusTitleColor +
-              '">' +
-              statusTitle +
-              '</div><div class="desc">' +
-              statusDesc +
-              "</div></div></div>";
-
-            // Process history — only in final step
-            if (step === 5) {
-              right +=
-                '<div class="wiz-card"><h5><i class="fas fa-history"></i> Historial del proceso</h5>';
-              var hSteps = [
-                {
-                  key: "creada",
-                  label: "Cita creada",
-                  done: true,
-                  icon: "fa-plus-circle",
-                  iconDone: "fa-plus-circle",
-                  color: "#2563EB",
-                  date: c.fecha_creacion,
-                },
-                {
-                  key: "confirmada",
-                  label: "Cita confirmada",
-                  done: c.estado !== "pendiente",
-                  icon: "fa-circle",
-                  iconDone: "fa-check-circle",
-                  color: "#94A3B8",
-                  colorDone: "#10B981",
-                  date:
-                    c._fecha_confirmacion ||
-                    (c.estado !== "pendiente"
-                      ? c.fecha_actualizacion || c.fecha_creacion
-                      : null),
-                  user: c._confirmado_por,
-                },
-                {
-                  key: "cobertura",
-                  label: "Cobertura validada",
-                  done:
-                    f.cobertura_estado === "autorizada" ||
-                    f.cobertura_estado === "rechazada",
-                  icon: "fa-circle",
-                  iconDone:
-                    f.cobertura_estado === "rechazada"
-                      ? "fa-times-circle"
-                      : "fa-check-circle",
-                  color: "#94A3B8",
-                  colorDone:
-                    f.cobertura_estado === "rechazada" ? "#EF4444" : "#10B981",
-                  date:
-                    f._fecha_validacion ||
-                    (f.cobertura_estado === "autorizada"
-                      ? f.fecha_actualizacion || f.fecha_creacion
-                      : null),
-                  user: f._validado_por,
-                },
-                {
-                  key: "pago",
-                  label: "Pago registrado",
-                  done: f.estado === "pagada",
-                  icon: "fa-circle",
-                  iconDone: "fa-check-circle",
-                  color: "#94A3B8",
-                  colorDone: "#10B981",
-                  date:
-                    f._fecha_pago_local ||
-                    (f.estado === "pagada"
-                      ? f.fecha_pago || f.fecha_actualizacion
-                      : null),
-                  user: f._pagado_por,
-                },
-                {
-                  key: "factura",
-                  label: "Factura generada",
-                  done: true,
-                  icon: "fa-circle",
-                  iconDone: "fa-check-circle",
-                  color: "#94A3B8",
-                  colorDone: "#10B981",
-                  date: f.fecha_creacion || null,
-                },
-                {
-                  key: "finalizado",
-                  label: "Proceso finalizado",
-                  done: c.estado === "completada",
-                  icon: "fa-circle",
-                  iconDone: "fa-flag-checkered",
-                  color: "#94A3B8",
-                  colorDone: "#10B981",
-                  date:
-                    c.estado === "completada"
-                      ? c.fecha_actualizacion || c.fecha_creacion
-                      : null,
-                },
-              ];
-              for (var hi = 0; hi < hSteps.length; hi++) {
-                var hs = hSteps[hi];
-                var hDone = hs.done;
-                var hIcon = hDone ? hs.iconDone || hs.icon : hs.icon;
-                var hColor = hDone ? hs.colorDone || hs.color : hs.color;
-                right +=
-                  '<div style="display:flex;align-items:flex-start;gap:8px;padding:4px 0">';
-                right +=
-                  '<div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">';
-                right +=
-                  '<i class="fas ' +
-                  hIcon +
-                  '" style="color:' +
-                  hColor +
-                  ';font-size:.72rem;width:16px;text-align:center;line-height:1.5"></i>';
-                if (hi < hSteps.length - 1) {
-                  right +=
-                    '<div style="border-left:1.5px solid #E5E7EB;flex:1;min-height:18px;margin:2px 0 0 7px"></div>';
-                }
-                right += '</div><div style="flex:1;min-width:0">';
-                right +=
-                  '<div style="display:flex;align-items:center;justify-content:space-between">';
-                right +=
-                  '<span style="font-size:.72rem;font-weight:' +
-                  (hDone ? "600" : "400") +
-                  ";color:" +
-                  (hDone ? "#1E293B" : "#94A3B8") +
-                  '">' +
-                  (hDone
-                    ? ""
-                    : '<span style="color:#CBD5E1;margin-right:2px">\u25CB</span> ') +
-                  hs.label +
-                  "</span>";
-                if (hDone && hs.date) {
-                  right +=
-                    '<span style="color:#94A3B8;font-size:.6rem;white-space:nowrap;margin-left:4px">' +
-                    new Date(hs.date + "Z").toLocaleDateString("es-ES", {
-                      day: "2-digit",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }) +
-                    "</span>";
-                } else if (!hDone) {
-                  right +=
-                    '<span style="color:#CBD5E1;font-size:.6rem;white-space:nowrap;margin-left:4px">Pendiente</span>';
-                }
-                right += "</div>";
-                if (hDone && hs.user) {
-                  right +=
-                    '<div style="font-size:.6rem;color:#94A3B8;margin-top:1px">Por: ' +
-                    esc(hs.user) +
-                    "</div>";
-                }
-                right += "</div></div>";
-              }
-              right += "</div>";
-            }
           }
 
+          // Last change card
+          right += '<div class="wiz-card-change">';
+          right += '<h5><i class="fas fa-clock"></i> Ultimo cambio</h5>';
+          var foundChange = false;
+          if (c.observaciones_lista && c.observaciones_lista.length > 0) {
+            var ultimoReagendamiento = null;
+            for (var oi = 0; oi < c.observaciones_lista.length; oi++) {
+              var obs = c.observaciones_lista[oi];
+              if (obs.tipo === "reagendamiento") {
+                try {
+                  var detalle = JSON.parse(obs.contenido);
+                  if (!ultimoReagendamiento || new Date(detalle.fecha_cambio) > new Date(ultimoReagendamiento.fecha_cambio)) {
+                    ultimoReagendamiento = detalle;
+                  }
+                } catch (e) {}
+              }
+            }
+            if (ultimoReagendamiento) {
+              foundChange = true;
+              right += '<div class="wiz-summary-block" style="padding:0">';
+              right += '<div class="wiz-summary-block-icon date" style="width:24px;height:24px;font-size:0.6rem"><i class="fas fa-history"></i></div>';
+              right += '<div class="wiz-summary-block-body">';
+              right += '<div class="wiz-summary-block-value" style="font-size:0.78rem">Cita reagendada</div>';
+              right += '<div class="wiz-summary-block-sub">' +
+                (ultimoReagendamiento.fecha_cambio
+                  ? new Date(ultimoReagendamiento.fecha_cambio).toLocaleDateString("es-ES", {day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})
+                  : "—") +
+                "</div>";
+              right += '<div class="wiz-summary-block-sub">Por: ' + esc(ultimoReagendamiento.realizado_por || "Administrador") + "</div>";
+              right += "</div></div>";
+            }
+          }
+          if (!foundChange) {
+            right += '<div class="wiz-change-empty"><i class="fas fa-inbox"></i> Sin cambios registrados</div>';
+          }
+          right += "</div>";
+
+          // Info note
+          right += '<div class="wiz-note"><i class="fas fa-info-circle"></i><span>Al reagendar una cita se notificara automaticamente al paciente y al medico asignado.</span></div>';
+
           var stepContentHtml = renderStepContent();
-          var flowHtml = flowCardsHtml(step);
+
+          // Navigation buttons
+          var disableNext = false;
+          if (step === 1 && (c.estado === "pendiente" || !c.medico_nombre)) disableNext = true;
+          if (step === 2 && f && f.cobertura_estado === "pendiente_de_validacion" && f.ars_nombre && f.ars_nombre !== "No tengo seguro" && f.ars_nombre !== "No especificado") disableNext = true;
+          if (step === 3 && f && f.estado !== "pagada") disableNext = true;
+
+          var navHtml = '<div class="wiz-nav">';
+          if (step > 1) {
+            navHtml += '<button class="btn-nav btn-nav-back" data-action="anterior"><i class="fas fa-arrow-left"></i> Atras</button>';
+          } else {
+            navHtml += '<div></div>';
+          }
+          if (step < 5) {
+            navHtml += '<button class="btn-nav btn-nav-next" data-action="siguiente"' + (disableNext ? ' disabled' : '') + '><i class="fas fa-arrow-right"></i> Siguiente</button>';
+          } else {
+            navHtml += '<button class="btn-nav btn-nav-next" onclick="cerrarModal()"><i class="fas fa-check"></i> Finalizar</button>';
+          }
+          navHtml += "</div>";
 
           document.getElementById("modalContent").innerHTML = [
             '<div class="wiz-header"><h3><i class="fas fa-file-medical"></i> Gestion de Cita: ' +
@@ -6442,10 +6881,10 @@
               left +
               '</div><div class="wiz-col" id="stepContent">' +
               stepContentHtml +
+              navHtml +
               '</div><div class="wiz-col" id="wizRightCol">' +
               right +
               "</div></div>",
-            flowHtml,
             '<div class="wiz-footer-cerrar"><button class="btn btn-glass btn-sm" onclick="cerrarModal()">Cerrar</button></div>',
           ].join("");
 
@@ -6473,97 +6912,62 @@
 
         function renderPaso1() {
           var pb = f ? f.precio_base || 0 : 0;
+          var fechaNac = c.fecha_nacimiento || "";
+          var edad = c.edad || "";
+          var sexo = c.sexo || "";
+          var cedula = c.cedula || "";
           var html = "";
-          html +=
-            '<div style="font-size:.65rem;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Paso 1 de 5</div>';
-          html +=
-            '<h3 style="font-size:1.1rem;font-weight:700;color:#2563EB;margin:0 0 16px"><i class="fas fa-calendar-check"></i> Confirmacion de Cita</h3>';
 
-          html +=
-            '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;margin-bottom:16px">';
-          html +=
-            '<i class="fas fa-check-circle" style="color:#10B981;font-size:1rem;flex-shrink:0;margin-top:1px"></i>';
-          html +=
-            '<div><div style="font-weight:600;color:#065F46;font-size:.82rem">Verificacion de datos</div>';
-          html +=
-            '<div style="font-size:.75rem;color:#047857;line-height:1.5">Revise los datos del paciente y servicio antes de confirmar.</div></div></div>';
+          // Verification alert
+          html += '<div class="wiz-alert wiz-alert-success"><i class="fas fa-check-circle"></i><div><div class="wiz-alert-title">Verificacion completada</div><div class="wiz-alert-desc">Se validaron correctamente los datos del paciente y del servicio.</div></div></div>';
 
-          html +=
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;padding:14px;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:12px">';
-          html +=
-            '<div><div style="font-size:.65rem;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Informacion del paciente</div>';
-          html +=
-            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><i class="fas fa-user" style="color:#2563EB;width:14px;font-size:.7rem"></i><span style="font-weight:600;color:#1E293B;font-size:.8rem">' +
-            p(c.nombre_paciente) +
-            "</span></div>";
-          html +=
-            '<div style="padding-left:20px;font-size:.75rem;color:#64748B"><i class="fas fa-phone" style="color:#10B981;width:12px"></i> ' +
-            p(c.telefono) +
-            "</div>";
-          html +=
-            '<div style="padding-left:20px;font-size:.75rem;color:#64748B"><i class="fas fa-envelope" style="color:#64748B;width:12px"></i> ' +
-            p(c.correo || "No especificado") +
-            "</div>";
-          html +=
-            '<div style="padding-left:20px;font-size:.75rem;color:#64748B"><i class="fas fa-phone-alt" style="color:#64748B;width:12px"></i> ' +
-            p(c.telefono_adicional || "—") +
-            "</div></div>";
-          html +=
-            '<div><div style="font-size:.65rem;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Detalles del servicio</div>';
-          html +=
-            '<div style="font-size:.75rem;color:#64748B;margin-bottom:2px"><span style="font-weight:500;color:#1E293B">Direccion:</span> ' +
-            p(c.direccion, "No especificado") +
-            (c.ciudad ? ", " + p(c.ciudad) : "") +
-            "</div>";
-          html +=
-            '<div style="font-size:.75rem;color:#64748B;margin-bottom:2px"><span style="font-weight:500;color:#1E293B">Servicio:</span> ' +
-            p(c.servicio_nombre) +
-            "</div>";
-          html +=
-            '<div style="font-size:.75rem;color:#64748B"><span style="font-weight:500;color:#1E293B">Precio:</span> <span style="font-weight:700;color:#2563EB">RD$ ' +
-            Number(pb).toLocaleString() +
-            "</span></div></div></div>";
+          // Two-column info card
+          html += '<div class="wiz-info-card">';
+          html += '<div class="wiz-info-col">';
+          html += '<div class="wiz-info-label">Informacion del paciente</div>';
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Nombre completo</div><div class="wiz-info-field-value">' + p(c.nombre_paciente) + "</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Telefono</div><div class="wiz-info-field-value">' + p(c.telefono) + "</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Correo</div><div class="wiz-info-field-value">' + p(c.correo || "No especificado") + "</div></div>";
+          if (fechaNac) html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Fecha de nacimiento</div><div class="wiz-info-field-value">' + p(fechaNac) + "</div></div>";
+          if (edad) html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Edad</div><div class="wiz-info-field-value">' + p(edad) + "</div></div>";
+          if (sexo) html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Sexo</div><div class="wiz-info-field-value">' + p(sexo) + "</div></div>";
+          if (cedula) html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Cedula</div><div class="wiz-info-field-value">' + p(cedula) + "</div></div>";
+          html += "</div>";
+          html += '<div class="wiz-info-col">';
+          html += '<div class="wiz-info-label">Informacion del servicio</div>';
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Servicio</div><div class="wiz-info-field-value">' + p(c.servicio_nombre) + "</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Modalidad</div><div class="wiz-info-field-value">' + (modos[c.modalidad] || p(c.modalidad)) + "</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Duracion</div><div class="wiz-info-field-value">' + durMin + " minutos</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Sucursal</div><div class="wiz-info-field-value">' + p(c.direccion, "No especificado") + (c.ciudad ? ", " + p(c.ciudad) : "") + "</div></div>";
+          html += '<div class="wiz-info-field"><div class="wiz-info-field-label">Precio</div><div class="wiz-info-field-value">RD$ ' + Number(pb).toLocaleString() + "</div></div>";
+          html += "</div></div>";
 
+          // Doctor assignment card (premium)
+          var tieneMedico = !!c.medico_nombre;
+          html += '<div class="wiz-doctor-card' + (tieneMedico ? "" : " wiz-doctor-unassigned") + '">';
+          html += '<div class="wiz-doctor-icon"><i class="fas fa-user-md"></i></div>';
+          html += '<div class="wiz-doctor-body">';
+          if (tieneMedico) {
+            html += '<div class="wiz-doctor-title">Medico asignado</div>';
+            html += '<div class="wiz-doctor-name">' + p(c.medico_nombre) + "</div>";
+            html += '<div class="wiz-doctor-spec">' + p(c.especialidad || "Medico general") + "</div>";
+          } else {
+            html += '<div class="wiz-doctor-title" style="color:#B45309">Medico no asignado</div>';
+            html += '<div class="wiz-doctor-unassigned"><div class="wiz-doctor-desc">Debe asignar un medico antes de confirmar la cita.</div></div>';
+          }
+          html += '<div class="wiz-doctor-actions">';
+          html += '<button class="btn btn-warning" onclick="abrirAsignarMedico(' + c.id + ');return false"><i class="fas fa-user-md"></i> ' + (tieneMedico ? "Reasignar medico" : "Asignar medico") + "</button>";
+          html += '<button class="btn btn-outline-primary" onclick="abrirReagendar(' + c.id + ');return false"><i class="fas fa-calendar-alt"></i> Ver disponibilidad</button>';
+          html += "</div></div></div>";
+
+          // Confirm + Cancel buttons (only when pending)
           if (c.estado === "pendiente") {
-            if (!c.medico_nombre) {
-              html +=
-                '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:#FFF7ED;border:1px solid #FDE68A;border-radius:10px;margin-bottom:12px">';
-              html +=
-                '<i class="fas fa-user-md" style="color:#D97706;font-size:.9rem;flex-shrink:0;margin-top:1px"></i>';
-              html +=
-                '<div><div style="font-weight:600;color:#92400E;font-size:.8rem">Medico no asignado</div>';
-              html +=
-                '<div style="font-size:.72rem;color:#B45309;margin-bottom:6px">Debe asignar un medico antes de confirmar la cita.</div>';
-              html +=
-                '<button class="btn btn-sm btn-warning" style="font-size:.72rem;padding:4px 12px;border:none;cursor:pointer;border-radius:6px;background:#D97706;color:white;font-weight:600" onclick="abrirAsignarMedico(' +
-                c.id +
-                ');return false"><i class="fas fa-user-md"></i> Asignar medico</button></div></div>';
-            }
-            var confDisabled = !c.medico_nombre
-              ? ' disabled style="opacity:0.5;cursor:not-allowed"'
-              : "";
-            html += '<div style="display:flex;gap:8px;margin-bottom:12px">';
-            html +=
-              '<button class="btn btn-success" data-action="confirmar"' +
-              confDisabled +
-              '><i class="fas fa-check-circle"></i> Confirmar Cita</button>';
-            html +=
-              '<button class="btn btn-outline-danger" onclick="if(confirm(\'Cancelar esta cita?\')){cambiarEstado(' +
-              c.id +
-              ',\'cancelada\');cerrarModal();}"><i class="fas fa-times"></i> Cancelar</button>';
+            var confDisabled = !c.medico_nombre ? ' disabled style="opacity:0.5;cursor:not-allowed"' : "";
+            html += '<div class="wiz-action-bar">';
+            html += '<button class="btn btn-success" id="wizConfirmar" data-action="confirmar"' + confDisabled + '><i class="fas fa-check-circle"></i> Confirmar Cita</button>';
+            html += '<button class="btn btn-outline-danger" onclick="if(confirm(\'Cancelar esta cita?\')){cambiarEstado(' + c.id + ',\'cancelada\');cerrarModal();}"><i class="fas fa-times"></i> Cancelar</button>';
             html += "</div>";
           }
-
-          var nextDisabled1 = c.estado === "pendiente" || !c.medico_nombre;
-          var nextAttr1 = nextDisabled1
-            ? ' disabled style="opacity:0.5;cursor:not-allowed"'
-            : "";
-          html +=
-            '<hr style="border:none;border-top:1px solid #E5E7EB;margin:12px 0">';
-          html +=
-            '<div style="display:flex;justify-content:flex-end"><button class="btn btn-primary" data-action="siguiente"' +
-            nextAttr1 +
-            '><i class="fas fa-arrow-right"></i> Siguiente</button></div>';
 
           return html;
         }
@@ -6694,20 +7098,6 @@
               '<button class="btn btn-danger" id="wizRechazar" data-action="rechazar"><i class="fas fa-times"></i> Rechazar cobertura</button></div>';
           }
 
-          var nextDisabled2 = ce === "pendiente_de_validacion" && !isSinSeguro;
-          var nextAttr2 = nextDisabled2
-            ? ' disabled style="opacity:0.5;cursor:not-allowed"'
-            : "";
-          html +=
-            '<hr style="border:none;border-top:1px solid #E5E7EB;margin:12px 0">';
-          html += '<div style="display:flex;justify-content:space-between">';
-          html +=
-            '<button class="btn btn-glass btn-sm" data-action="anterior"><i class="fas fa-arrow-left"></i> Atras</button>';
-          html +=
-            '<button class="btn btn-primary" data-action="siguiente"' +
-            nextAttr2 +
-            '><i class="fas fa-arrow-right"></i> Siguiente</button></div>';
-
           return html;
         }
 
@@ -6824,20 +7214,6 @@
               '<button class="btn btn-success" id="wizPagar" data-action="pagar" style="margin-bottom:16px"><i class="fas fa-check"></i> Registrar Pago</button>';
           }
 
-          var nextDisabled3 = f && f.estado !== "pagada";
-          var nextAttr3 = nextDisabled3
-            ? ' disabled style="opacity:0.5;cursor:not-allowed"'
-            : "";
-          html +=
-            '<hr style="border:none;border-top:1px solid #E5E7EB;margin:12px 0">';
-          html += '<div style="display:flex;justify-content:space-between">';
-          html +=
-            '<button class="btn btn-glass btn-sm" data-action="anterior"><i class="fas fa-arrow-left"></i> Atras</button>';
-          html +=
-            '<button class="btn btn-primary" data-action="siguiente"' +
-            nextAttr3 +
-            '><i class="fas fa-arrow-right"></i> Siguiente</button></div>';
-
           return html;
         }
 
@@ -6913,14 +7289,6 @@
               "</div>";
           }
 
-          html +=
-            '<hr style="border:none;border-top:1px solid #E5E7EB;margin:12px 0">';
-          html += '<div style="display:flex;justify-content:space-between">';
-          html +=
-            '<button class="btn btn-glass btn-sm" data-action="anterior"><i class="fas fa-arrow-left"></i> Atras</button>';
-          html +=
-            '<button class="btn btn-primary" data-action="siguiente"><i class="fas fa-arrow-right"></i> Siguiente</button></div>';
-
           return html;
         }
 
@@ -6928,133 +7296,48 @@
 
         function renderPaso5() {
           var html = "";
-          html +=
-            '<div style="display:flex;flex-direction:column;align-items:center;padding:16px 16px">';
-          html +=
-            '<div style="width:52px;height:52px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;margin-bottom:12px">';
-          html +=
-            '<i class="fas fa-check-circle" style="color:white;font-size:1.5rem"></i></div>';
-          html +=
-            '<h3 style="font-size:1.2rem;font-weight:800;color:#10B981;margin:0 0 16px">PROCESO COMPLETADO</h3>';
+          html += '<div style="display:flex;flex-direction:column;align-items:center;padding:8px 8px">';
+          html += '<div style="width:48px;height:48px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;margin-bottom:10px">';
+          html += '<i class="fas fa-check-circle" style="color:white;font-size:1.3rem"></i></div>';
+          html += '<h3 style="font-size:1.1rem;font-weight:700;color:#10B981;margin:0 0 16px">Proceso Completado</h3>';
 
-          html +=
-            '<div style="width:100%;max-width:520px;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:12px;padding:14px;margin-bottom:16px">';
-          html +=
-            '<div class="wiz-econ-row"><span class="l">Paciente</span><span class="v">' +
-            p(c.nombre_paciente) +
-            "</span></div>";
-          html +=
-            '<div class="wiz-econ-row"><span class="l">Servicio</span><span class="v">' +
-            p(c.servicio_nombre) +
-            "</span></div>";
+          html += '<div class="wiz-econ-card" style="width:100%;max-width:480px">';
+          html += '<div class="wiz-econ-row"><span class="l">Paciente</span><span class="v">' + p(c.nombre_paciente) + "</span></div>";
+          html += '<div class="wiz-econ-row"><span class="l">Servicio</span><span class="v">' + p(c.servicio_nombre) + "</span></div>";
           if (f) {
-            var p5IsNoSeguro =
-              f.ars_nombre === "No tengo seguro" ||
-              f.ars_nombre === "No especificado" ||
-              !f.ars_nombre;
-            var p5CobPct =
-              f.cobertura_estado === "autorizada" && f.porcentaje_autorizado
-                ? f.porcentaje_autorizado
-                : f.cobertura_estado === "autorizada"
-                  ? 100
-                  : 0;
-            var p5MontoCub =
-              f.cobertura_estado === "autorizada" ? f.monto_cubierto || 0 : 0;
-            var p5Copago =
-              f.cobertura_estado === "autorizada"
-                ? f.monto_pagar || 0
-                : f.precio_base || 0;
-            html +=
-              '<div class="wiz-econ-row"><span class="l">ARS</span><span class="v">' +
-              (p5IsNoSeguro ? "Sin seguro" : esc(f.ars_nombre)) +
-              "</span></div>";
+            var p5IsNoSeguro = f.ars_nombre === "No tengo seguro" || f.ars_nombre === "No especificado" || !f.ars_nombre;
+            var p5CobPct = f.cobertura_estado === "autorizada" && f.porcentaje_autorizado ? f.porcentaje_autorizado : f.cobertura_estado === "autorizada" ? 100 : 0;
+            var p5MontoCub = f.cobertura_estado === "autorizada" ? f.monto_cubierto || 0 : 0;
+            var p5Copago = f.cobertura_estado === "autorizada" ? f.monto_pagar || 0 : f.precio_base || 0;
+            html += '<div class="wiz-econ-row"><span class="l">ARS</span><span class="v">' + (p5IsNoSeguro ? "Sin seguro" : esc(f.ars_nombre)) + "</span></div>";
             if (f.cobertura_estado === "autorizada") {
-              html +=
-                '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v green">' +
-                p5CobPct +
-                "%</span></div>";
-              if (f.numero_autorizacion) {
-                html +=
-                  '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:.76rem"><span style="color:#64748B">Autorizacion</span><span style="font-weight:600;color:#2563EB">' +
-                  esc(f.numero_autorizacion) +
-                  "</span></div>";
-              }
+              html += '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v green">' + p5CobPct + "%</span></div>";
+              if (f.numero_autorizacion) html += '<div class="wiz-econ-row"><span class="l">Autorizacion</span><span class="v pri">' + esc(f.numero_autorizacion) + "</span></div>";
             } else {
-              html +=
-                '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:' +
-                (p5IsNoSeguro ? "#EF4444" : "var(--text-muted)") +
-                '">' +
-                (p5IsNoSeguro ? "Sin seguro" : "N/A") +
-                "</span></div>";
+              html += '<div class="wiz-econ-row"><span class="l">Cobertura</span><span class="v" style="color:' + (p5IsNoSeguro ? "#EF4444" : "#94a3b8") + '">' + (p5IsNoSeguro ? "Sin seguro" : "N/A") + "</span></div>";
             }
             html += '<hr class="wiz-divider">';
-            html +=
-              '<div class="wiz-econ-row"><span class="l">Precio</span><span class="v">RD$ ' +
-              Number(f.precio_base || 0).toLocaleString() +
-              "</span></div>";
-            html +=
-              '<div class="wiz-econ-row"><span class="l">Cobertura ARS</span><span class="v green">RD$ ' +
-              Number(p5MontoCub).toLocaleString() +
-              "</span></div>";
-            html +=
-              '<div class="wiz-econ-row"><span class="l">Copago</span><span class="v blue">RD$ ' +
-              Number(p5Copago).toLocaleString() +
-              "</span></div>";
+            html += '<div class="wiz-econ-row"><span class="l">Precio</span><span class="v">RD$ ' + Number(f.precio_base || 0).toLocaleString() + "</span></div>";
+            html += '<div class="wiz-econ-row"><span class="l">Cobertura ARS</span><span class="v green">RD$ ' + Number(p5MontoCub).toLocaleString() + "</span></div>";
+            html += '<div class="wiz-econ-row"><span class="l">Copago</span><span class="v blue">RD$ ' + Number(p5Copago).toLocaleString() + "</span></div>";
             html += '<hr class="wiz-divider">';
-            html +=
-              '<div class="wiz-econ-row"><span class="l">Factura</span><span class="v pri">' +
-              esc(f.numero_factura || "—") +
-              "</span></div>";
-            html +=
-              '<div class="wiz-econ-row"><span class="l">Estado factura</span><span class="v suc">' +
-              (f.estado === "pagada" ? "Pagada" : f.estado || "Pendiente") +
-              "</span></div>";
+            html += '<div class="wiz-econ-row"><span class="l">Factura</span><span class="v pri">' + esc(f.numero_factura || "—") + "</span></div>";
+            html += '<div class="wiz-econ-row"><span class="l">Estado factura</span><span class="v suc">' + (f.estado === "pagada" ? "Pagada" : f.estado || "Pendiente") + "</span></div>";
           }
-          html +=
-            '<div class="wiz-econ-row"><span class="l">Estado cita</span><span class="v suc">' +
-            (c.estado === "completada" ? "Completada" : "Confirmada") +
-            "</span></div>";
+          html += '<div class="wiz-econ-row"><span class="l">Estado cita</span><span class="v suc">' + (c.estado === "completada" ? "Completada" : "Confirmada") + "</span></div>";
           var finDate = c.fecha_actualizacion || c.fecha_creacion || "";
-          html +=
-            '<div class="wiz-econ-row"><span class="l">Fecha</span><span class="v">' +
-            (finDate
-              ? new Date(finDate + "Z").toLocaleDateString("es-ES", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "—") +
-            "</span></div>";
+          html += '<div class="wiz-econ-row"><span class="l">Fecha</span><span class="v">' + (finDate ? new Date(finDate + "Z").toLocaleDateString("es-ES",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—") + "</span></div>";
           html += "</div>";
 
-          html +=
-            '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">';
+          // Action buttons row
+          html += '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">';
           if (f) {
-            html +=
-              '<button class="btn btn-white-outline" onclick="abrirModalFactura(' +
-              f.id +
-              ')"><i class="fas fa-file-invoice"></i> Ver factura</button>';
-            html +=
-              '<button class="btn btn-white-outline" onclick="descargarPDF(' +
-              f.id +
-              ",'" +
-              (f.numero_factura || "").replace(/'/g, "\\'") +
-              '\',this)"><i class="fas fa-download"></i> Descargar PDF</button>';
-            html +=
-              '<button class="btn btn-white-outline" onclick="imprimirFactura(' +
-              f.id +
-              ')"><i class="fas fa-print"></i> Imprimir</button>';
-            html +=
-              '<button class="btn btn-white-outline" onclick="enviarWhatsApp(' +
-              f.id +
-              ')"><i class="fab fa-whatsapp" style="color:#25D366"></i> Compartir WhatsApp</button>';
-            html +=
-              '<button class="btn btn-white-outline" id="wizEnviarEmailFinal" data-action="reenviar" style="cursor:pointer"><i class="fas fa-envelope"></i> Enviar correo</button>';
+            html += '<button class="btn btn-white-outline" onclick="abrirModalFactura(' + f.id + ')"><i class="fas fa-file-invoice"></i> Ver factura</button>';
+            html += '<button class="btn btn-white-outline" onclick="descargarPDF(' + f.id + ",'" + (f.numero_factura || "").replace(/'/g, "\\'") + '\',this)"><i class="fas fa-download"></i> PDF</button>';
+            html += '<button class="btn btn-white-outline" onclick="imprimirFactura(' + f.id + ')"><i class="fas fa-print"></i> Imprimir</button>';
+            html += '<button class="btn btn-white-outline" onclick="enviarWhatsApp(' + f.id + ')"><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</button>';
+            html += '<button class="btn btn-white-outline" id="wizEnviarEmailFinal" data-action="reenviar" style="cursor:pointer"><i class="fas fa-envelope"></i> Enviar correo</button>';
           }
-          html +=
-            '<button class="btn btn-primary" onclick="cerrarModal()"><i class="fas fa-check"></i> Cerrar</button>';
           html += "</div></div>";
 
           return html;
@@ -7102,11 +7385,9 @@
         function goToStep(n) {
           // Validation: block advancing if prerequisites not met
           if (n > step) {
-            if (step === 1 && c.estado === "pendiente" && !c.medico_nombre) {
-              mostrarToast(
-                "Debe asignar un medico antes de continuar",
-                "error",
-              );
+            if (step === 1 && (c.estado === "pendiente" || !c.medico_nombre)) {
+              var msg1 = !c.medico_nombre ? "Debe asignar un medico antes de continuar" : "Debe confirmar la cita antes de continuar";
+              mostrarToast(msg1, "error");
               return;
             }
             if (
@@ -7539,120 +7820,395 @@
       }
 
       function abrirAsignarMedico(id) {
+        abrirReagendar(id);
+      }
+
+      function abrirReagendar(id) {
+        var cita = window._currentCita;
+        if (!cita) return mostrarToast("Error: datos de cita no disponibles", "error");
+        if (cita.estado === "completada" || cita.estado === "cancelada") {
+          return mostrarToast("No se puede reagendar una cita completada o cancelada", "error");
+        }
         var existing = document.getElementById("wizSubModalWrap");
         if (existing) existing.remove();
-        fetch("/api/admin/medicos", { headers: apiHeaders() })
-          .then(function (r) {
-            return r.json();
+
+        // ── State ──
+        var calYear = new Date().getFullYear();
+        var calMonth = new Date().getMonth();
+        var calData = { dias: [] };
+        var selectedDate = null;
+        var selectedTime = null;
+        var selectedTimeLabel = null;
+        var selectedDoctorId = null;
+        var selectedDoctorName = null;
+        var citaDuracion = cita.servicio_duracion || 30;
+
+        var diasSemana = ["Do","Lu","Ma","Mi","Ju","Vi","Sa"];
+        var meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+        function esc(s) { return (s || "").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+        function fmtDate(d) {
+          if (!d) return "—";
+          var p = d.split("-");
+          return p[2] + "/" + p[1] + "/" + p[0];
+        }
+        function fmtTime12(hhmm) {
+          if (!hhmm) return "—";
+          var p = hhmm.split(":");
+          var h = parseInt(p[0]), m = p[1];
+          var per = h >= 12 ? "PM" : "AM";
+          var h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+          return h12 + ":" + m + " " + per;
+        }
+
+        // ── DOM ──
+        var wrap = document.createElement("div");
+        wrap.id = "wizSubModalWrap";
+        wrap.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:99999;display:flex;align-items:center;justify-content:center";
+        wrap.onclick = function (e) { if (e.target === wrap) wrap.remove(); };
+
+        var box = document.createElement("div");
+        box.style.cssText = "background:white;border-radius:16px;padding:28px;width:660px;max-width:94vw;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,0.3);animation:modalIn .2s ease";
+
+        // ── Header ──
+        var header = document.createElement("div");
+        header.style.cssText = "font-size:1rem;font-weight:700;color:#1E293B;margin-bottom:16px;display:flex;align-items:center;gap:8px";
+        header.innerHTML = '<i class="fas fa-calendar-alt" style="color:#D97706"></i> Reagendar cita — ' + esc(cita.codigo_cita || "Sin código");
+        box.appendChild(header);
+
+        // ── Current info ──
+        var infoBox = document.createElement("div");
+        infoBox.style.cssText = "background:#F8FAFC;border:1px solid #E5E7EB;border-radius:10px;padding:14px;margin-bottom:18px";
+        infoBox.innerHTML =
+          '<div style="font-size:.82rem;line-height:1.7">' +
+          '<span style="color:#64748B">Estudio:</span> <strong>' + esc(cita.servicio_nombre || "—") + '</strong><br>' +
+          '<span style="color:#64748B">Cita actual:</span> <strong>' + fmtDate(cita.fecha) + ' ' + fmtTime12(cita.hora) + '</strong>' +
+          (cita.medico_nombre ? ' &middot; ' + esc(cita.medico_nombre) : ' &middot; <em style="color:#94A3B8">Sin médico asignado</em>') +
+          '</div>';
+        box.appendChild(infoBox);
+
+        // ── Calendar ──
+        var calHeader = document.createElement("div");
+        calHeader.style.cssText = "font-size:.82rem;font-weight:700;color:#1E293B;margin-bottom:10px";
+        calHeader.innerHTML = '<i class="fas fa-calendar-day" style="color:#2563EB"></i> Seleccione la nueva fecha';
+        box.appendChild(calHeader);
+
+        var calContainer = document.createElement("div");
+        calContainer.id = "reagCalContainer";
+        calContainer.className = "reag-calendar";
+        calContainer.innerHTML = '<div style="text-align:center;padding:30px;color:#94A3B8"><i class="fas fa-spinner fa-spin"></i> Cargando disponibilidad...</div>';
+        box.appendChild(calContainer);
+
+        // ── Time slots (appears after date selection) ──
+        var slotsSection = document.createElement("div");
+        slotsSection.id = "reagSlotsSection";
+        slotsSection.style.display = "none";
+        box.appendChild(slotsSection);
+
+        // ── Doctor + Summary (appears after time selection) ──
+        var resultSection = document.createElement("div");
+        resultSection.id = "reagResultSection";
+        resultSection.style.display = "none";
+        box.appendChild(resultSection);
+
+        // ── Buttons ──
+        var btnBar = document.createElement("div");
+        btnBar.style.cssText = "display:flex;justify-content:space-between;gap:8px;border-top:1px solid #E5E7EB;padding-top:16px;margin-top:8px";
+
+        var cancelBtn = document.createElement("button");
+        cancelBtn.style.cssText = "padding:10px 20px;border:1px solid #E5E7EB;border-radius:8px;font-size:.85rem;font-weight:500;color:#64748B;background:white;cursor:pointer";
+        cancelBtn.textContent = "Cancelar";
+        cancelBtn.onclick = function () { wrap.remove(); };
+        btnBar.appendChild(cancelBtn);
+
+        var confirmBtn = document.createElement("button");
+        confirmBtn.style.cssText = "padding:10px 24px;border:none;border-radius:8px;font-size:.85rem;font-weight:600;color:white;background:#D97706;cursor:pointer;display:none;align-items:center;gap:6px";
+        confirmBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirmar reagendamiento';
+        confirmBtn.onclick = function () {
+          confirmBtn.disabled = true;
+          confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reagendando...';
+
+          fetch("/api/admin/citas/" + id + "/reagendar", {
+            method: "PUT",
+            headers: apiHeaders(),
+            body: JSON.stringify({
+              nueva_fecha: selectedDate,
+              nueva_hora: selectedTime,
+              medico_id: parseInt(selectedDoctorId),
+              motivo: "Reagendamiento administrativo",
+            }),
           })
-          .then(function (medicos) {
-            var wrap = document.createElement("div");
-            wrap.id = "wizSubModalWrap";
-            wrap.style.cssText =
-              "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:99999;display:flex;align-items:center;justify-content:center";
-            wrap.onclick = function (e) {
-              if (e.target === wrap) wrap.remove();
-            };
-
-            var box = document.createElement("div");
-            box.style.cssText =
-              "background:white;border-radius:16px;padding:24px;width:440px;max-width:90vw;box-shadow:0 25px 60px rgba(0,0,0,0.3);animation:modalIn .2s ease";
-
-            var title = document.createElement("div");
-            title.style.cssText =
-              "font-size:1rem;font-weight:700;color:#1E293B;margin-bottom:20px;display:flex;align-items:center;gap:8px";
-            title.innerHTML =
-              '<i class="fas fa-user-md" style="color:#2563EB"></i> Asignar medico';
-            box.appendChild(title);
-
-            var label = document.createElement("div");
-            label.style.cssText =
-              "font-size:.75rem;font-weight:600;color:#374151;margin-bottom:6px";
-            label.textContent = "Seleccionar medico";
-            box.appendChild(label);
-
-            var select = document.createElement("select");
-            select.id = "wizSubMedicoSelect";
-            select.style.cssText =
-              "width:100%;padding:10px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:.85rem;background:white;margin-bottom:20px;outline:none";
-            select.innerHTML =
-              '<option value="">Seleccione un medico...</option>';
-            var filtered = medicos.filter(function (m) {
-              return m.activo != 0;
-            });
-            for (var mi = 0; mi < filtered.length; mi++) {
-              var o = document.createElement("option");
-              o.value = filtered[mi].id;
-              o.textContent =
-                filtered[mi].nombre +
-                " — " +
-                (filtered[mi].especialidad || "General");
-              select.appendChild(o);
-            }
-            box.appendChild(select);
-
-            var btns = document.createElement("div");
-            btns.style.cssText =
-              "display:flex;justify-content:flex-end;gap:8px";
-
-            var cancelBtn = document.createElement("button");
-            cancelBtn.style.cssText =
-              "padding:8px 18px;border:1px solid #E5E7EB;border-radius:8px;font-size:.82rem;font-weight:500;color:#64748B;background:white;cursor:pointer";
-            cancelBtn.textContent = "Cancelar";
-            cancelBtn.onclick = function () {
-              wrap.remove();
-            };
-            btns.appendChild(cancelBtn);
-
-            var assignBtn = document.createElement("button");
-            assignBtn.style.cssText =
-              "padding:8px 18px;border:none;border-radius:8px;font-size:.82rem;font-weight:600;color:white;background:#2563EB;cursor:pointer";
-            assignBtn.innerHTML = '<i class="fas fa-check"></i> Asignar';
-            assignBtn.onclick = function () {
-              var val = select.value;
-              if (!val) {
-                mostrarToast("Seleccione un medico", "error");
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              if (d && d.error) {
+                mostrarToast(d.error, "error");
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirmar reagendamiento';
                 return;
               }
-              assignBtn.disabled = true;
-              assignBtn.innerHTML =
-                '<i class="fas fa-spinner fa-spin"></i> Asignando...';
-              fetch("/api/admin/citas/" + id, {
-                method: "PUT",
-                headers: apiHeaders(),
-                body: JSON.stringify({ medico_id: parseInt(val) }),
-              })
-                .then(function (r) {
-                  return r.json();
-                })
-                .then(function (d) {
-                  if (d && d.error) {
-                    mostrarToast(d.error, "error");
-                    assignBtn.disabled = false;
-                    assignBtn.innerHTML =
-                      '<i class="fas fa-check"></i> Asignar';
-                    return;
-                  }
-                  mostrarToast("Medico asignado correctamente", "success");
-                  wrap.remove();
-                  cargarCitas();
-                  verDetalle(id);
-                })
-                .catch(function () {
-                  mostrarToast("Error al asignar medico", "error");
-                  assignBtn.disabled = false;
-                  assignBtn.innerHTML = '<i class="fas fa-check"></i> Asignar';
-                });
-            };
-            btns.appendChild(assignBtn);
+              mostrarToast("Cita reagendada correctamente", "success");
+              wrap.remove();
+              cargarCitas();
+              verDetalle(id);
+            })
+            .catch(function () {
+              mostrarToast("Error al reagendar la cita", "error");
+              confirmBtn.disabled = false;
+              confirmBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirmar reagendamiento';
+            });
+        };
+        btnBar.appendChild(confirmBtn);
 
-            box.appendChild(btns);
-            wrap.appendChild(box);
-            document.body.appendChild(wrap);
-          })
-          .catch(function () {
-            mostrarToast("Error al cargar medicos", "error");
+        box.appendChild(btnBar);
+        wrap.appendChild(box);
+        document.body.appendChild(wrap);
+
+        // ── Build calendar ──
+        function buildCalendar() {
+          var c = document.getElementById("reagCalContainer");
+          var html = "";
+
+          html += '<div class="reag-cal-header">';
+          html += '<div class="reag-cal-title">' + meses[calMonth] + ' ' + calYear + '</div>';
+          html += '<div class="reag-cal-nav">';
+          html += '<button onclick="cambiarMes(-1);return false"><i class="fas fa-chevron-left"></i></button>';
+          html += '<button onclick="cambiarMes(1);return false"><i class="fas fa-chevron-right"></i></button>';
+          html += '</div></div>';
+
+          html += '<div class="reag-cal-grid">';
+          for (var di = 0; di < diasSemana.length; di++) {
+            html += '<div class="reag-cal-dow">' + diasSemana[di] + '</div>';
+          }
+
+          var primerDia = new Date(calYear, calMonth, 1).getDay();
+          var diasEnMes = new Date(calYear, calMonth + 1, 0).getDate();
+          var hoy = new Date();
+          var hoyStr = hoy.getFullYear() + "-" + String(hoy.getMonth()+1).padStart(2,"0") + "-" + String(hoy.getDate()).padStart(2,"0");
+
+          for (var ei = 0; ei < primerDia; ei++) {
+            html += '<div class="reag-cal-day empty"></div>';
+          }
+
+          var dispMap = {};
+          for (var cdi = 0; cdi < calData.dias.length; cdi++) {
+            dispMap[calData.dias[cdi].dia] = calData.dias[cdi];
+          }
+
+          for (var d = 1; d <= diasEnMes; d++) {
+            var dateStr = calYear + "-" + String(calMonth+1).padStart(2,"0") + "-" + String(d).padStart(2,"0");
+            var isAvailable = dispMap[d] && dispMap[d].disponible;
+            var isPast = dispMap[d] && dispMap[d].razon === "pasado";
+            var isSelected = selectedDate === dateStr;
+            var isToday = dateStr === hoyStr;
+
+            var cls = "reag-cal-day";
+            if (isSelected) cls += " selected";
+            else if (isAvailable) cls += " available";
+            else if (isPast) cls += " past";
+            else cls += " unavailable";
+            if (isToday) cls += " today";
+
+            html += '<div class="' + cls + '" data-date="' + dateStr + '" data-dia="' + d + '"';
+            if (isAvailable) {
+              html += ' onclick="seleccionarDia(\'' + dateStr + '\');return false"';
+            }
+            html += '>' + d + '</div>';
+          }
+
+          html += '</div>';
+          c.innerHTML = html;
+        }
+
+        window.cambiarMes = function(dir) {
+          calMonth += dir;
+          if (calMonth < 0) { calMonth = 11; calYear--; }
+          if (calMonth > 11) { calMonth = 0; calYear++; }
+          hideSlots();
+          hideResult();
+          cargarCalendario();
+        };
+
+        window.seleccionarDia = function(dateStr) {
+          selectedDate = dateStr;
+          selectedTime = null;
+          selectedDoctorId = null;
+          selectedDoctorName = null;
+
+          var allDays = document.querySelectorAll(".reag-cal-day.available, .reag-cal-day.selected");
+          allDays.forEach(function(el) {
+            if (el.getAttribute("data-date") === dateStr) {
+              el.className = el.className.replace(/ available| selected/g, "") + " selected";
+            } else {
+              el.className = el.className.replace(/ selected/g, "") + " available";
+            }
           });
+
+          hideResult();
+          cargarHorarios(dateStr);
+        };
+
+        function hideSlots() {
+          var sec = document.getElementById("reagSlotsSection");
+          sec.style.display = "none";
+          sec.innerHTML = "";
+        }
+
+        function hideResult() {
+          var sec = document.getElementById("reagResultSection");
+          sec.style.display = "none";
+          sec.innerHTML = "";
+          confirmBtn.style.display = "none";
+        }
+
+        // ── Load calendar ──
+        function cargarCalendario() {
+          document.getElementById("reagCalContainer").innerHTML =
+            '<div style="text-align:center;padding:30px;color:#94A3B8"><i class="fas fa-spinner fa-spin"></i> Cargando disponibilidad...</div>';
+
+          fetch("/api/admin/reagendar/calendario?servicio_id=" + encodeURIComponent(cita.servicio_id || "") + "&year=" + calYear + "&month=" + calMonth, {
+            headers: apiHeaders(),
+          })
+            .then(function(r){ return r.json(); })
+            .then(function(data) {
+              calData = data;
+              buildCalendar();
+            })
+            .catch(function() {
+              document.getElementById("reagCalContainer").innerHTML =
+                '<div style="text-align:center;padding:24px;color:#EF4444;font-size:.85rem">' +
+                '<i class="fas fa-exclamation-triangle" style="display:block;font-size:1.5rem;margin-bottom:8px"></i>' +
+                'No hay horarios disponibles para este estudio o no se pudo cargar la disponibilidad.' +
+                '<br><button onclick="cargarCalendario();return false" style="margin-top:12px;padding:8px 16px;border:1px solid #EF4444;border-radius:8px;background:white;color:#EF4444;font-size:.8rem;cursor:pointer"><i class="fas fa-sync"></i> Recargar disponibilidad</button>' +
+                '</div>';
+            });
+        }
+
+        // ── Load time slots ──
+        function cargarHorarios(dateStr) {
+          var sec = document.getElementById("reagSlotsSection");
+          sec.style.display = "block";
+          sec.innerHTML = '<div style="margin-top:14px"><div style="font-size:.82rem;font-weight:700;color:#1E293B;margin-bottom:10px"><i class="fas fa-clock" style="color:#2563EB"></i> Horarios disponibles — <span style="font-weight:400;color:#64748B;font-size:.78rem">' + dateStr + '</span></div></div>' +
+            '<div style="text-align:center;padding:20px;color:#94A3B8"><i class="fas fa-spinner fa-spin"></i> Cargando horarios...</div>';
+
+          fetch("/api/admin/reagendar/disponibilidad-global?servicio_id=" + encodeURIComponent(cita.servicio_id || "") + "&fecha=" + encodeURIComponent(dateStr) + "&excluir_cita_id=" + id, {
+            headers: apiHeaders(),
+          })
+            .then(function(r){ return r.json(); })
+            .then(function(data) {
+              var disponibles = (data.slots || []).filter(function(s){ return !s.ocupado; });
+
+              if (disponibles.length === 0) {
+                sec.innerHTML = '<div style="margin-top:14px"><div style="font-size:.82rem;font-weight:700;color:#1E293B;margin-bottom:10px"><i class="fas fa-clock" style="color:#2563EB"></i> Horarios disponibles — <span style="font-weight:400;color:#64748B;font-size:.78rem">' + dateStr + '</span></div>' +
+                  '<div style="text-align:center;padding:20px;color:#EF4444;font-size:.82rem;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px"><i class="fas fa-ban"></i> No hay horarios disponibles para esta fecha</div></div>';
+                return;
+              }
+
+              var html = '<div style="margin-top:14px"><div style="font-size:.82rem;font-weight:700;color:#1E293B;margin-bottom:10px"><i class="fas fa-clock" style="color:#2563EB"></i> Horarios disponibles — <span style="font-weight:400;color:#64748B;font-size:.78rem">' + dateStr + '</span></div>' +
+                '<div class="reag-slots-grid">';
+
+              disponibles.forEach(function(s) {
+                html += '<div class="reag-slot" data-hora="' + s.hora + '" data-hora12="' + esc(s.hora12) + '" data-doctores=\'' + JSON.stringify(s.doctores_disponibles).replace(/'/g, "&#39;") + '\'';
+                html += ' onclick="seleccionarSlot(this);return false"';
+                html += '>' + s.hora12 + '</div>';
+              });
+
+              html += '</div></div>';
+              sec.innerHTML = html;
+            })
+            .catch(function() {
+              sec.innerHTML = '<div style="margin-top:14px;text-align:center;padding:20px;color:#EF4444;font-size:.82rem;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px"><i class="fas fa-exclamation-triangle"></i> Error al cargar horarios</div>';
+            });
+        }
+
+        window.seleccionarSlot = function(el) {
+          var hora = el.getAttribute("data-hora");
+          var hora12 = el.getAttribute("data-hora12");
+          var doctores = JSON.parse(el.getAttribute("data-doctores"));
+
+          selectedTime = hora;
+          selectedTimeLabel = hora12;
+
+          document.querySelectorAll(".reag-slot").forEach(function(s) {
+            s.className = "reag-slot" + (s.getAttribute("data-hora") === hora ? " selected" : "");
+          });
+
+          // Build result section
+          var rs = document.getElementById("reagResultSection");
+          var html = '<div style="border-top:1px solid #E5E7EB;margin-top:16px;padding-top:16px">';
+
+          // Doctor
+          if (doctores.length === 1) {
+            selectedDoctorId = doctores[0].id;
+            selectedDoctorName = doctores[0].nombre;
+            html += '<div class="reag-auto-assign">' +
+              '<i class="fas fa-check-circle"></i>' +
+              '<div class="aa-text">Médico asignado automáticamente<strong>' + esc(doctores[0].nombre) + '</strong></div>' +
+              '</div>';
+          } else if (doctores.length > 1) {
+            selectedDoctorId = null;
+            selectedDoctorName = null;
+            html += '<div style="font-size:.82rem;font-weight:700;color:#1E293B;margin-bottom:8px"><i class="fas fa-user-md" style="color:#2563EB"></i> Seleccione el médico</div>';
+            html += '<div class="reag-doctor-list">';
+            for (var mi = 0; mi < doctores.length; mi++) {
+              html +=
+                '<div class="reag-doctor-option" data-doc-id="' + doctores[mi].id + '" data-doc-name="' + esc(doctores[mi].nombre) + '" onclick="seleccionarDoctor(this,' + doctores[mi].id + ',\'' + esc(doctores[mi].nombre) + '\');return false">' +
+                '<input type="radio" name="reagDoctor" value="' + doctores[mi].id + '">' +
+                '<div class="doc-info"><span class="doc-name">' + esc(doctores[mi].nombre) + '</span><span class="doc-spec">' + esc(doctores[mi].especialidad || "General") + '</span></div>' +
+                '</div>';
+            }
+            html += '</div>';
+          } else {
+            selectedDoctorId = null;
+            selectedDoctorName = null;
+            html += '<div style="text-align:center;padding:16px;color:#EF4444;font-size:.82rem;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px"><i class="fas fa-exclamation-triangle"></i> No hay médicos disponibles para este horario</div>';
+          }
+
+          // Summary
+          var newDateObj = new Date(selectedDate + "T12:00:00");
+          var newDateStr = newDateObj.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+
+          html += '<div style="background:#F8FAFC;border:1px solid #E5E7EB;border-radius:10px;padding:14px;margin-top:14px;font-size:.82rem;line-height:1.8">';
+          html += '<div style="font-weight:700;color:#DC2626;margin-bottom:4px">Cita actual:</div>';
+          html += fmtDate(cita.fecha) + ' ' + fmtTime12(cita.hora) + (cita.medico_nombre ? ' &middot; ' + esc(cita.medico_nombre) : '');
+          html += '<div style="font-weight:700;color:#059669;margin-top:10px;margin-bottom:4px">Nueva cita:</div>';
+          html += newDateStr + ' ' + fmtTime12(selectedTime) + ' &middot; ' + esc(selectedDoctorName || "Seleccione médico...");
+          html += '</div>';
+
+          html += '</div>';
+          rs.innerHTML = html;
+          rs.style.display = "block";
+
+          // Show confirm button only if doctor is resolved
+          if (doctores.length === 1) {
+            confirmBtn.style.display = "inline-flex";
+          } else {
+            confirmBtn.style.display = "none";
+          }
+        };
+
+        window.seleccionarDoctor = function(el, docId, docName) {
+          selectedDoctorId = docId;
+          selectedDoctorName = docName;
+
+          document.querySelectorAll(".reag-doctor-option").forEach(function(o) {
+            var id = parseInt(o.getAttribute("data-doc-id"));
+            o.className = "reag-doctor-option" + (id === docId ? " selected" : "");
+            var radio = o.querySelector("input[type='radio']");
+            if (radio) radio.checked = (id === docId);
+          });
+
+          // Update doctor name in summary
+          var rs = document.getElementById("reagResultSection");
+          var summaryTexts = rs.querySelectorAll("div[style*='background:#F8FAFC']");
+          if (summaryTexts.length > 0) {
+            summaryTexts[0].innerHTML = summaryTexts[0].innerHTML.replace(/Seleccione médico\.\.\./, esc(docName));
+          }
+
+          confirmBtn.style.display = "inline-flex";
+        };
+
+        // ── Initial load ──
+        cargarCalendario();
       }
 
       function limpiarFiltros() {

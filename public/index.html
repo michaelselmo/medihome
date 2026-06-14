@@ -1259,19 +1259,20 @@
         z-index: 1;
       }
       .appointment-card-header {
+        background: #F4F8FF;
+        border-radius: 16px 16px 0 0;
+        padding: 22px 32px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 28px 32px 0 32px;
-        flex-wrap: wrap;
-        gap: 16px;
+        min-height: 100px;
       }
-      .appointment-card-header-left {
+      .banner-left {
         display: flex;
         align-items: center;
         gap: 16px;
       }
-      .appointment-icon-circle {
+      .banner-icon {
         width: 52px;
         height: 52px;
         border-radius: 14px;
@@ -1280,57 +1281,103 @@
         align-items: center;
         justify-content: center;
         color: #2563EB;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         flex-shrink: 0;
       }
-      .appointment-title-group h2 {
-        font-size: 1.3rem;
-        font-weight: 800;
+      .banner-text h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
         color: #0F172A;
         margin: 0;
+        line-height: 1.2;
       }
-      .appointment-title-group p {
-        font-size: 0.82rem;
+      .banner-text p {
+        font-size: 0.85rem;
         color: #64748B;
-        margin: 2px 0 0 0;
+        margin: 4px 0 0 0;
       }
-      .stepper {
+      .banner-illustration {
+        flex-shrink: 0;
+      }
+      .progress-tracker {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 0 20px;
+        margin: 0 32px 16px 32px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        height: 80px;
       }
-      .step-item {
+      .progress-step {
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #94A3B8;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
       }
-      .step-item.active {
-        color: #2563EB;
-      }
-      .step-item .step-num {
-        width: 24px;
-        height: 24px;
+      .progress-marker {
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: #E2E8F0;
-        color: #94A3B8;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.7rem;
+        font-size: 0.85rem;
         font-weight: 700;
+        flex-shrink: 0;
+        background: #F1F5F9;
+        color: #94A3B8;
+        transition: all 0.3s;
       }
-      .step-item.active .step-num {
+      .progress-step.active .progress-marker {
         background: #2563EB;
-        color: #fff;
+        color: #FFFFFF;
       }
-      .step-line {
-        width: 28px;
-        height: 2px;
-        background: #E2E8F0;
-        border-radius: 2px;
+      .progress-step.completed .progress-marker {
+        background: #2563EB;
+        color: #FFFFFF;
+      }
+      .progress-step.completed .progress-marker i {
+        font-size: 0.8rem;
+      }
+      .progress-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .progress-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #94A3B8;
+        transition: color 0.3s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .progress-step.active .progress-label {
+        color: #0F172A;
+      }
+      .progress-step.completed .progress-label {
+        color: #1E40AF;
+      }
+      .progress-status {
+        font-size: 0.7rem;
+        color: #94A3B8;
+        margin-top: 1px;
+        transition: color 0.3s;
+      }
+      .progress-step.completed .progress-status {
+        color: #2563EB;
+      }
+      .progress-connector {
+        flex: 0 0 28px;
+        border-top: 2px dashed #D1D5DB;
+        margin: 0 4px;
+        align-self: center;
+      }
+      .progress-step.completed + .progress-connector {
+        border-color: #2563EB;
       }
       .appointment-card-body {
         padding: 28px 32px 0 32px;
@@ -1409,31 +1456,31 @@
         padding-right: 36px;
       }
 
-      /* ── Calendar + Legend Block ── */
+      /* ── Compact Calendar + Hours side-by-side ── */
       .calendar-block {
         margin-top: 20px;
       }
-      .calendar-block > label {
+      .calendar-block > .cal-label {
         display: block;
         font-size: 0.78rem;
         font-weight: 600;
         color: #334155;
         margin-bottom: 10px;
       }
-      .calendar-block > label .required {
-        color: #DC2626;
-      }
-      .calendar-layout {
+      .calendar-block > .cal-label .required { color: #DC2626; }
+      .cal-hora-row {
         display: flex;
         gap: 20px;
         align-items: flex-start;
       }
+      .cal-col {
+        flex-shrink: 0;
+      }
       .calendar-compact {
-        width: 520px;
-        min-height: 390px;
+        width: 364px;
         border: 1px solid #E2E8F0;
         border-radius: 14px;
-        padding: 16px;
+        padding: 12px;
         background: #FFFFFF;
         user-select: none;
       }
@@ -1441,25 +1488,25 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
       }
       .cal-title {
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #0F172A;
       }
       .cal-nav {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
         border: 1px solid #E2E8F0;
-        border-radius: 8px;
+        border-radius: 6px;
         background: #FFFFFF;
         color: #64748B;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         transition: all 0.2s;
       }
       .cal-nav:hover {
@@ -1470,27 +1517,27 @@
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         text-align: center;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 600;
         color: #94A3B8;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         text-transform: uppercase;
         letter-spacing: 0.04em;
       }
       .cal-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 3px;
+        gap: 2px;
       }
       .cal-day {
-        width: 58px;
-        height: 58px;
+        width: 44px;
+        height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.82rem;
+        font-size: 0.75rem;
         font-weight: 600;
-        border-radius: 10px;
+        border-radius: 8px;
         cursor: pointer;
         transition: all 0.15s;
         background: #FFFFFF;
@@ -1532,97 +1579,31 @@
         box-shadow: 0 2px 8px rgba(37,99,235,0.3);
       }
 
-      /* ── Legend Card ── */
-      .legend-card {
+      /* ── Hours Column (side-by-side with calendar) ── */
+      .hora-col {
         flex: 1;
-        min-width: 200px;
-        border: 1px solid #E2E8F0;
-        border-radius: 14px;
-        padding: 20px;
-        background: #FFFFFF;
+        min-width: 0;
       }
-      .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
-        font-size: 0.78rem;
-      }
-      .legend-item:last-child {
-        margin-bottom: 0;
-      }
-      .legend-swatch {
-        width: 16px;
-        height: 16px;
-        border-radius: 4px;
-        flex-shrink: 0;
-      }
-      .legend-swatch.green { background: #D1FAE5; border: 1px solid #A7F3D0; }
-      .legend-swatch.blue { background: #2563EB; }
-      .legend-swatch.gray { background: #F8FAFC; border: 1px solid #EEF2F7; }
-      .legend-swatch.white { background: #FFFFFF; border: 1px solid #CBD5E1; }
-      .legend-swatch.red { background: #FEE2E2; border: 1px solid #FECACA; }
-      .legend-item-text strong {
-        display: block;
-        font-size: 0.78rem;
-        color: #0F172A;
-        font-weight: 600;
-      }
-      .legend-item-text span {
-        display: block;
-        font-size: 0.68rem;
-        color: #64748B;
-      }
-      .legend-divider {
-        height: 1px;
-        background: #E2E8F0;
-        margin: 16px 0;
-      }
-      .legend-info-box {
-        background: #EFF6FF;
-        border: 1px solid #BFDBFE;
-        border-radius: 12px;
-        padding: 14px 16px;
-        margin-top: 16px;
-      }
-      .legend-info-box strong {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #1E40AF;
-        margin-bottom: 4px;
-      }
-      .legend-info-box p {
-        font-size: 0.72rem;
-        color: #3B82F6;
-        margin: 0;
-        line-height: 1.5;
-      }
-
-      /* ── Hour Grid (Modern) ── */
-      .hora-block {
-        margin-top: 20px;
-      }
-      .hora-block > label {
+      .hora-col > label {
         display: block;
         font-size: 0.78rem;
         font-weight: 600;
         color: #334155;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
-      .hora-block > label .required { color: #DC2626; }
+      .hora-col > label .required { color: #DC2626; }
       .hora-grid-modern {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
       }
       .hora-btn-modern {
-        height: 44px;
+        height: 40px;
         border: 1.5px solid #CBD5E1;
         border-radius: 8px;
         background: #FFFFFF;
         color: #0F172A;
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s;
@@ -1652,54 +1633,106 @@
         cursor: not-allowed;
       }
       .hora-duracion {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         color: #64748B;
-        margin-top: 10px;
+        margin-top: 8px;
         display: flex;
         align-items: center;
         gap: 6px;
       }
       .hora-duracion i { color: #2563EB; }
 
+      /* ── Appointment Summary ── */
+      .cita-resumen {
+        margin-top: 20px;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 20px 24px;
+        background: #F8FAFC;
+      }
+      .cita-resumen-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #0F172A;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .cita-resumen-title i { color: #2563EB; }
+      .cita-resumen-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .cita-resumen-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .cita-resumen-item .label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .cita-resumen-item .value {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #0F172A;
+      }
+
       /* ── Form Footer ── */
       .appointment-card-footer {
         border-top: 1px solid #E5E7EB;
-        padding: 24px 32px;
+        padding: 20px 32px;
         display: flex;
         justify-content: flex-end;
         gap: 12px;
-        margin-top: 28px;
+        margin-top: 24px;
       }
-      .btn-cancel {
-        height: 44px;
+      .btn-clear {
+        height: 48px;
+        min-width: 180px;
         padding: 0 24px;
-        border: 1.5px solid #CBD5E1;
+        border: 1px solid #D1D5DB;
         border-radius: 10px;
         background: #FFFFFF;
-        color: #0F172A;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: "Inter", sans-serif;
-        transition: all 0.2s;
-      }
-      .btn-cancel:hover {
-        background: #F8FAFC;
-      }
-      .btn-continue {
-        height: 44px;
-        padding: 0 28px;
-        border: none;
-        border-radius: 10px;
-        background: #2563EB;
-        color: #FFFFFF;
-        font-size: 0.85rem;
+        color: #DC2626;
+        font-size: 0.95rem;
         font-weight: 600;
         cursor: pointer;
         font-family: "Inter", sans-serif;
         transition: all 0.2s;
         display: flex;
         align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-clear:hover {
+        background: #FEF2F2;
+        border-color: #FCA5A5;
+      }
+      .btn-clear i {
+        color: #DC2626;
+      }
+      .btn-continue {
+        height: 48px;
+        min-width: 200px;
+        padding: 0 28px;
+        border: none;
+        border-radius: 10px;
+        background: #2563EB;
+        color: #FFFFFF;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         gap: 8px;
       }
       .btn-continue:hover {
@@ -1726,27 +1759,43 @@
         opacity: 0.4;
       }
 
-      @media (max-width: 1024px) {
+      @media (max-width: 1100px) {
+        .cal-hora-row { flex-direction: column; }
         .calendar-compact { width: 100%; }
-        .calendar-layout { flex-direction: column; }
-        .legend-card { width: 100%; }
+        .hora-col { width: 100%; }
         .hora-grid-modern { grid-template-columns: repeat(4, 1fr); }
       }
       @media (max-width: 768px) {
-        .appointment-card-header { flex-direction: column; align-items: flex-start; }
-        .stepper { width: 100%; justify-content: center; }
+        .appointment-card-header { padding: 18px 24px; }
+        .banner-text h2 { font-size: 1.4rem; }
+        .banner-illustration svg { width: 110px; height: auto; }
         .form-grid-2 { grid-template-columns: 1fr; }
         .form-grid-2 .full { grid-column: span 1; }
         .hora-grid-modern { grid-template-columns: repeat(3, 1fr); }
         .appointment-card-footer { justify-content: center; }
+        .cita-resumen-grid { grid-template-columns: 1fr 1fr; }
       }
       @media (max-width: 480px) {
+        .appointment-card-header { padding: 16px; min-height: auto; }
+        .banner-icon { width: 40px; height: 40px; font-size: 1.1rem; border-radius: 10px; }
+        .banner-text h2 { font-size: 1.15rem; }
+        .banner-text p { font-size: 0.78rem; }
+        .banner-illustration { display: none; }
+        .progress-tracker { margin: 0 16px 12px 16px; padding: 0 12px; height: auto; min-height: 64px; overflow-x: auto; gap: 0; }
+        .progress-step { flex: 0 0 auto; flex-direction: column; text-align: center; padding: 8px 4px; min-width: 80px; gap: 6px; }
+        .progress-marker { width: 28px; height: 28px; font-size: 0.75rem; }
+        .progress-label { font-size: 0.7rem; white-space: normal; }
+        .progress-status { font-size: 0.6rem; }
+        .progress-info { align-items: center; }
+        .progress-connector { flex: 0 0 12px; margin: 0; align-self: auto; }
         .appointment-card-body { padding: 20px 16px 0 16px; }
-        .appointment-card-header { padding: 20px 16px 0 16px; }
-        .appointment-card-footer { padding: 20px 16px; flex-direction: column; }
-        .cal-day { width: 40px; height: 40px; font-size: 0.72rem; }
-        .calendar-compact { padding: 12px; }
+        .appointment-card-footer { padding: 16px; flex-direction: column; align-items: stretch; }
+        .btn-clear { width: 100%; }
+        .btn-continue { width: 100%; }
+        .cal-day { width: 36px; height: 36px; font-size: 0.7rem; }
+        .calendar-compact { padding: 8px; }
         .hora-grid-modern { grid-template-columns: repeat(2, 1fr); }
+        .cita-resumen-grid { grid-template-columns: 1fr; }
       }
 
       /* ── Technology ── */
@@ -2869,26 +2918,61 @@
         </div>
         <div class="appointment-card reveal">
           <div class="appointment-card-header">
-            <div class="appointment-card-header-left">
-              <div class="appointment-icon-circle">
-                <i class="fas fa-calendar-check"></i>
+            <div class="banner-left">
+              <div class="banner-icon">
+                <i class="fas fa-calendar-alt"></i>
               </div>
-              <div class="appointment-title-group">
+              <div class="banner-text">
                 <h2>Solicitar cita m&eacute;dica</h2>
-                <p>Completa los datos para agendar tu cita</p>
+                <p>Completa los datos para agendar tu cita.</p>
               </div>
             </div>
-            <div class="stepper">
-              <div class="step-item active">
-                <span class="step-num">1</span> Informaci&oacute;n
+            <div class="banner-illustration">
+              <svg width="150" height="90" viewBox="0 0 150 90" fill="none">
+                <rect x="28" y="16" width="58" height="54" rx="6" fill="white" stroke="#CBD5E1" stroke-width="1.5"/>
+                <rect x="28" y="16" width="58" height="16" rx="6" fill="#2563EB"/>
+                <circle cx="40" cy="39" r="1.5" fill="#E2E8F0"/>
+                <circle cx="48" cy="39" r="1.5" fill="#E2E8F0"/>
+                <circle cx="56" cy="39" r="1.5" fill="#E2E8F0"/>
+                <circle cx="40" cy="47" r="1.5" fill="#E2E8F0"/>
+                <circle cx="48" cy="47" r="1.5" fill="#E2E8F0"/>
+                <circle cx="40" cy="55" r="1.5" fill="#E2E8F0"/>
+                <circle cx="56" cy="47" r="1.5" fill="#E2E8F0"/>
+                <circle cx="56" cy="55" r="1.5" fill="#E2E8F0"/>
+                <circle cx="72" cy="52" r="12" fill="#10B981"/>
+                <path d="M67 52L70.5 55.5L77 49" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M118 60L121 78H141L144 60" stroke="#94A3B8" stroke-width="1.5" fill="none"/>
+                <line x1="121" y1="78" x2="141" y2="78" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M131 60C131 48 135 38 140 30" stroke="#34D399" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <path d="M137 43C131 40 124 40 118 42" stroke="#10B981" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M133 50C128 47 121 46 114 47" stroke="#34D399" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M130 38C127 33 126 28 128 25" stroke="#10B981" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M139 36C143 31 145 26 143 22" stroke="#34D399" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+          <div class="progress-tracker">
+            <div class="progress-step" data-step="1">
+              <div class="progress-marker">1</div>
+              <div class="progress-info">
+                <span class="progress-label">Datos del paciente</span>
+                <span class="progress-status">Pendiente</span>
               </div>
-              <div class="step-line"></div>
-              <div class="step-item">
-                <span class="step-num">2</span> Confirmaci&oacute;n
+            </div>
+            <div class="progress-connector"></div>
+            <div class="progress-step" data-step="2">
+              <div class="progress-marker">2</div>
+              <div class="progress-info">
+                <span class="progress-label">Informaci&oacute;n de la cita</span>
+                <span class="progress-status">Pendiente</span>
               </div>
-              <div class="step-line"></div>
-              <div class="step-item">
-                <span class="step-num">3</span> Completado
+            </div>
+            <div class="progress-connector"></div>
+            <div class="progress-step" data-step="3">
+              <div class="progress-marker">3</div>
+              <div class="progress-info">
+                <span class="progress-label">Agendar cita</span>
+                <span class="progress-status">Pendiente</span>
               </div>
             </div>
           </div>
@@ -2898,19 +2982,21 @@
                 <i class="fas fa-user"></i> Datos del paciente
               </div>
               <div class="form-grid-2">
-                <div class="full">
-                  <div class="form-group-modern">
-                    <label>Nombre completo del paciente</label>
-                    <input type="text" id="nombre_paciente" placeholder="Ej: Maria Garcia" required />
-                  </div>
+                <div class="form-group-modern">
+                  <label>Nombres <span class="required">*</span></label>
+                  <input type="text" id="nombres" placeholder="Ej: Maria" required />
+                </div>
+                <div class="form-group-modern">
+                  <label>Apellidos <span class="required">*</span></label>
+                  <input type="text" id="apellidos" placeholder="Ej: Garcia" required />
                 </div>
                 <div class="form-group-modern">
                   <label>C&eacute;dula <span class="required">*</span></label>
                   <input type="text" id="cedula" placeholder="000-0000000-0" required maxlength="13" autocomplete="off" />
                 </div>
                 <div class="form-group-modern">
-                  <label>Tel&eacute;fono / WhatsApp</label>
-                  <input type="tel" id="telefono" placeholder="809-555-0100" required />
+                  <label>Tel&eacute;fono / WhatsApp <span class="required">*</span></label>
+                  <input type="tel" id="telefono" placeholder="809-555-0100" required maxlength="10" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)" />
                 </div>
                 <div class="form-group-modern">
                   <label>Correo electr&oacute;nico <span class="required">*</span></label>
@@ -2936,80 +3022,40 @@
                   </select>
                 </div>
                 <div class="form-group-modern">
-                  <label>ARS / Seguro m&eacute;dico</label>
+                  <label>ARS / Seguro m&eacute;dico <span class="required">*</span></label>
                   <select id="ars" required>
                     <option value="">Selecciona tu ARS</option>
                   </select>
                 </div>
               </div>
               <div class="calendar-block" id="calendarGroup" style="display:none;">
-                <label>Fecha deseada <span class="required">*</span></label>
-                <div class="calendar-layout">
-                  <div class="calendar-compact" id="calWidget">
-                    <div class="cal-header">
-                      <button type="button" class="cal-nav" id="calPrev" onclick="calMesAnterior()"><i class="fas fa-chevron-left"></i></button>
-                      <span class="cal-title" id="calTitle">Junio 2026</span>
-                      <button type="button" class="cal-nav" id="calNext" onclick="calMesSiguiente()"><i class="fas fa-chevron-right"></i></button>
+                <span class="cal-label">Fecha deseada <span class="required">*</span></span>
+                <div class="cal-hora-row">
+                  <div class="cal-col">
+                    <div class="calendar-compact" id="calWidget">
+                      <div class="cal-header">
+                        <button type="button" class="cal-nav" id="calPrev" onclick="calMesAnterior()"><i class="fas fa-chevron-left"></i></button>
+                        <span class="cal-title" id="calTitle">Junio 2026</span>
+                        <button type="button" class="cal-nav" id="calNext" onclick="calMesSiguiente()"><i class="fas fa-chevron-right"></i></button>
+                      </div>
+                      <div class="cal-days-header">
+                        <span>DOM</span><span>LUN</span><span>MAR</span><span>MI&Eacute;</span><span>JUE</span><span>VIE</span><span>S&Aacute;B</span>
+                      </div>
+                      <div class="cal-grid" id="calGrid"></div>
                     </div>
-                    <div class="cal-days-header">
-                      <span>DOM</span><span>LUN</span><span>MAR</span><span>MI&Eacute;</span><span>JUE</span><span>VIE</span><span>S&Aacute;B</span>
-                    </div>
-                    <div class="cal-grid" id="calGrid"></div>
+                    <input type="hidden" id="fecha" />
+                    <div id="disponibilidadMsg" style="display:none;margin-top:6px;font-size:0.78rem;padding:6px 10px;border-radius:6px;"></div>
                   </div>
-                  <div class="legend-card">
-                    <div class="legend-item">
-                      <div class="legend-swatch green"></div>
-                      <div class="legend-item-text">
-                        <strong>Disponible</strong>
-                        <span>Fechas con disponibilidad</span>
-                      </div>
-                    </div>
-                    <div class="legend-item">
-                      <div class="legend-swatch blue"></div>
-                      <div class="legend-item-text">
-                        <strong>Seleccionado</strong>
-                        <span>Fecha elegida</span>
-                      </div>
-                    </div>
-                    <div class="legend-item">
-                      <div class="legend-swatch gray"></div>
-                      <div class="legend-item-text">
-                        <strong>No disponible</strong>
-                        <span>Sin disponibilidad</span>
-                      </div>
-                    </div>
-                    <div class="legend-item">
-                      <div class="legend-swatch white"></div>
-                      <div class="legend-item-text">
-                        <strong>Pasadas</strong>
-                        <span>Fechas anteriores</span>
-                      </div>
-                    </div>
-                    <div class="legend-item">
-                      <div class="legend-swatch red"></div>
-                      <div class="legend-item-text">
-                        <strong>Ocupado</strong>
-                        <span>D&iacute;a sin cupos disponibles</span>
-                      </div>
-                    </div>
-                    <div class="legend-divider"></div>
-                    <div class="legend-info-box">
-                      <strong>Importante</strong>
-                      <p>Las citas est&aacute;n sujetas a disponibilidad. Te confirmaremos tu cita por WhatsApp o correo.</p>
+                  <div class="hora-col" id="horaGroup" style="display:none;">
+                    <label>Hora deseada <span class="required">*</span></label>
+                    <div class="hora-grid-modern" id="horaGrid"></div>
+                    <select id="hora" required style="display:none;">
+                      <option value="">Selecciona un horario</option>
+                    </select>
+                    <div class="hora-duracion" id="duracionDisplay">
+                      <i class="far fa-clock"></i> Duraci&oacute;n: <span id="duracionTexto">40 min</span>
                     </div>
                   </div>
-                </div>
-                <input type="hidden" id="fecha" />
-                <div id="disponibilidadMsg" style="display:none;margin-top:6px;font-size:0.78rem;padding:6px 10px;border-radius:6px;"></div>
-              </div>
-              <div class="hora-block" id="horaGroup" style="display:none;">
-                <label>Hora deseada <span class="required">*</span></label>
-                <div class="hora-grid-modern" id="horaGrid"></div>
-                <select id="hora" required style="display:none;">
-                  <option value="">Selecciona un horario</option>
-                </select>
-                <div class="hora-duracion" id="duracionDisplay">
-                  <i class="far fa-clock"></i> Duraci&oacute;n aproximada: <span id="duracionTexto">40 minutos</span>
                 </div>
               </div>
               <div class="form-grid-2" style="margin-top:20px">
@@ -3033,14 +3079,14 @@
                   <span>Acepto la pol&iacute;tica de privacidad y el tratamiento de mis datos personales para la gesti&oacute;n de la cita.</span>
                 </label>
               </div>
-            </form>
-          </div>
-          <div class="appointment-card-footer">
-            <button type="button" class="btn-cancel" onclick="document.getElementById('citaForm').reset()">Cancelar</button>
-            <button type="submit" class="btn-continue" id="submitBtn" form="citaForm">
-              Continuar <i class="fas fa-arrow-right"></i>
-            </button>
-          </div>
+            </div>
+            <div class="appointment-card-footer">
+              <button type="button" class="btn-clear" onclick="limpiarFormulario()"><i class="fas fa-trash-alt"></i> Limpiar formulario</button>
+              <button type="submit" class="btn-continue" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> Solicitar cita
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -3905,11 +3951,11 @@
           e.preventDefault();
           const btn = document.getElementById("submitBtn");
           btn.disabled = true;
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+          btn.innerHTML = '⏳ Enviando solicitud...';
 
-          const nombre = document
-            .getElementById("nombre_paciente")
-            .value.trim();
+          const nombresVal = document.getElementById("nombres").value.trim();
+          const apellidosVal = document.getElementById("apellidos").value.trim();
+          const nombre = (nombresVal + " " + apellidosVal).trim();
           const ced = document.getElementById("cedula").value.trim();
           const tel = document.getElementById("telefono").value.trim();
           const email = document.getElementById("correo").value.trim();
@@ -3924,7 +3970,7 @@
           const priv = document.getElementById("acepto_privacidad").checked;
 
           const faltan = [];
-          if (!nombre) faltan.push("Nombre del paciente");
+          if (!nombresVal || !apellidosVal) faltan.push("Nombres y apellidos");
           if (!ced) faltan.push("Cédula");
           else if (!validarCedulaRD(ced)) {
             mostrarToast(
@@ -3932,7 +3978,7 @@
               "error",
             );
             btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar cita';
             return;
           }
           if (!tel) faltan.push("Teléfono");
@@ -3942,14 +3988,14 @@
               "error",
             );
             btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar cita';
             return;
           }
           if (!email) faltan.push("Correo electrónico");
           else if (!validarEmail(email)) {
             mostrarToast("Correo electrónico inválido", "error");
             btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar cita';
             return;
           }
           if (!dir) faltan.push("Dirección");
@@ -3962,40 +4008,33 @@
           if (!priv) faltan.push("Aceptar política de privacidad");
 
           if (faltan.length > 0) {
-            mostrarToast("Campos obligatorios: " + faltan.join(", "), "error");
+            mostrarToast("Completa todos los campos requeridos: " + faltan.join(", "), "error");
             btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar cita';
             return;
           }
 
-          // Check if service has availability configured
-          const fechaInput = document.getElementById("fecha");
-          if (fechaInput.disabled) {
-            mostrarToast("Este servicio no tiene horario disponible configurado. Seleccione otro servicio.", "error");
-            btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
-            return;
-          }
-
+          const payload = {
+            nombre_paciente: nombre,
+            cedula: normalizarCedula(ced),
+            telefono: tel,
+            correo: email,
+            direccion: dir,
+            ciudad: ciu,
+            servicio_id: servId,
+            ars: ars,
+            fecha: fec,
+            hora: hor,
+            modalidad: mod,
+            comentario: com,
+            acepto_privacidad: priv,
+          };
+          console.log("Payload final de cita:", payload);
           try {
             const res = await fetch("/api/citas", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                nombre_paciente: nombre,
-                cedula: normalizarCedula(ced),
-                telefono: tel,
-                correo: email,
-                direccion: dir,
-                ciudad: ciu,
-                servicio_id: servId,
-                ars: ars,
-                fecha: fec,
-                hora: hor,
-                modalidad: mod,
-                comentario: com,
-                acepto_privacidad: priv,
-              }),
+              body: JSON.stringify(payload),
             });
             const result = await res.json();
             if (res.ok) {
@@ -4003,6 +4042,8 @@
                 result.codigo_cita;
               document.getElementById("successModal").classList.add("open");
               document.getElementById("citaForm").reset();
+              btn.innerHTML = '✓ Solicitud enviada';
+              actualizarProgreso();
             } else {
               mostrarToast(result.error || "Error al crear la cita", "error");
             }
@@ -4010,9 +4051,37 @@
             mostrarToast("Error de conexion. Intente nuevamente.", "error");
           } finally {
             btn.disabled = false;
-            btn.innerHTML = 'Continuar <i class="fas fa-arrow-right"></i>';
+            if (btn.innerHTML !== '✓ Solicitud enviada') {
+              btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar cita';
+            }
           }
         });
+
+      function limpiarFormulario() {
+        if (!confirm("¿Desea limpiar el formulario completo?")) return;
+        document.getElementById("citaForm").reset();
+        document.getElementById("nombres").value = "";
+        document.getElementById("apellidos").value = "";
+        document.getElementById("cedula").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("correo").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("ciudad").value = "";
+        document.getElementById("servicio_id").value = "";
+        document.getElementById("ars").value = "";
+        document.getElementById("modalidad").value = "";
+        document.getElementById("comentario").value = "";
+        document.getElementById("fecha").value = "";
+        document.getElementById("hora").value = "";
+        document.getElementById("acepto_privacidad").checked = false;
+        document.getElementById("successModal") &&
+          document.getElementById("successModal").classList.remove("open");
+        var calendarGroup = document.getElementById("calendarGroup");
+        if (calendarGroup) calendarGroup.style.display = "none";
+        var horaGroup = document.getElementById("horaGroup");
+        if (horaGroup) horaGroup.style.display = "none";
+        actualizarProgreso();
+      }
 
       function cerrarModal() {
         document.getElementById("successModal").classList.remove("open");
@@ -4101,6 +4170,71 @@
         toast.className = "toast toast-" + tipo + " show";
         setTimeout(() => toast.classList.remove("show"), 4000);
       }
+
+      function actualizarProgreso() {
+        var paso1 = (
+          document.getElementById("nombres").value.trim() !== "" &&
+          document.getElementById("apellidos").value.trim() !== "" &&
+          document.getElementById("cedula").value.trim() !== "" &&
+          document.getElementById("telefono").value.trim() !== "" &&
+          document.getElementById("correo").value.trim() !== "" &&
+          document.getElementById("direccion").value.trim() !== "" &&
+          document.getElementById("ciudad").value.trim() !== ""
+        );
+        var paso2 = (
+          document.getElementById("servicio_id").value !== "" &&
+          document.getElementById("ars").value !== "" &&
+          document.getElementById("modalidad").value !== ""
+        );
+        var paso3 = (
+          document.getElementById("fecha").value !== "" &&
+          document.getElementById("hora").value !== "" &&
+          document.getElementById("acepto_privacidad").checked
+        );
+
+        var pasos = [
+          { paso: paso1, el: 1, label: "Completado" },
+          { paso: paso2, el: 2, label: "Completado" },
+          { paso: paso3, el: 3, label: "Listo para enviar" }
+        ];
+
+        var currentSet = false;
+
+        for (var i = 0; i < pasos.length; i++) {
+          var stepEl = document.querySelector('.progress-step[data-step="' + pasos[i].el + '"]');
+          if (!stepEl) continue;
+          var marker = stepEl.querySelector(".progress-marker");
+          var status = stepEl.querySelector(".progress-status");
+
+          if (pasos[i].paso) {
+            stepEl.classList.remove("active");
+            stepEl.classList.add("completed");
+            marker.innerHTML = '<i class="fas fa-check"></i>';
+            status.textContent = pasos[i].label;
+          } else if (!currentSet) {
+            stepEl.classList.add("active");
+            stepEl.classList.remove("completed");
+            marker.innerHTML = pasos[i].el;
+            status.textContent = "Pendiente";
+            currentSet = true;
+          } else {
+            stepEl.classList.remove("active", "completed");
+            marker.innerHTML = pasos[i].el;
+            status.textContent = "Pendiente";
+          }
+        }
+      }
+
+      var progressFields = ["nombres", "apellidos", "cedula", "telefono", "correo", "direccion", "ciudad", "servicio_id", "ars", "modalidad", "fecha", "hora", "acepto_privacidad"];
+      for (var i = 0; i < progressFields.length; i++) {
+        var el = document.getElementById(progressFields[i]);
+        if (el) {
+          el.addEventListener("input", actualizarProgreso);
+          el.addEventListener("change", actualizarProgreso);
+        }
+      }
+
+      actualizarProgreso();
 
       cargarServicios();
       cargarMedicos();
